@@ -78,10 +78,47 @@ const parser = new XMLParser({
 });
 
 /**
+ * Return available SkillSets, ItemSets and Tree Specs from a PoB XML string.
+ * Used by /api/inspect so the UI can show set selectors before converting.
+ */
+export function getAvailableSets(xml) {
+  const doc = parser.parse(xml);
+  const root = doc.PathOfBuilding2 ?? doc.PathOfBuilding;
+  if (!root) return { skillSets: [], itemSets: [], treeSpecs: [], meta: {} };
+
+  const buildEl = root.Build;
+  const meta = buildEl ? {
+    level: num(buildEl['@_level']),
+    className: str(buildEl['@_className']),
+    ascendClassName: str(buildEl['@_ascendClassName']),
+  } : {};
+
+  const skillSets = asArray(root.Skills?.SkillSet).map((s, i) => ({
+    id: num(s['@_id']) || i + 1,
+    title: str(s['@_title']) || `Skill Set ${i + 1}`,
+  }));
+
+  const itemSets = asArray(root.Items?.ItemSet).map((s, i) => ({
+    id: num(s['@_id']) || i + 1,
+    title: str(s['@_title']) || `Item Set ${i + 1}`,
+  }));
+
+  const treeSpecs = asArray(root.Tree?.Spec).map((s, i) => ({
+    index: i,
+    title: str(s['@_title']) || `Spec ${i + 1}`,
+    treeVersion: str(s['@_treeVersion']),
+  }));
+
+  return { meta, skillSets, itemSets, treeSpecs };
+}
+
+/**
  * Parse PoB XML into a normalized build object.
  * Supports both <PathOfBuilding2> (PoB2) and <PathOfBuilding> (PoB1) roots.
+ * @param {string} xml
+ * @param {{ skillSetId?: number, itemSetId?: number, specIndex?: number }} opts
  */
-export function parsePobXml(xml) {
+export function parsePobXml(xml, { skillSetId, itemSetId, specIndex } = {}) {
   const doc = parser.parse(xml);
   // PoB2 exports use <PathOfBuilding2>; PoB1 uses <PathOfBuilding>
   const root = doc.PathOfBuilding2 ?? doc.PathOfBuilding;
@@ -92,9 +129,9 @@ export function parsePobXml(xml) {
 
   return {
     meta: parseBuildMeta(buildEl),
-    skills: parseSkills(root.Skills),
-    tree: parseTree(root.Tree),
-    items: parseItems(root.Items),
+    skills: parseSkills(root.Skills, skillSetId),
+    tree: parseTree(root.Tree, specIndex),
+    items: parseItems(root.Items, itemSetId),
     notes: extractNotes(root),
   };
 }
@@ -110,10 +147,10 @@ function parseBuildMeta(b) {
   };
 }
 
-function parseSkills(skills) {
+function parseSkills(skills, targetId) {
   if (!skills) return [];
 
-  const activeId = num(skills['@_activeSkillSet']) || 1;
+  const activeId = targetId ?? num(skills['@_activeSkillSet']) ?? 1;
   const sets = asArray(skills.SkillSet);
 
   let skillNodes;
@@ -164,7 +201,7 @@ function parseGem(gem) {
   };
 }
 
-function parseTree(tree) {
+function parseTree(tree, targetSpecIndex) {
   if (!tree) return { nodes: [], specs: [] };
 
   const specs = asArray(tree.Spec).map((spec) => {
@@ -182,11 +219,11 @@ function parseTree(tree) {
     };
   });
 
-  const active = specs[0] ?? { nodes: [] };
+  const active = (targetSpecIndex != null ? specs[targetSpecIndex] : null) ?? specs[0] ?? { nodes: [] };
   return { nodes: active.nodes, specs };
 }
 
-function parseItems(items) {
+function parseItems(items, targetId) {
   if (!items) return { list: [], slots: [] };
 
   const catalog = {};
@@ -195,7 +232,7 @@ function parseItems(items) {
     if (id > 0) catalog[String(id)] = parsePobItem(raw, id);
   }
 
-  const activeId = num(items['@_activeItemSet']) || 1;
+  const activeId = targetId ?? num(items['@_activeItemSet']) ?? 1;
   const sets = asArray(items.ItemSet);
   let slotNodes = [];
   if (sets.length) {

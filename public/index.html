@@ -96,6 +96,25 @@
           <textarea id="input" rows="5" spellcheck="false"
             placeholder="https://pobb.in/abc123   https://mobalytics.gg/poe-2/builds/...   eNqVk...   <PathOfBuilding>..."></textarea>
 
+          <!-- Set selectors — hidden until inspect finds multiple sets -->
+          <div id="set-selector" class="set-selector hidden">
+            <div class="set-selector-label">Select sets to convert</div>
+            <div class="set-selector-row">
+              <div class="set-field" id="gems-field">
+                <label for="sel-gems">Gems</label>
+                <select id="sel-gems"></select>
+              </div>
+              <div class="set-field" id="gear-field">
+                <label for="sel-gear">Gear</label>
+                <select id="sel-gear"></select>
+              </div>
+              <div class="set-field" id="tree-field">
+                <label for="sel-tree">Tree</label>
+                <select id="sel-tree"></select>
+              </div>
+            </div>
+          </div>
+
           <div class="row">
             <div class="field grow">
               <label for="name">Build name</label>

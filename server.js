@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { resolveAndConvert } from './src/resolve.js';
+import { resolveAndConvert, inspectInput } from './src/resolve.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -13,17 +13,35 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
 /**
+ * Inspect a PoB input and return available SkillSets, ItemSets, and Tree Specs.
+ * Body: { input: string, kind?: string }
+ */
+app.post('/api/inspect', async (req, res) => {
+  const { input, kind } = req.body ?? {};
+  if (!input || typeof input !== 'string') {
+    return res.status(400).json({ error: 'Missing "input" string in request body.' });
+  }
+  try {
+    const sets = await inspectInput(input, { kind });
+    return res.json({ ok: true, ...sets });
+  } catch (err) {
+    return res.status(422).json({ ok: false, error: err.message });
+  }
+});
+
+/**
  * Convert any supported input into the PoE2 .build object + a report.
- * Body: { input: string, kind?: string, name?: string, description?: string }
+ * Body: { input: string, kind?: string, name?: string, description?: string,
+ *         skillSetId?: number, itemSetId?: number, specIndex?: number }
  */
 app.post('/api/convert', async (req, res) => {
-  const { input, kind, name, description } = req.body ?? {};
+  const { input, kind, name, description, skillSetId, itemSetId, specIndex } = req.body ?? {};
   if (!input || typeof input !== 'string') {
     return res.status(400).json({ error: 'Missing "input" string in request body.' });
   }
 
   try {
-    const result = await resolveAndConvert(input, { kind, name, description });
+    const result = await resolveAndConvert(input, { kind, name, description, skillSetId, itemSetId, specIndex });
     const filename = `${sanitizeFilename(result.build.name)}.build`;
     return res.json({
       ok: true,

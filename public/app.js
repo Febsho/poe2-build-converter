@@ -4,6 +4,10 @@ let lastBuild = null;
 let lastFilename = 'MyBuild.build';
 let selectedKind = 'auto';
 
+// Set selection state
+let inspectedInput = null;  // the input string that was last inspected
+let availableSets = null;   // { skillSets, itemSets, treeSpecs }
+
 // Segmented input-type control
 document.querySelectorAll('#kind-seg .seg').forEach((btn) => {
   btn.addEventListener('click', () => {
@@ -31,6 +35,18 @@ $('input').addEventListener('keydown', (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') convert();
 });
 
+// Reset set selectors when input changes
+$('input').addEventListener('input', () => {
+  inspectedInput = null;
+  availableSets = null;
+  $('set-selector').classList.add('hidden');
+});
+
+// Re-convert when a set selector changes
+['sel-gems', 'sel-gear', 'sel-tree'].forEach((id) => {
+  $(id)?.addEventListener('change', () => doConvert());
+});
+
 async function convert() {
   const input = $('input').value.trim();
   if (!input) {
@@ -38,8 +54,50 @@ async function convert() {
     return;
   }
 
+  // Phase 1: inspect if not done yet for this input
+  if (inspectedInput !== input) {
+    await inspect(input);
+    // inspect sets inspectedInput; if sets found, selectors are shown
+    // and we still fall through to convert with defaults
+  }
+
+  await doConvert();
+}
+
+async function inspect(input) {
+  setStatus('Inspecting…', '');
+  $('convert-btn').disabled = true;
+  try {
+    const res = await fetch('/api/inspect', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ input, kind: selectedKind }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) return; // silently skip — convert will surface errors
+
+    inspectedInput = input;
+    availableSets = { skillSets: data.skillSets, itemSets: data.itemSets, treeSpecs: data.treeSpecs };
+
+    renderSetSelectors(availableSets);
+  } catch {
+    // non-fatal — convert will surface any real errors
+  } finally {
+    $('convert-btn').disabled = false;
+  }
+}
+
+async function doConvert() {
+  const input = $('input').value.trim();
+  if (!input) return;
+
   setStatus('Converting…', '');
   $('convert-btn').disabled = true;
+
+  // Read current selector values
+  const skillSetId = parseSelValue($('sel-gems')?.value);
+  const itemSetId  = parseSelValue($('sel-gear')?.value);
+  const specIndex  = parseSelValue($('sel-tree')?.value);
 
   try {
     const res = await fetch('/api/convert', {
@@ -50,6 +108,9 @@ async function convert() {
         kind: selectedKind,
         name: $('name').value.trim() || undefined,
         description: $('description').value.trim() || undefined,
+        skillSetId,
+        itemSetId,
+        specIndex,
       }),
     });
 
@@ -68,6 +129,47 @@ async function convert() {
     $('json-card').classList.add('hidden');
   } finally {
     $('convert-btn').disabled = false;
+  }
+}
+
+function parseSelValue(v) {
+  if (v === undefined || v === null || v === '') return undefined;
+  const n = Number(v);
+  return isNaN(n) ? undefined : n;
+}
+
+function renderSetSelectors({ skillSets, itemSets, treeSpecs }) {
+  const hasSets = skillSets.length > 1 || itemSets.length > 1 || treeSpecs.length > 1;
+  if (!hasSets) {
+    $('set-selector').classList.add('hidden');
+    return;
+  }
+
+  populateSelect('sel-gems', skillSets, 'id');
+  populateSelect('sel-gear', itemSets, 'id');
+  populateSelect('sel-tree', treeSpecs, 'index');
+
+  $('gems-field').classList.toggle('hidden', skillSets.length <= 1);
+  $('gear-field').classList.toggle('hidden', itemSets.length <= 1);
+  $('tree-field').classList.toggle('hidden', treeSpecs.length <= 1);
+
+  $('set-selector').classList.remove('hidden');
+}
+
+function populateSelect(id, items, valueKey) {
+  const sel = $(id);
+  if (!sel) return;
+  const prev = sel.value;
+  sel.innerHTML = '';
+  for (const item of items) {
+    const opt = document.createElement('option');
+    opt.value = item[valueKey];
+    opt.textContent = item.title;
+    sel.appendChild(opt);
+  }
+  // Restore previously selected value if still valid
+  if (prev !== '' && [...sel.options].some((o) => o.value === prev)) {
+    sel.value = prev;
   }
 }
 

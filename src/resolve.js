@@ -1,4 +1,4 @@
-import { decodePobCode, parsePobXml } from './pobParser.js';
+import { decodePobCode, parsePobXml, getAvailableSets } from './pobParser.js';
 import { isPobbinUrl, fetchPobbinCode } from './pobbin.js';
 import { isMobalyticsUrl, fetchMobalyticsData } from './mobalytics.js';
 import { convertToBuild } from './converter.js';
@@ -12,13 +12,16 @@ import { convertToBuild } from './converter.js';
  *   - 'pobcode'     : a PoB export code (base64) -> decode
  *   - 'xml'         : raw PoB XML
  *   - 'json'        : an already-normalized build object (advanced/manual)
+ *
+ * Set selection opts: { skillSetId, itemSetId, specIndex }
  */
-export async function resolveInput(rawInput, { kind = 'auto' } = {}) {
+export async function resolveInput(rawInput, { kind = 'auto', skillSetId, itemSetId, specIndex } = {}) {
   const input = (rawInput ?? '').trim();
   if (!input) throw new Error('No input provided');
 
   const detected = kind === 'auto' ? detectKind(input) : kind;
   const source = { kind: detected };
+  const setOpts = { skillSetId, itemSetId, specIndex };
 
   if (detected === 'mobalytics') {
     const build = await fetchMobalyticsData(input);
@@ -29,11 +32,11 @@ export async function resolveInput(rawInput, { kind = 'auto' } = {}) {
     const code = await fetchPobbinCode(input);
     source.fetchedCode = true;
     const xml = decodePobCode(code);
-    return { build: parsePobXml(xml), source };
+    return { build: parsePobXml(xml, setOpts), source };
   }
 
   if (detected === 'xml') {
-    return { build: parsePobXml(input), source };
+    return { build: parsePobXml(input, setOpts), source };
   }
 
   if (detected === 'json') {
@@ -42,7 +45,35 @@ export async function resolveInput(rawInput, { kind = 'auto' } = {}) {
 
   // default: treat as a PoB export code
   const xml = decodePobCode(input);
-  return { build: parsePobXml(xml), source };
+  return { build: parsePobXml(xml, setOpts), source };
+}
+
+/**
+ * Inspect a PoB input without converting — returns available SkillSets,
+ * ItemSets, and Tree Specs so the UI can show selectors before converting.
+ */
+export async function inspectInput(rawInput, { kind = 'auto' } = {}) {
+  const input = (rawInput ?? '').trim();
+  if (!input) throw new Error('No input provided');
+
+  const detected = kind === 'auto' ? detectKind(input) : kind;
+
+  // Only PoB-format inputs have multiple sets; others get empty arrays.
+  if (detected === 'mobalytics' || detected === 'json') {
+    return { skillSets: [], itemSets: [], treeSpecs: [], meta: {} };
+  }
+
+  let xml;
+  if (detected === 'pobbin') {
+    const code = await fetchPobbinCode(input);
+    xml = decodePobCode(code);
+  } else if (detected === 'xml') {
+    xml = input;
+  } else {
+    xml = decodePobCode(input);
+  }
+
+  return getAvailableSets(xml);
 }
 
 function detectKind(input) {
@@ -81,5 +112,5 @@ function normalizeJsonInput(obj) {
 export async function resolveAndConvert(rawInput, opts = {}) {
   const { build, source } = await resolveInput(rawInput, opts);
   const { build: out, report } = convertToBuild(build, opts);
-  return { build: out, report, source, parsed: build };
+  return { build: out, report, source };
 }
