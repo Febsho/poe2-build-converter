@@ -12,9 +12,8 @@
       <aside class="sidebar">
         <div class="brand">
           <span class="brand-mark">⌂</span>
-          <span class="brand-name">pob2build</span>
+          <span class="brand-name">Build Converter for Path of Exile 2</span>
         </div>
-
         <div class="sidebar-footer">
           <a href="https://github.com/febsho/poe2-build-converter" target="_blank" rel="noreferrer">GitHub ↗</a>
           <div class="version">version 1.0.0</div>
@@ -28,17 +27,17 @@
         <section class="stats">
           <div class="stat">
             <div class="stat-label">Converted</div>
-            <div class="stat-value" id="stat-converted">0</div>
+            <div class="stat-value" id="stat-converted">—</div>
             <div class="stat-foot">high confidence</div>
           </div>
           <div class="stat">
             <div class="stat-label">Guessed</div>
-            <div class="stat-value amber" id="stat-guessed">0</div>
+            <div class="stat-value amber" id="stat-guessed">—</div>
             <div class="stat-foot">verify before use</div>
           </div>
           <div class="stat">
             <div class="stat-label">Unsupported</div>
-            <div class="stat-value red" id="stat-unsupported">0</div>
+            <div class="stat-value red" id="stat-unsupported">—</div>
             <div class="stat-foot">kept as text</div>
           </div>
           <div class="stat">
@@ -48,17 +47,23 @@
           </div>
         </section>
 
-        <!-- Convert input -->
+        <!-- Input -->
         <section class="panel" id="convert">
           <div class="panel-head">
             <div>
               <h2>Input</h2>
-              <p class="panel-sub">Paste a PoB export code, pobb.in URL, mobalytics.gg/poe-2 URL, maxroll.gg/poe2 URL, raw PoB XML, or normalized JSON</p>
+              <p class="panel-sub">Paste a PoB export code, pobb.in URL, mobalytics.gg/poe-2 URL, maxroll.gg/poe2 URL, raw PoB XML, or normalized JSON — or drag &amp; drop a file</p>
             </div>
           </div>
 
-          <textarea id="input" rows="5" spellcheck="false"
-            placeholder="https://pobb.in/abc123   https://mobalytics.gg/poe-2/builds/...   https://maxroll.gg/poe2/planner/...   eNqVk..."></textarea>
+          <div class="drop-zone" id="drop-zone">
+            <textarea id="input" rows="5" spellcheck="false"
+              placeholder="https://pobb.in/abc123   https://mobalytics.gg/poe-2/builds/...   https://maxroll.gg/poe2/planner/...   eNqVk..."></textarea>
+            <div class="drop-overlay" id="drop-overlay">
+              <span class="drop-icon">📂</span>
+              <span>Drop file to import</span>
+            </div>
+          </div>
 
           <!-- Set selectors — hidden until inspect finds multiple sets -->
           <div id="set-selector" class="set-selector hidden">
@@ -92,51 +97,33 @@
 
           <div class="actions">
             <button id="convert-btn" type="button" class="primary">Convert</button>
-            <button id="download" type="button" class="ghost" disabled>Download .build</button>
             <span id="status" class="status"></span>
           </div>
         </section>
 
-        <!-- Report -->
-        <section class="panel hidden" id="report">
-          <div class="panel-head">
-            <div>
-              <h2>Conversion report</h2>
-              <p class="panel-sub" id="legend">Review the Guessed and Unsupported columns before using in-game.</p>
+        <!-- Results with tabs -->
+        <section class="panel hidden" id="results">
+          <div class="results-head">
+            <nav class="tab-bar" role="tablist">
+              <button class="tab active" data-tab="overview">Overview</button>
+              <button class="tab" data-tab="skills">Skills</button>
+              <button class="tab" data-tab="passives">Passives</button>
+              <button class="tab" data-tab="items">Items</button>
+              <button class="tab" data-tab="json">JSON</button>
+              <button class="tab" data-tab="problems">Problems <span class="badge hidden" id="problems-badge"></span></button>
+            </nav>
+            <div class="tab-actions">
+              <button id="copy" type="button" class="ghost sm">Copy</button>
+              <button id="download" type="button" class="ghost sm" disabled>Download .build</button>
             </div>
           </div>
 
-          <div class="report-grid">
-            <div class="report-col converted">
-              <h3><span class="dot"></span> Converted</h3>
-              <ul id="converted"></ul>
-            </div>
-            <div class="report-col guessed">
-              <h3><span class="dot"></span> Guessed / Mapped</h3>
-              <ul id="guessed"></ul>
-            </div>
-            <div class="report-col unsupported">
-              <h3><span class="dot"></span> Unsupported</h3>
-              <ul id="unsupported"></ul>
-            </div>
-          </div>
-
-          <div id="warnings-wrap" class="warnings hidden">
-            <h3>Notes</h3>
-            <ul id="warnings"></ul>
-          </div>
-        </section>
-
-        <!-- JSON preview -->
-        <section class="panel hidden" id="json-card">
-          <div class="panel-head">
-            <div>
-              <h2>Generated <code>.build</code></h2>
-              <p class="panel-sub" id="install-hint">Place the file in <code>Documents/My Games/Path of Exile 2/BuildPlanner</code></p>
-            </div>
-            <button id="copy" type="button" class="ghost sm">Copy</button>
-          </div>
-          <pre id="json"></pre>
+          <div class="tab-panel active" id="tab-overview"></div>
+          <div class="tab-panel" id="tab-skills"></div>
+          <div class="tab-panel" id="tab-passives"></div>
+          <div class="tab-panel" id="tab-items"></div>
+          <div class="tab-panel" id="tab-json"><pre id="json"></pre></div>
+          <div class="tab-panel" id="tab-problems"></div>
         </section>
 
       </main>

@@ -48,6 +48,7 @@ app.post('/api/convert', async (req, res) => {
       source: result.source,
       report: result.report,
       build: result.build,
+      preview: result.normalizedBuild,
       filename,
     });
   } catch (err) {

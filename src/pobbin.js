@@ -20,22 +20,24 @@ export function isPobbinUrl(input) {
   return false;
 }
 
-function toRawUrl(input) {
+export function toRawUrl(input) {
   const url = new URL(input.trim());
   if (!SUPPORTED_HOSTS.includes(url.hostname)) {
     throw new Error(`Unsupported host: ${url.hostname}`);
   }
 
-  // Path is like /abc123 ; the raw code is at /abc123/raw.
   let path = url.pathname.replace(/\/+$/, '');
-  if (path.endsWith('/raw')) {
-    return `${url.origin}${path}`;
-  }
-  const id = path.split('/').filter(Boolean)[0];
-  if (!id) {
+  if (!path) {
     throw new Error('Could not find a build id in the pobb.in URL');
   }
-  return `${url.origin}/${id}/raw`;
+
+  if (/\/raw$/i.test(path)) {
+    return `${url.origin}${path}`;
+  }
+
+  // Support both direct links like /abc123 and profile links like
+  // /u/<user>/<build-id> by preserving the full path and appending /raw.
+  return `${url.origin}${path}/raw`;
 }
 
 export async function fetchPobbinCode(input, { timeoutMs = 10000 } = {}) {

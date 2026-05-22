@@ -1,5 +1,6 @@
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
+import { resolveGemLevel } from './gemLevels.js';
 
 const execFileAsync = promisify(execFile);
 
@@ -7,7 +8,7 @@ const MAXROLL_HOSTS = ['maxroll.gg', 'www.maxroll.gg'];
 // Planner path IDs that are NOT build IDs
 const EXCLUDED_IDS = new Set([
   'community-builds', 'static', 'external', 'auto-loader',
-  'assets', 'planner', 'poe2',
+  'assets', 'planner', 'poe2', 'community', 'build-guides',
 ]);
 
 export function isMaxrollUrl(input) {
@@ -30,6 +31,7 @@ export async function fetchMaxrollData(input, opts = {}) {
   const html = await fetchPageHtml(input.trim(), timeoutMs);
 
   let plannerHtml = html;
+  let sourceName = cleanMaxrollTitle(extractPageTitle(html));
 
   // Build guide pages don't embed planner data — extract ID and fetch planner page
   if (!html.includes('poe2-planner-by-id')) {
@@ -45,7 +47,11 @@ export async function fetchMaxrollData(input, opts = {}) {
     );
   }
 
-  return parseMaxrollPage(plannerHtml, opts);
+  const parsed = parseMaxrollPage(plannerHtml, opts);
+  return {
+    build: parsed.build,
+    sourceName: parsed.sourceName || sourceName,
+  };
 }
 
 /**
@@ -105,30 +111,85 @@ export async function inspectMaxrollUrl(input, { timeoutMs = 20000 } = {}) {
 function extractPlannerId(html) {
   // Match /planner/XXXX where XXXX is 4-12 alphanumeric chars
   const re = /\/planner\/([A-Za-z0-9]{4,12})(?=[^A-Za-z0-9/]|$)/g;
+  const counts = new Map();
   let m;
   while ((m = re.exec(html)) !== null) {
-    if (!EXCLUDED_IDS.has(m[1])) return m[1];
+    const id = m[1];
+    if (EXCLUDED_IDS.has(id)) continue;
+    counts.set(id, (counts.get(id) ?? 0) + 1);
   }
-  return null;
+
+  if (!counts.size) return null;
+
+  return [...counts.entries()]
+    .sort((a, b) => {
+      if (b[1] !== a[1]) return b[1] - a[1];
+      if (b[0].length !== a[0].length) return b[0].length - a[0].length;
+      return a[0].localeCompare(b[0]);
+    })[0][0];
 }
 
 function extractProfile(html) {
-  // __remixContext is a large JSON blob; use a regex that stops at </script>
-  const m = html.match(/__remixContext\s*=\s*(\{[\s\S]*?);\s*<\/script>/);
-  if (!m) throw new Error('Could not find Maxroll page data (is this a valid planner URL?)');
-
-  let ctx;
-  try {
-    ctx = JSON.parse(m[1]);
-  } catch (e) {
-    throw new Error(`Failed to parse Maxroll page data: ${e.message}`);
-  }
+  const ctx = extractRemixContext(html);
 
   const loaderData = ctx?.state?.loaderData ?? {};
   for (const v of Object.values(loaderData)) {
     if (v && typeof v === 'object' && v.profile) return v.profile;
   }
   throw new Error('Could not find build profile in Maxroll planner page');
+}
+
+function extractRemixContext(html) {
+  const assignIdx = html.indexOf('__remixContext');
+  if (assignIdx === -1) {
+    throw new Error('Could not find Maxroll page data (is this a valid planner URL?)');
+  }
+
+  const start = html.indexOf('{', assignIdx);
+  if (start === -1) {
+    throw new Error('Could not find Maxroll page data payload');
+  }
+
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+
+  for (let i = start; i < html.length; i++) {
+    const ch = html[i];
+
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (ch === '\\') {
+        escaped = true;
+      } else if (ch === '"') {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (ch === '"') {
+      inString = true;
+      continue;
+    }
+    if (ch === '{') {
+      depth++;
+      continue;
+    }
+    if (ch === '}') {
+      depth--;
+      if (depth === 0) {
+        const raw = html.slice(start, i + 1);
+        try {
+          return JSON.parse(raw);
+        } catch (e) {
+          throw new Error(`Failed to parse Maxroll page data: ${e.message}`);
+        }
+      }
+    }
+  }
+
+  throw new Error('Could not find end of Maxroll page data payload');
 }
 
 function parseMaxrollPage(html, opts = {}) {
@@ -145,16 +206,24 @@ function parseMaxrollPage(html, opts = {}) {
   const passiveVariant = opts.specIndex ?? (planner.passives?.variants?.length ?? 1) - 1;
 
   return {
-    meta: {
-      level: planner.level ?? 1,
-      className,
-      ascendClassName: ascKey,
-      mainSocketGroup: 0,
+    sourceName: cleanMaxrollTitle(
+      profile.name ||
+      planner.name ||
+      data.name ||
+      extractPageTitle(html)
+    ),
+    build: {
+      meta: {
+        level: planner.level ?? 1,
+        className,
+        ascendClassName: ascKey,
+        mainSocketGroup: 0,
+      },
+      skills: parseMaxrollSkills(planner.skills, skillStep),
+      tree: parseMaxrollPassives(planner.passives, passiveVariant),
+      items: parseMaxrollItems(data.items ?? {}, planner.equipment, itemVariant),
+      notes: typeof planner.notes === 'string' ? planner.notes : '',
     },
-    skills: parseMaxrollSkills(planner.skills, skillStep),
-    tree: parseMaxrollPassives(planner.passives, passiveVariant),
-    items: parseMaxrollItems(data.items ?? {}, planner.equipment, itemVariant),
-    notes: typeof planner.notes === 'string' ? planner.notes : '',
   };
 }
 
@@ -167,10 +236,12 @@ function parseMaxrollSkills(skillsData, stepIndex) {
   for (const group of (step.skills ?? [])) {
     const gems = (group.gems ?? []).map((g) => {
       const isSupport = g.id.includes('SupportGem');
+      const displayName = deriveMaxrollGemName(g.id);
       return {
         gemId: g.id,
-        nameSpec: g.id.split('/').pop() ?? '',
-        level: g.level ?? 1,
+        nameSpec: displayName,
+        displayName,
+        level: resolveGemLevel(g.level, displayName, g.id, { preferNameSuffix: isSupport }),
         quality: g.quality ?? 0,
         enabled: !g.corrupted,
         isSupport,
@@ -187,6 +258,19 @@ function parseMaxrollSkills(skillsData, stepIndex) {
     });
   }
   return result;
+}
+
+function deriveMaxrollGemName(id) {
+  const token = String(id ?? '').split('/').pop() ?? '';
+  return token
+    .replace(/^SkillGem/, '')
+    .replace(/^SupportGem/, '')
+    .replace(/([a-z])([A-Z0-9])/g, '$1 $2')
+    .replace(/([0-9])([A-Z])/g, '$1 $2')
+    .replace(/\bTwo\b/g, 'II')
+    .replace(/\bThree\b/g, 'III')
+    .replace(/\bFour\b/g, 'IV')
+    .trim();
 }
 
 function parseMaxrollPassives(passivesData, variantIndex) {
@@ -229,9 +313,9 @@ function parseMaxrollItem(raw, id) {
   const implicits = formatMaxrollStats(raw.stats?.implicit ?? {});
   const explicits = [
     ...formatMaxrollStats(raw.stats?.explicit ?? {}),
-    ...formatMaxrollStats(raw.stats?.rune ?? {}),
     ...formatMaxrollStats(raw.stats?.enchant ?? {}),
   ];
+  const runes = extractMaxrollRunes(raw);
 
   // Readable item name: for non-uniques, label is rarity + base type
   const name = isUnique ? (raw.unique ?? baseType) : baseType;
@@ -246,8 +330,29 @@ function parseMaxrollItem(raw, id) {
     uniqueName,
     implicits,
     explicits,
+    runes,
     raw: basePath,
   };
+}
+
+function extractMaxrollRunes(raw) {
+  const socketNames = (raw.sockets ?? [])
+    .map((socket) => formatMaxrollRuneName(socket))
+    .filter(Boolean);
+  if (socketNames.length) return socketNames;
+
+  return formatMaxrollStats(raw.stats?.rune ?? {}).map((line) => line.trim()).filter(Boolean);
+}
+
+function formatMaxrollRuneName(value) {
+  const token = String(value ?? '').split('/').pop() ?? '';
+  if (!token) return '';
+  return token
+    .replace(/^SoulCore/, 'Soul Core ')
+    .replace(/^Rune/, '')
+    .replace(/([a-z])([A-Z0-9])/g, '$1 $2')
+    .replace(/([0-9])([A-Z])/g, '$1 $2')
+    .trim();
 }
 
 /**
@@ -302,4 +407,32 @@ async function fetchPageHtml(url, timeoutMs) {
     throw new Error('Maxroll page blocked by bot protection — try again in a moment.');
   }
   return stdout;
+}
+
+function extractPageTitle(html) {
+  const meta = html.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i);
+  if (meta?.[1]) return decodeHtml(meta[1]).trim();
+
+  const title = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+  if (title?.[1]) return decodeHtml(title[1]).trim();
+
+  return '';
+}
+
+function cleanMaxrollTitle(title) {
+  return String(title ?? '')
+    .replace(/^Home News,\s*/i, '')
+    .replace(/\s*[|:-]\s*Maxroll(?:\.gg)?\s*$/i, '')
+    .replace(/\s*[|:-]\s*Path of Exile 2\s*$/i, '')
+    .replace(/\s*[|:-]\s*PoE\s*2\s*$/i, '')
+    .trim();
+}
+
+function decodeHtml(str) {
+  return String(str ?? '')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>');
 }

@@ -32,7 +32,7 @@ export function convertToBuild(build, opts = {}) {
   const skills = convertSkills(build, report);
   if (skills.length) out.skills = skills;
 
-  const passives = convertPassives(build, report);
+  const passives = convertPassivesWithWeaponSets(build, report);
   if (passives.length) out.passives = passives;
 
   const items = convertItems(build, report);
@@ -45,6 +45,11 @@ function pickName(build, opts, report) {
   if (opts.name?.trim()) {
     report.converted.push('name (provided by user)');
     return opts.name.trim();
+  }
+  if (opts.sourceName?.trim()) {
+    const name = opts.sourceName.trim();
+    report.converted.push(`name (from source page: "${name}")`);
+    return name;
   }
   const cls = build.meta?.className;
   const asc = build.meta?.ascendClassName;
@@ -114,23 +119,40 @@ function convertSkills(build, report) {
   for (const group of groups) {
     if (!group.enabled) continue;
 
-    for (const active of group.actives) {
-      if (!active.enabled) continue;
+    const activeGems = group.actives.filter((active) => active.enabled);
+    if (!activeGems.length) continue;
 
-      // gemId is already the GGG metadata path — use directly.
-      if (active.gemId) {
-        const supports = group.supports
-          .filter((s) => s.enabled && s.gemId)
-          .map((s) => s.gemId);
+    const primaryActive = activeGems.find((active) => active.gemId) ?? activeGems[0];
+    if (!primaryActive.gemId) {
+      report.unsupported.push(
+        `skill "${primaryActive.nameSpec || 'unknown'}" — no gemId in PoB export; gem omitted.`
+      );
+      continue;
+    }
 
-        if (supports.length) {
-          out.push({ id: active.gemId, support_skills: supports });
-        } else {
-          out.push(active.gemId);
-        }
-        report.converted.push(`skill "${active.nameSpec || active.gemId}"`);
-      } else {
-        // Fallback for PoB1 exports that don't have gemId
+    const linkedActives = activeGems
+      .filter((active) => active !== primaryActive && active.gemId)
+      .map((active) => gemToSupportEntry(active));
+    const supports = group.supports
+      .filter((support) => support.enabled && support.gemId)
+      .map((support) => gemToSupportEntry(support));
+    const supportSkills = [...linkedActives, ...supports];
+
+    const entry = { id: primaryActive.gemId };
+    if (primaryActive.level > 1) entry.level_interval = [primaryActive.level, 100];
+    if (supportSkills.length) entry.support_skills = supportSkills;
+
+    // Emit as a plain string when it's just an id with no extra fields
+    if (!entry.level_interval && !entry.support_skills) {
+      out.push(entry.id);
+    } else {
+      out.push(entry);
+    }
+    report.converted.push(`skill "${primaryActive.nameSpec || primaryActive.gemId}"`);
+
+    for (const active of activeGems) {
+      if (active === primaryActive) continue;
+      if (!active.gemId) {
         report.unsupported.push(
           `skill "${active.nameSpec || 'unknown'}" — no gemId in PoB export; gem omitted.`
         );
@@ -139,6 +161,17 @@ function convertSkills(build, report) {
   }
 
   return out;
+}
+
+/**
+ * Convert a gem object into a BuildSupport entry: either a plain string
+ * (when level <= 1) or a { id, level_interval } object (when level > 1).
+ */
+function gemToSupportEntry(gem) {
+  if (gem.level > 1) {
+    return { id: gem.gemId, level_interval: [gem.level, 100] };
+  }
+  return gem.gemId;
 }
 
 function convertPassives(build, report) {
@@ -204,6 +237,64 @@ function convertPassives(build, report) {
   return out;
 }
 
+function convertPassivesWithWeaponSets(build, report) {
+  const localReport = { warnings: [], converted: [], guessed: [] };
+  const out = convertPassives(build, localReport);
+  const weaponSet1Nodes = build.tree?.weaponSet1Nodes ?? [];
+  const weaponSet2Nodes = build.tree?.weaponSet2Nodes ?? [];
+  const seenNodeIds = new Set();
+
+  for (const spec of build.tree?.specs ?? []) {
+    for (const nodeId of spec.nodes ?? []) {
+      seenNodeIds.add(nodeId);
+    }
+  }
+
+  const weaponSet1 = appendWeaponSetPassives(out, seenNodeIds, weaponSet1Nodes, 1);
+  const weaponSet2 = appendWeaponSetPassives(out, seenNodeIds, weaponSet2Nodes, 2);
+  const resolved = localReport.converted
+    .map((line) => line.match(/^(\d+) passive nodes resolved from GGG data$/))
+    .find(Boolean);
+  const guessed = localReport.guessed
+    .map((line) => line.match(/^(\d+) passive node\(s\) not found in data/))
+    .find(Boolean);
+  const resolvedCount = (resolved ? Number(resolved[1]) : 0) + weaponSet1.resolved + weaponSet2.resolved;
+  const unresolvedCount = (guessed ? Number(guessed[1]) : 0) + weaponSet1.unresolved + weaponSet2.unresolved;
+
+  report.warnings.push(...localReport.warnings);
+  report.converted.push(...localReport.converted.filter((line) => !/passive nodes resolved from GGG data$/.test(line)));
+  report.guessed.push(...localReport.guessed.filter((line) => !/passive node\(s\) not found in data/.test(line)));
+  if (resolvedCount) report.converted.push(`${resolvedCount} passive nodes resolved from GGG data`);
+  if (unresolvedCount) report.guessed.push(`${unresolvedCount} passive node(s) not found in data - omitted`);
+
+  return out;
+}
+
+function convertPassiveNode(nodeId) {
+  const entry = PASSIVES[String(nodeId)];
+  if (!entry || entry.is_jewel_socket) return null;
+  return entry.id;
+}
+
+function appendWeaponSetPassives(out, seenNodeIds, nodeIds, weaponSet) {
+  let resolved = 0;
+  let unresolved = 0;
+
+  for (const nodeId of nodeIds) {
+    if (seenNodeIds.has(nodeId)) continue;
+    const passive = convertPassiveNode(nodeId);
+    if (!passive) {
+      unresolved++;
+      continue;
+    }
+    out.push({ id: passive, weapon_set: weaponSet });
+    seenNodeIds.add(nodeId);
+    resolved++;
+  }
+
+  return { resolved, unresolved };
+}
+
 function convertItems(build, report) {
   const { list, slots, catalog } = build.items ?? { list: [], slots: [], catalog: {} };
   const itemLookup = catalog ?? Object.fromEntries((list ?? []).map((i) => [i.id, i]));
@@ -226,14 +317,14 @@ function convertItems(build, report) {
     if (item) {
       if (item.isUnique && item.uniqueName) {
         buildItem.unique_name = item.uniqueName;
-        const modText = formatMods(item.implicits, item.explicits);
+        const modText = formatMods(item.implicits, item.explicits, item.runes);
         if (modText) buildItem.additional_text = modText;
         report.converted.push(`unique "${item.uniqueName}" in slot "${slot.name}"`);
       } else if (item.rarity && item.name) {
         const base = item.typeLine && item.typeLine !== item.name
           ? `${item.rarity}: ${item.typeLine} ("${item.name}")`
           : `${item.rarity}: ${item.name}`;
-        const modText = formatMods(item.implicits, item.explicits);
+        const modText = formatMods(item.implicits, item.explicits, item.runes);
         buildItem.additional_text = modText ? `${base}\n${modText}` : base;
         report.converted.push(`item "${item.name}" in slot "${slot.name}"`);
       }
@@ -245,8 +336,9 @@ function convertItems(build, report) {
   return out;
 }
 
-function formatMods(implicits = [], explicits = []) {
+function formatMods(implicits = [], explicits = [], runes = []) {
   const lines = [];
+  for (const rune of runes) lines.push(`[Rune] ${rune}`);
   for (const m of implicits) lines.push(`[Implicit] ${m}`);
   for (const m of explicits) lines.push(m);
   return lines.join('\n');

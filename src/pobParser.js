@@ -1,5 +1,6 @@
 import zlib from 'node:zlib';
 import { XMLParser } from 'fast-xml-parser';
+import { resolveGemLevel } from './gemLevels.js';
 
 /**
  * Decode a Path of Building export code into its raw XML string.
@@ -194,7 +195,7 @@ function parseGem(gem) {
     variantId: str(gem['@_variantId']),
     nameSpec,
     skillId,
-    level: num(gem['@_level']) || 1,
+    level: resolveGemLevel(num(gem['@_level']), nameSpec, skillId, gemId, { preferNameSuffix: isSupport }),
     quality: num(gem['@_quality']) || 0,
     enabled: gem['@_enabled'] !== false && gem['@_enabled'] !== 'false',
     isSupport,
@@ -283,6 +284,7 @@ const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
     uniqueName: isUnique ? name : undefined,
     implicits,
     explicits,
+    runes: parseRuneNames(lines),
     raw: text,
   };
 }
@@ -319,6 +321,12 @@ function parseItemMods(lines) {
   }
 
   return { implicits, explicits };
+}
+
+function parseRuneNames(lines) {
+  return lines
+    .map((line) => line.match(/^Rune:\s*(.+)$/i)?.[1]?.trim())
+    .filter(Boolean);
 }
 
 function looksLikeBaseType(line) {

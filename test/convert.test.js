@@ -4,6 +4,8 @@ import zlib from 'node:zlib';
 import { decodePobCode, parsePobXml } from '../src/pobParser.js';
 import { convertToBuild } from '../src/converter.js';
 import { resolveInput } from '../src/resolve.js';
+import { toRawUrl } from '../src/pobbin.js';
+import { resolveGemLevel } from '../src/gemLevels.js';
 
 const SAMPLE_XML = `<?xml version="1.0" encoding="UTF-8"?>
 <PathOfBuilding>
@@ -63,7 +65,7 @@ test('parsePobXml extracts meta, skills, tree, items, notes', () => {
   assert.equal(build.skills[0].actives[0].nameSpec, 'Spark');
   assert.equal(build.skills[0].supports[0].nameSpec, 'Added Lightning Damage');
 
-  assert.deepEqual(build.tree.nodes, ['100', '200', '300', '400']);
+  assert.deepEqual(build.tree.nodes, [100, 200, 300, 400]);
 
   assert.equal(build.items.slots.length, 2);
   const belt = build.items.list.find((i) => i.id === '1');
@@ -73,25 +75,69 @@ test('parsePobXml extracts meta, skills, tree, items, notes', () => {
   assert.match(build.notes, /endgame mapper/);
 });
 
+test('parsePobXml infers support gem level from rank suffix when PoB level is missing', () => {
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<PathOfBuilding>
+  <Build level="92" className="Witch" ascendClassName="Infernalist" />
+  <Skills activeSkillSet="1">
+    <SkillSet id="1">
+      <Skill enabled="true">
+        <Gem gemId="Metadata/Items/Gems/SkillGemEssenceDrain" nameSpec="Essence Drain" skillId="EssenceDrain" enabled="true"/>
+        <Gem gemId="Metadata/Items/Gems/SupportGemSwiftAffliction" nameSpec="Swift Affliction II" skillId="SupportGemSwiftAffliction" support="true" enabled="true"/>
+      </Skill>
+    </SkillSet>
+  </Skills>
+</PathOfBuilding>`;
+
+  const build = parsePobXml(xml);
+  assert.equal(build.skills[0].supports[0].level, 2);
+});
+
+test('support gem rank suffix overrides misleading explicit preview level', () => {
+  assert.equal(
+    resolveGemLevel(20, 'Persistence II', 'Metadata/Items/Gems/SupportGemPersistenceTwo', { preferNameSuffix: true }),
+    2
+  );
+  assert.equal(
+    resolveGemLevel(20, 'Unleash', 'Metadata/Items/Gems/SupportGemUnleash', { preferNameSuffix: true }),
+    20
+  );
+});
+
+test('parsePobXml extracts rune names from item text', () => {
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<PathOfBuilding>
+  <Build level="92" className="Witch" ascendClassName="Infernalist" />
+  <Items activeItemSet="1">
+    <Item id="1">Rarity: RARE
+Rune Visage
+Kamasan Tiara
+Rune: Greater Iron Rune
+Item Level: 79
+Implicits: 0
++66% increased Energy Shield</Item>
+    <ItemSet id="1">
+      <Slot name="Helmet" itemId="1"/>
+    </ItemSet>
+  </Items>
+</PathOfBuilding>`;
+
+  const build = parsePobXml(xml);
+  assert.deepEqual(build.items.list[0].runes, ['Greater Iron Rune']);
+});
+
 test('convertToBuild produces a valid .build object with a classification report', () => {
   const build = parsePobXml(SAMPLE_XML);
   const { build: out, report } = convertToBuild(build, {});
 
-  // name auto-derived from ascendancy + level
-  assert.equal(out.name, 'Stormweaver Lvl 92');
-  assert.equal(out.ascendancy, 'Stormweaver');
+  // name auto-derived from class + ascendancy when no source title is available
+  assert.equal(out.name, 'Sorceress - Stormweaver');
+  assert.equal(out.ascendancy, 'Sorceress1');
 
-  // skills: main + support
-  assert.equal(out.skills.length, 1);
-  assert.match(out.skills[0].id, /^Metadata\/Items\/Gems\/SkillGem/);
-  assert.equal(out.skills[0].support_skills.length, 1);
-  assert.match(out.skills[0].support_skills[0].id, /SupportGem/);
-  assert.deepEqual(out.skills[0].level_interval, [0, 100]);
-
-  // passives present, first carries a note
-  assert.equal(out.passives.length, 4);
-  assert.equal(typeof out.passives[0], 'object');
-  assert.equal(out.passives[1], '200');
+  // sample PoB lacks PoE2 gem metadata paths, so skills are reported unsupported
+  assert.equal(out.skills, undefined);
+  assert.equal(out.passives, undefined);
+  assert.ok(report.unsupported.some((line) => line.includes('Spark')));
 
   // items: belt mapped + unique_name set
   const beltOut = out.items.find((i) => i.inventory_id === 'Belt');
@@ -101,6 +147,133 @@ test('convertToBuild produces a valid .build object with a classification report
   // report categories populated
   assert.ok(report.converted.length > 0);
   assert.ok(report.guessed.length > 0);
+});
+
+test('convertToBuild includes rune lines in item additional_text', () => {
+  const build = parsePobXml(SAMPLE_XML);
+  build.items = {
+    list: [{
+      id: '1',
+      rarity: 'RARE',
+      name: 'Rune Visage',
+      typeLine: 'Kamasan Tiara',
+      isUnique: false,
+      implicits: ['+10 to maximum Mana'],
+      explicits: ['+66% increased Energy Shield'],
+      runes: ['Greater Iron Rune'],
+    }],
+    slots: [{ name: 'Helmet', itemId: '1' }],
+    catalog: {
+      '1': {
+        id: '1',
+        rarity: 'RARE',
+        name: 'Rune Visage',
+        typeLine: 'Kamasan Tiara',
+        isUnique: false,
+        implicits: ['+10 to maximum Mana'],
+        explicits: ['+66% increased Energy Shield'],
+        runes: ['Greater Iron Rune'],
+      },
+    },
+  };
+
+  const { build: out } = convertToBuild(build, {});
+  assert.match(out.items[0].additional_text, /\[Rune\] Greater Iron Rune/);
+});
+
+test('convertToBuild uses source name for auto-name when available', () => {
+  const build = parsePobXml(SAMPLE_XML);
+  const { build: out } = convertToBuild(build, { sourceName: 'Lightning Spear Deadeye' });
+  assert.equal(out.name, 'Lightning Spear Deadeye');
+});
+
+test('convertToBuild keeps explicit user name over source name', () => {
+  const build = parsePobXml(SAMPLE_XML);
+  const { build: out } = convertToBuild(build, {
+    name: 'My Custom Name',
+    sourceName: 'Lightning Spear Deadeye',
+  });
+  assert.equal(out.name, 'My Custom Name');
+});
+
+test('convertToBuild emits weapon-set passive nodes after the main tree', () => {
+  const build = parsePobXml(SAMPLE_XML);
+  build.tree = {
+    nodes: [4, 16],
+    specs: [{ nodes: [4, 16] }],
+    weaponSet1Nodes: [30, 4],
+    weaponSet2Nodes: [40],
+  };
+
+  const { build: out, report } = convertToBuild(build, {});
+  assert.deepEqual(out.passives, [
+    'lightning14',
+    'AscendancyRanger3Small6',
+    { id: 'AscendancyRanger1Notable3', weapon_set: 1 },
+    { id: 'AscendancyRanger3Notable5', weapon_set: 2 },
+  ]);
+  assert.ok(report.converted.some((line) => line.includes('4 passive nodes resolved')));
+});
+
+test('convertToBuild folds extra active gems into the same skill group with level_interval', () => {
+  const build = parsePobXml(SAMPLE_XML);
+  build.skills = [{
+    enabled: true,
+    actives: [
+      { gemId: 'Metadata/Items/Gems/SkillGemCastOnCritMeta', nameSpec: 'Cast on Critical', level: 1, enabled: true },
+      { gemId: 'Metadata/Items/Gems/SkillGemComet', nameSpec: 'Comet', level: 3, enabled: true },
+      { gemId: 'Metadata/Items/Gems/SkillGemLivingBomb', nameSpec: 'Living Bomb', level: 1, enabled: true },
+    ],
+    supports: [
+      { gemId: 'Metadata/Items/Gems/SupportGemPinpointCritical', nameSpec: 'Pinpoint Critical', level: 1, enabled: true },
+      { gemId: 'Metadata/Items/Gems/SupportGemAddedEnergyRetention', nameSpec: 'Energy Retention II', level: 2, enabled: true },
+    ],
+  }];
+
+  const { build: out } = convertToBuild(build, {});
+  assert.deepEqual(out.skills, [{
+    id: 'Metadata/Items/Gems/SkillGemCastOnCritMeta',
+    support_skills: [
+      { id: 'Metadata/Items/Gems/SkillGemComet', level_interval: [3, 100] },
+      'Metadata/Items/Gems/SkillGemLivingBomb',
+      'Metadata/Items/Gems/SupportGemPinpointCritical',
+      { id: 'Metadata/Items/Gems/SupportGemAddedEnergyRetention', level_interval: [2, 100] },
+    ],
+  }]);
+});
+
+test('convertToBuild emits level_interval on primary active skill when level > 1', () => {
+  const build = parsePobXml(SAMPLE_XML);
+  build.skills = [{
+    enabled: true,
+    actives: [
+      { gemId: 'Metadata/Items/Gems/SkillGemSpark', nameSpec: 'Spark', level: 5, enabled: true },
+    ],
+    supports: [
+      { gemId: 'Metadata/Items/Gems/SupportGemAddedLightning', nameSpec: 'Added Lightning', level: 1, enabled: true },
+    ],
+  }];
+
+  const { build: out } = convertToBuild(build, {});
+  assert.deepEqual(out.skills, [{
+    id: 'Metadata/Items/Gems/SkillGemSpark',
+    level_interval: [5, 100],
+    support_skills: ['Metadata/Items/Gems/SupportGemAddedLightning'],
+  }]);
+});
+
+test('convertToBuild keeps level-1 skill with no supports as plain string', () => {
+  const build = parsePobXml(SAMPLE_XML);
+  build.skills = [{
+    enabled: true,
+    actives: [
+      { gemId: 'Metadata/Items/Gems/SkillGemSpark', nameSpec: 'Spark', level: 1, enabled: true },
+    ],
+    supports: [],
+  }];
+
+  const { build: out } = convertToBuild(build, {});
+  assert.deepEqual(out.skills, ['Metadata/Items/Gems/SkillGemSpark']);
 });
 
 test('resolveInput auto-detects a PoB export code', async () => {
@@ -115,6 +288,18 @@ test('resolveInput auto-detects raw XML', async () => {
   assert.equal(source.kind, 'xml');
 });
 
+test('toRawUrl preserves pobb.in profile-style paths', () => {
+  assert.equal(
+    toRawUrl('https://pobb.in/u/paintmaster%232396/wvbnZ6zR-FuL'),
+    'https://pobb.in/u/paintmaster%232396/wvbnZ6zR-FuL/raw'
+  );
+  assert.equal(
+    toRawUrl('https://pobb.in/wvbnZ6zR-FuL'),
+    'https://pobb.in/wvbnZ6zR-FuL/raw'
+  );
+});
+
 test('decodePobCode rejects garbage', () => {
   assert.throws(() => decodePobCode('not a real code!!!'), /PoB/i);
 });
+

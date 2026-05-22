@@ -25,12 +25,14 @@ export async function resolveInput(rawInput, { kind = 'auto', skillSetId, itemSe
   const setOpts = { skillSetId, itemSetId, specIndex };
 
   if (detected === 'mobalytics') {
-    const build = await fetchMobalyticsData(input, setOpts);
+    const { build, sourceName } = await fetchMobalyticsData(input, setOpts);
+    if (sourceName) source.name = sourceName;
     return { build, source };
   }
 
   if (detected === 'maxroll') {
-    const build = await fetchMaxrollData(input, setOpts);
+    const { build, sourceName } = await fetchMaxrollData(input, setOpts);
+    if (sourceName) source.name = sourceName;
     return { build, source };
   }
 
@@ -125,6 +127,6 @@ function normalizeJsonInput(obj) {
  */
 export async function resolveAndConvert(rawInput, opts = {}) {
   const { build, source } = await resolveInput(rawInput, opts);
-  const { build: out, report } = convertToBuild(build, opts);
-  return { build: out, report, source };
+  const { build: out, report } = convertToBuild(build, { ...opts, sourceName: source.name });
+  return { build: out, report, source, normalizedBuild: build };
 }
