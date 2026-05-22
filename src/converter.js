@@ -132,21 +132,16 @@ function convertSkills(build, report) {
 
     const linkedActives = activeGems
       .filter((active) => active !== primaryActive && active.gemId)
-      .map((active) => gemToSupportEntry(active));
+      .map((active) => active.gemId);
     const supports = group.supports
       .filter((support) => support.enabled && support.gemId)
-      .map((support) => gemToSupportEntry(support));
+      .map((support) => support.gemId);
     const supportSkills = [...linkedActives, ...supports];
 
-    const entry = { id: primaryActive.gemId };
-    if (primaryActive.level > 1) entry.level_interval = [primaryActive.level, 100];
-    if (supportSkills.length) entry.support_skills = supportSkills;
-
-    // Emit as a plain string when it's just an id with no extra fields
-    if (!entry.level_interval && !entry.support_skills) {
-      out.push(entry.id);
+    if (supportSkills.length) {
+      out.push({ id: primaryActive.gemId, support_skills: supportSkills });
     } else {
-      out.push(entry);
+      out.push(primaryActive.gemId);
     }
     report.converted.push(`skill "${primaryActive.nameSpec || primaryActive.gemId}"`);
 
@@ -161,17 +156,6 @@ function convertSkills(build, report) {
   }
 
   return out;
-}
-
-/**
- * Convert a gem object into a BuildSupport entry: either a plain string
- * (when level <= 1) or a { id, level_interval } object (when level > 1).
- */
-function gemToSupportEntry(gem) {
-  if (gem.level > 1) {
-    return { id: gem.gemId, level_interval: [gem.level, 100] };
-  }
-  return gem.gemId;
 }
 
 function convertPassives(build, report) {

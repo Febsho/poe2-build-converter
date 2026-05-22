@@ -215,18 +215,18 @@ test('convertToBuild emits weapon-set passive nodes after the main tree', () => 
   assert.ok(report.converted.some((line) => line.includes('4 passive nodes resolved')));
 });
 
-test('convertToBuild folds extra active gems into the same skill group with level_interval', () => {
+test('convertToBuild folds extra active gems into the same skill group', () => {
   const build = parsePobXml(SAMPLE_XML);
   build.skills = [{
     enabled: true,
     actives: [
-      { gemId: 'Metadata/Items/Gems/SkillGemCastOnCritMeta', nameSpec: 'Cast on Critical', level: 1, enabled: true },
-      { gemId: 'Metadata/Items/Gems/SkillGemComet', nameSpec: 'Comet', level: 3, enabled: true },
-      { gemId: 'Metadata/Items/Gems/SkillGemLivingBomb', nameSpec: 'Living Bomb', level: 1, enabled: true },
+      { gemId: 'Metadata/Items/Gems/SkillGemCastOnCritMeta', nameSpec: 'Cast on Critical', enabled: true },
+      { gemId: 'Metadata/Items/Gems/SkillGemComet', nameSpec: 'Comet', enabled: true },
+      { gemId: 'Metadata/Items/Gems/SkillGemLivingBomb', nameSpec: 'Living Bomb', enabled: true },
     ],
     supports: [
-      { gemId: 'Metadata/Items/Gems/SupportGemPinpointCritical', nameSpec: 'Pinpoint Critical', level: 1, enabled: true },
-      { gemId: 'Metadata/Items/Gems/SupportGemAddedEnergyRetention', nameSpec: 'Energy Retention II', level: 2, enabled: true },
+      { gemId: 'Metadata/Items/Gems/SupportGemPinpointCritical', nameSpec: 'Pinpoint Critical', enabled: true },
+      { gemId: 'Metadata/Items/Gems/SupportGemAddedEnergyRetention', nameSpec: 'Energy Retention', enabled: true },
     ],
   }];
 
@@ -234,46 +234,12 @@ test('convertToBuild folds extra active gems into the same skill group with leve
   assert.deepEqual(out.skills, [{
     id: 'Metadata/Items/Gems/SkillGemCastOnCritMeta',
     support_skills: [
-      { id: 'Metadata/Items/Gems/SkillGemComet', level_interval: [3, 100] },
+      'Metadata/Items/Gems/SkillGemComet',
       'Metadata/Items/Gems/SkillGemLivingBomb',
       'Metadata/Items/Gems/SupportGemPinpointCritical',
-      { id: 'Metadata/Items/Gems/SupportGemAddedEnergyRetention', level_interval: [2, 100] },
+      'Metadata/Items/Gems/SupportGemAddedEnergyRetention',
     ],
   }]);
-});
-
-test('convertToBuild emits level_interval on primary active skill when level > 1', () => {
-  const build = parsePobXml(SAMPLE_XML);
-  build.skills = [{
-    enabled: true,
-    actives: [
-      { gemId: 'Metadata/Items/Gems/SkillGemSpark', nameSpec: 'Spark', level: 5, enabled: true },
-    ],
-    supports: [
-      { gemId: 'Metadata/Items/Gems/SupportGemAddedLightning', nameSpec: 'Added Lightning', level: 1, enabled: true },
-    ],
-  }];
-
-  const { build: out } = convertToBuild(build, {});
-  assert.deepEqual(out.skills, [{
-    id: 'Metadata/Items/Gems/SkillGemSpark',
-    level_interval: [5, 100],
-    support_skills: ['Metadata/Items/Gems/SupportGemAddedLightning'],
-  }]);
-});
-
-test('convertToBuild keeps level-1 skill with no supports as plain string', () => {
-  const build = parsePobXml(SAMPLE_XML);
-  build.skills = [{
-    enabled: true,
-    actives: [
-      { gemId: 'Metadata/Items/Gems/SkillGemSpark', nameSpec: 'Spark', level: 1, enabled: true },
-    ],
-    supports: [],
-  }];
-
-  const { build: out } = convertToBuild(build, {});
-  assert.deepEqual(out.skills, ['Metadata/Items/Gems/SkillGemSpark']);
 });
 
 test('resolveInput auto-detects a PoB export code', async () => {
