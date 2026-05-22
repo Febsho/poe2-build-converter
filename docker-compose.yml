@@ -1,7 +1,6 @@
 services:
   converter:
-    build: .
-    image: pob-to-poe2-buildplanner
+    image: ghcr.io/febsho/poe2-build-converter:latest
     container_name: pob-to-poe2
     ports:
       - "3000:3000"
