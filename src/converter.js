@@ -14,6 +14,25 @@ const ASCENDANCY_BY_NAME = Object.fromEntries(
   Object.entries(ASCENDANCIES).map(([key, val]) => [val.name, key])
 );
 
+/** Returns true if the interval is the implicit default [0, 100] (always-show). */
+function isDefaultInterval(interval) {
+  return Array.isArray(interval) && interval[0] === 0 && interval[1] === 100;
+}
+
+/**
+ * Build a level/quality annotation string for a gem.
+ * Only includes non-trivial values (level > 1, quality > 0).
+ */
+function buildGemLevelText(gem) {
+  if (!gem) return '';
+  const parts = [];
+  const level   = Number(gem.level);
+  const quality = Number(gem.quality);
+  if (Number.isFinite(level)   && level   > 1) parts.push(`Level ${level}`);
+  if (Number.isFinite(quality) && quality > 0) parts.push(`Quality ${quality}%`);
+  return parts.join(' | ');
+}
+
 /**
  * Convert a normalized PoB build (from parsePobXml) into a PoE2 .build object
  * plus a classification report.
@@ -140,9 +159,9 @@ function convertSkills(build, report) {
       continue;
     }
 
-    // 2. If it's a string, convert to standard GGG object
+    // 2. If it's a string, convert to minimal GGG BuildSkill object
     if (typeof group === 'string') {
-      out.push({ id: group, level_interval: [0, 100], support_skills: [] });
+      out.push({ id: group, support_skills: [] });
       report.converted.push(`skill "${group}"`);
       continue;
     }
@@ -165,11 +184,14 @@ function convertSkills(build, report) {
     // 3. Process linked actives
     const linkedActives = activeGems.filter((active) => active !== primaryActive && active.gemId);
     for (const active of linkedActives) {
-      const activeText = active.additional_text ?? active.comment ?? active.description;
+      const rawText = active.additional_text ?? active.comment ?? active.description;
+      const levelText = buildGemLevelText(active);
+      const activeText = [levelText, rawText].filter(Boolean).join(' | ') || undefined;
       const activeInterval = active.level_interval ?? active.levelInterval;
-      if (activeText || activeInterval) {
+      const nonDefaultInterval = activeInterval && !isDefaultInterval(activeInterval) ? activeInterval : null;
+      if (activeText || nonDefaultInterval) {
         const obj = { id: active.gemId };
-        if (activeInterval) obj.level_interval = activeInterval;
+        if (nonDefaultInterval) obj.level_interval = nonDefaultInterval;
         if (activeText) obj.additional_text = activeText;
         supportSkills.push(obj);
       } else {
@@ -180,11 +202,14 @@ function convertSkills(build, report) {
     // 4. Process supports
     const supports = (group.supports ?? []).filter((support) => support.enabled && support.gemId);
     for (const support of supports) {
-      const supportText = support.additional_text ?? support.comment ?? support.description;
+      const rawText = support.additional_text ?? support.comment ?? support.description;
+      const levelText = buildGemLevelText(support);
+      const supportText = [levelText, rawText].filter(Boolean).join(' | ') || undefined;
       const supportInterval = support.level_interval ?? support.levelInterval;
-      if (supportText || supportInterval) {
+      const nonDefaultInterval = supportInterval && !isDefaultInterval(supportInterval) ? supportInterval : null;
+      if (supportText || nonDefaultInterval) {
         const obj = { id: support.gemId };
-        if (supportInterval) obj.level_interval = supportInterval;
+        if (nonDefaultInterval) obj.level_interval = nonDefaultInterval;
         if (supportText) obj.additional_text = supportText;
         supportSkills.push(obj);
       } else {
@@ -192,14 +217,19 @@ function convertSkills(build, report) {
       }
     }
 
-    const skillInterval = primaryActive.level_interval ?? primaryActive.levelInterval ?? group.level_interval ?? group.levelInterval ?? [0, 100];
-    const skillText = primaryActive.additional_text ?? primaryActive.comment ?? primaryActive.description ?? group.additional_text ?? group.comment ?? group.description;
+    const skillInterval = primaryActive.level_interval ?? primaryActive.levelInterval ?? group.level_interval ?? group.levelInterval;
+    const rawSkillText  = primaryActive.additional_text ?? primaryActive.comment ?? primaryActive.description ?? group.additional_text ?? group.comment ?? group.description;
+    const skillLevelText = buildGemLevelText(primaryActive);
+    const skillText = [skillLevelText, rawSkillText].filter(Boolean).join(' | ') || undefined;
 
     const buildSkill = {
       id: primaryActive.gemId,
-      level_interval: skillInterval,
       support_skills: supportSkills
     };
+
+    if (skillInterval && !isDefaultInterval(skillInterval)) {
+      buildSkill.level_interval = skillInterval;
+    }
 
     if (skillText) {
       buildSkill.additional_text = skillText;
@@ -403,20 +433,28 @@ function formatMods(implicits = [], explicits = [], runes = []) {
 
 function translateSlotName(name) {
   const map = {
-    'Weapon 1': 'Weapon1',
-    'Weapon 2': 'Weapon2',
-    'Weapon 1 Swap': 'Offhand1',
-    'Weapon 2 Swap': 'Offhand2',
-    'Body Armour': 'BodyArmour',
-    Helmet: 'Helm',
-    Gloves: 'Gloves',
-    Boots: 'Boots',
-    Belt: 'Belt',
-    Amulet: 'Amulet',
-    'Ring 1': 'Ring',
-    'Ring 2': 'Ring2',
-    'Flask 1': 'Flask1',
-    'Flask 2': 'Flask2',
+    // Weapon set 1
+    'Weapon 1':       'Weapon',
+    'Weapon 2':       'Offhand',
+    // Weapon set 2 (swap)
+    'Weapon 1 Swap':  'Weapon2',
+    'Weapon 2 Swap':  'Offhand2',
+    // Armour
+    'Body Armour':    'BodyArmour',
+    Helmet:           'Helm',
+    Gloves:           'Gloves',
+    Boots:            'Boots',
+    Belt:             'Belt',
+    Amulet:           'Amulet',
+    // Rings
+    'Ring 1':         'Ring',
+    'Ring 2':         'Ring2',
+    // Flasks
+    'Flask 1':        'Flask1',
+    'Flask 2':        'Flask2',
+    'Flask 3':        'Flask3',
+    'Flask 4':        'Flask4',
+    'Flask 5':        'Flask5',
   };
   return map[name] ?? name.replace(/\s+/g, '');
 }

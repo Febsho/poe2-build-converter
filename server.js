@@ -1,7 +1,19 @@
 import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 import { resolveAndConvert, inspectInput } from './src/resolve.js';
+
+const require = createRequire(import.meta.url);
+
+// Build a reverse lookup map: GGG passive id → human-readable name
+// e.g. "lightning14" → "Shock Chance"
+const _passivesRaw = require('./src/data/passives_default.json');
+const PASSIVE_DISPLAY_NAMES = Object.fromEntries(
+  Object.values(_passivesRaw)
+    .filter((e) => e.id && e.name)
+    .map((e) => [e.id, e.name])
+);
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -43,12 +55,21 @@ app.post('/api/convert', async (req, res) => {
   try {
     const result = await resolveAndConvert(input, { kind, name, description, skillSetId, itemSetId, specIndex });
     const filename = `${sanitizeFilename(result.build.name)}.build`;
+
+    // Build a name-lookup map so the UI can display "Lightning" instead of "lightning14"
+    const passiveNames = {};
+    for (const p of result.build.passives ?? []) {
+      const id = typeof p === 'string' ? p : p?.id;
+      if (id && PASSIVE_DISPLAY_NAMES[id]) passiveNames[id] = PASSIVE_DISPLAY_NAMES[id];
+    }
+
     return res.json({
       ok: true,
       source: result.source,
       report: result.report,
       build: result.build,
       preview: result.normalizedBuild,
+      passiveNames,
       filename,
     });
   } catch (err) {

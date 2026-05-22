@@ -58,7 +58,7 @@
 
           <div class="drop-zone" id="drop-zone">
             <textarea id="input" rows="5" spellcheck="false"
-              placeholder="https://pobb.in/abc123   https://mobalytics.gg/poe-2/builds/...   https://maxroll.gg/poe2/planner/...   eNqVk..."></textarea>
+              placeholder="https://pobb.in/abc123   https://mobalytics.gg/poe-2/builds/...   https://maxroll.gg/poe2/planner/...   https://poe.ninja/builds?accountName=…&characterName=…   eNqVk..."></textarea>
             <div class="drop-overlay" id="drop-overlay">
               <span class="drop-icon">📂</span>
               <span>Drop file to import</span>
@@ -95,11 +95,22 @@
             </div>
           </div>
 
+          <div class="example-btn-wrap">
+            <button id="example-btn" type="button" class="example-btn">Try example →</button>
+          </div>
+
           <div class="actions">
             <button id="convert-btn" type="button" class="primary">Convert</button>
             <span id="status" class="status"></span>
           </div>
         </section>
+
+        <!-- Quality warning banner -->
+        <div class="quality-banner hidden" id="quality-banner">
+          <span class="quality-banner-icon">⚠</span>
+          <span id="quality-banner-msg"></span>
+          <button class="quality-banner-close" id="quality-banner-close" type="button">×</button>
+        </div>
 
         <!-- Results with tabs -->
         <section class="panel hidden" id="results">
@@ -122,7 +133,16 @@
           <div class="tab-panel" id="tab-skills"></div>
           <div class="tab-panel" id="tab-passives"></div>
           <div class="tab-panel" id="tab-items"></div>
-          <div class="tab-panel" id="tab-json"><pre id="json"></pre></div>
+          <div class="tab-panel" id="tab-json">
+            <div class="json-editor-wrap">
+              <div class="json-toolbar">
+                <button id="json-format" type="button" class="ghost sm">Format</button>
+                <button id="json-reset"  type="button" class="ghost sm">Reset</button>
+                <span id="json-status" class="json-status"></span>
+              </div>
+              <textarea id="json" class="json-editor" spellcheck="false"></textarea>
+            </div>
+          </div>
           <div class="tab-panel" id="tab-problems"></div>
         </section>
 

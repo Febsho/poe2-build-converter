@@ -33,29 +33,28 @@ export const KNOWN_POE2_ASCENDANCIES = new Set([
 ]);
 
 /**
- * Map a PoB slot name to a candidate PoE2 `inventory_id`.
- * These follow GGG's historical inventory id conventions but are not yet
- * confirmed for the PoE2 Build Planner, so callers should treat the result
- * as "guessed".
+ * Map a PoB slot name to the official PoE2 Build Planner `inventory_id`.
+ * Weapon set 1: Weapon / Offhand
+ * Weapon set 2 (swap): Weapon2 / Offhand2
  */
 const SLOT_TO_INVENTORY = new Map([
-  ['weapon 1', 'Weapon1'],
-  ['weapon 2', 'Weapon2'],
-  ['weapon 1 swap', 'Weapon1Swap'],
-  ['weapon 2 swap', 'Weapon2Swap'],
-  ['helmet', 'Helm'],
-  ['body armour', 'BodyArmour'],
-  ['gloves', 'Gloves'],
-  ['boots', 'Boots'],
-  ['amulet', 'Amulet'],
-  ['ring 1', 'Ring'],
-  ['ring 2', 'Ring2'],
-  ['belt', 'Belt'],
-  ['flask 1', 'Flask1'],
-  ['flask 2', 'Flask2'],
-  ['flask 3', 'Flask3'],
-  ['flask 4', 'Flask4'],
-  ['flask 5', 'Flask5'],
+  ['weapon 1',       'Weapon'],
+  ['weapon 2',       'Offhand'],
+  ['weapon 1 swap',  'Weapon2'],
+  ['weapon 2 swap',  'Offhand2'],
+  ['helmet',         'Helm'],
+  ['body armour',    'BodyArmour'],
+  ['gloves',         'Gloves'],
+  ['boots',          'Boots'],
+  ['amulet',         'Amulet'],
+  ['ring 1',         'Ring'],
+  ['ring 2',         'Ring2'],
+  ['belt',           'Belt'],
+  ['flask 1',        'Flask1'],
+  ['flask 2',        'Flask2'],
+  ['flask 3',        'Flask3'],
+  ['flask 4',        'Flask4'],
+  ['flask 5',        'Flask5'],
 ]);
 
 export function slotToInventoryId(slotName) {
@@ -64,8 +63,8 @@ export function slotToInventoryId(slotName) {
   if (SLOT_TO_INVENTORY.has(key)) return SLOT_TO_INVENTORY.get(key);
 
   // PoB also uses "<Skill> Abyssal Socket N" and jewel slots we cannot map.
-  if (key.startsWith('weapon 1 swap')) return 'Weapon1Swap';
-  if (key.startsWith('weapon 2 swap')) return 'Weapon2Swap';
+  if (key.startsWith('weapon 1 swap')) return 'Weapon2';
+  if (key.startsWith('weapon 2 swap')) return 'Offhand2';
   return undefined;
 }
 
