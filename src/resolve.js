@@ -1,15 +1,17 @@
 import { decodePobCode, parsePobXml } from './pobParser.js';
 import { isPobbinUrl, fetchPobbinCode } from './pobbin.js';
+import { isMobalyticsUrl, fetchMobalyticsData } from './mobalytics.js';
 import { convertToBuild } from './converter.js';
 
 /**
  * Resolve any supported input into a normalized PoB build object.
  *
  * Supported input kinds (auto-detected, can be forced via `kind`):
- *   - 'pobbin'   : a pobb.in URL  -> fetch raw code, then decode
- *   - 'pobcode'  : a PoB export code (base64) -> decode
- *   - 'xml'      : raw PoB XML
- *   - 'json'     : an already-normalized build object (advanced/manual)
+ *   - 'pobbin'      : a pobb.in URL  -> fetch raw code, then decode
+ *   - 'mobalytics'  : a mobalytics.gg/poe-2 URL -> scrape build data
+ *   - 'pobcode'     : a PoB export code (base64) -> decode
+ *   - 'xml'         : raw PoB XML
+ *   - 'json'        : an already-normalized build object (advanced/manual)
  */
 export async function resolveInput(rawInput, { kind = 'auto' } = {}) {
   const input = (rawInput ?? '').trim();
@@ -17,6 +19,11 @@ export async function resolveInput(rawInput, { kind = 'auto' } = {}) {
 
   const detected = kind === 'auto' ? detectKind(input) : kind;
   const source = { kind: detected };
+
+  if (detected === 'mobalytics') {
+    const build = await fetchMobalyticsData(input);
+    return { build, source };
+  }
 
   if (detected === 'pobbin') {
     const code = await fetchPobbinCode(input);
@@ -39,8 +46,13 @@ export async function resolveInput(rawInput, { kind = 'auto' } = {}) {
 }
 
 function detectKind(input) {
+  if (isMobalyticsUrl(input)) return 'mobalytics';
   if (isPobbinUrl(input)) return 'pobbin';
-  if (/^https?:\/\//i.test(input)) return 'pobbin'; // try as paste host anyway
+  if (/^https?:\/\//i.test(input)) {
+    throw new Error(
+      'Unrecognized URL. Supported sources: pobb.in, mobalytics.gg/poe-2'
+    );
+  }
   if (input.startsWith('<') && input.includes('PathOfBuilding')) return 'xml';
   if (input.startsWith('{') || input.startsWith('[')) return 'json';
   return 'pobcode';

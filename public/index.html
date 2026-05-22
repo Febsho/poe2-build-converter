@@ -48,11 +48,12 @@
         <header class="topbar">
           <div>
             <h1>Converter</h1>
-            <p class="sub">Path of Building / pobb.in → official PoE2 <code>.build</code> file</p>
+            <p class="sub">Path of Building / pobb.in / Mobalytics → official PoE2 <code>.build</code> file</p>
           </div>
           <div class="segmented" id="kind-seg" role="tablist">
             <button class="seg active" data-kind="auto">Auto</button>
             <button class="seg" data-kind="pobbin">pobb.in</button>
+            <button class="seg" data-kind="mobalytics">Mobalytics</button>
             <button class="seg" data-kind="pobcode">Code</button>
             <button class="seg" data-kind="xml">XML</button>
             <button class="seg" data-kind="json">JSON</button>
@@ -88,12 +89,12 @@
           <div class="panel-head">
             <div>
               <h2>Input</h2>
-              <p class="panel-sub">Paste a PoB export code, pobb.in URL, raw PoB XML, or normalized JSON</p>
+              <p class="panel-sub">Paste a PoB export code, pobb.in URL, mobalytics.gg/poe-2 URL, raw PoB XML, or normalized JSON</p>
             </div>
           </div>
 
           <textarea id="input" rows="5" spellcheck="false"
-            placeholder="https://pobb.in/abc123   —or—   eNqVk...   —or—   <PathOfBuilding>..."></textarea>
+            placeholder="https://pobb.in/abc123   https://mobalytics.gg/poe-2/builds/...   eNqVk...   <PathOfBuilding>..."></textarea>
 
           <div class="row">
             <div class="field grow">

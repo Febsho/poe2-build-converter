@@ -39,6 +39,10 @@ export function decodePobCode(code) {
   }
 
   const attempts = [
+    // Modern PoB prepends a version byte (0x01 / 0x02) before the zlib stream.
+    // Try skipping it first since it's now the common case.
+    () => zlib.inflateSync(compressed.subarray(1)),
+    () => zlib.inflateRawSync(compressed.subarray(1)),
     () => zlib.inflateSync(compressed),
     () => zlib.inflateRawSync(compressed),
     () => zlib.gunzipSync(compressed),
