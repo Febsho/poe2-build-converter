@@ -489,10 +489,7 @@ function renderGemLevelTag(gem) {
 }
 
 function buildJsonTabPayload(data) {
-  const payload = {};
-  if (data.preview) payload.preview = data.preview;
-  payload.build = data.build;
-  return payload;
+  return data.build;
 }
 
 function parseSelValue(v) {
