@@ -74,6 +74,12 @@ function convertAscendancy(build, report) {
     return undefined;
   }
 
+  // Already an internal key (e.g. maxroll uses "Sorceress3" directly)
+  if (ASCENDANCIES[display]) {
+    report.converted.push(`ascendancy "${display}" (internal key, kept)`);
+    return display;
+  }
+
   // Try exact lookup: "Deadeye" -> "Ranger1"
   const key = ASCENDANCY_BY_NAME[display];
   if (key) {

@@ -1,6 +1,7 @@
 import { decodePobCode, parsePobXml, getAvailableSets } from './pobParser.js';
 import { isPobbinUrl, fetchPobbinCode } from './pobbin.js';
 import { isMobalyticsUrl, fetchMobalyticsData, inspectMobalyticsUrl } from './mobalytics.js';
+import { isMaxrollUrl, fetchMaxrollData, inspectMaxrollUrl } from './maxroll.js';
 import { convertToBuild } from './converter.js';
 
 /**
@@ -25,6 +26,11 @@ export async function resolveInput(rawInput, { kind = 'auto', skillSetId, itemSe
 
   if (detected === 'mobalytics') {
     const build = await fetchMobalyticsData(input, setOpts);
+    return { build, source };
+  }
+
+  if (detected === 'maxroll') {
+    const build = await fetchMaxrollData(input, setOpts);
     return { build, source };
   }
 
@@ -66,6 +72,10 @@ export async function inspectInput(rawInput, { kind = 'auto' } = {}) {
     return inspectMobalyticsUrl(input);
   }
 
+  if (detected === 'maxroll') {
+    return inspectMaxrollUrl(input);
+  }
+
   let xml;
   if (detected === 'pobbin') {
     const code = await fetchPobbinCode(input);
@@ -81,10 +91,11 @@ export async function inspectInput(rawInput, { kind = 'auto' } = {}) {
 
 function detectKind(input) {
   if (isMobalyticsUrl(input)) return 'mobalytics';
+  if (isMaxrollUrl(input)) return 'maxroll';
   if (isPobbinUrl(input)) return 'pobbin';
   if (/^https?:\/\//i.test(input)) {
     throw new Error(
-      'Unrecognized URL. Supported sources: pobb.in, mobalytics.gg/poe-2'
+      'Unrecognized URL. Supported sources: pobb.in, mobalytics.gg/poe-2, maxroll.gg/poe2'
     );
   }
   if (input.startsWith('<') && input.includes('PathOfBuilding')) return 'xml';

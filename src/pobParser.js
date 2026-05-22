@@ -258,8 +258,7 @@ function parseItems(items, targetId) {
 function parsePobItem(raw, id) {
   const text =
     typeof raw === 'string' ? raw : str(raw['#text']);
-  if (id <= 3) console.log(`[DEBUG item ${id}] raw text:\n${text.slice(0, 400)}\n---`);
-  const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
+const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
 
   let rarity = '', name = '', typeLine = '';
   for (let i = 0; i < lines.length; i++) {
