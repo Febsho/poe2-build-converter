@@ -220,12 +220,15 @@ function convertItems(build, report) {
     if (item) {
       if (item.isUnique && item.uniqueName) {
         buildItem.unique_name = item.uniqueName;
+        const modText = formatMods(item.implicits, item.explicits);
+        if (modText) buildItem.additional_text = modText;
         report.converted.push(`unique "${item.uniqueName}" in slot "${slot.name}"`);
       } else if (item.rarity && item.name) {
         const base = item.typeLine && item.typeLine !== item.name
           ? `${item.rarity}: ${item.typeLine} ("${item.name}")`
           : `${item.rarity}: ${item.name}`;
-        buildItem.additional_text = base;
+        const modText = formatMods(item.implicits, item.explicits);
+        buildItem.additional_text = modText ? `${base}\n${modText}` : base;
         report.converted.push(`item "${item.name}" in slot "${slot.name}"`);
       }
     }
@@ -234,6 +237,13 @@ function convertItems(build, report) {
   }
 
   return out;
+}
+
+function formatMods(implicits = [], explicits = []) {
+  const lines = [];
+  for (const m of implicits) lines.push(`[Implicit] ${m}`);
+  for (const m of explicits) lines.push(m);
+  return lines.join('\n');
 }
 
 function translateSlotName(name) {

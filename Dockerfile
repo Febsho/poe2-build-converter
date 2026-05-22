@@ -9,6 +9,8 @@ FROM node:22-alpine AS runtime
 ENV NODE_ENV=production
 WORKDIR /app
 
+RUN apk add --no-cache curl
+
 # Run as the unprivileged "node" user that ships with the base image.
 COPY --chown=node:node --from=deps /app/node_modules ./node_modules
 COPY --chown=node:node package.json server.js ./

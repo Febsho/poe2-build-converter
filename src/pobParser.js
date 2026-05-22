@@ -258,6 +258,7 @@ function parseItems(items, targetId) {
 function parsePobItem(raw, id) {
   const text =
     typeof raw === 'string' ? raw : str(raw['#text']);
+  if (id <= 3) console.log(`[DEBUG item ${id}] raw text:\n${text.slice(0, 400)}\n---`);
   const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
 
   let rarity = '', name = '', typeLine = '';
@@ -273,6 +274,7 @@ function parsePobItem(raw, id) {
   }
 
   const isUnique = rarity.toUpperCase() === 'UNIQUE';
+  const { implicits, explicits } = parseItemMods(lines);
   return {
     id: String(id),
     rarity,
@@ -280,9 +282,44 @@ function parsePobItem(raw, id) {
     typeLine,
     isUnique,
     uniqueName: isUnique ? name : undefined,
+    implicits,
+    explicits,
     raw: text,
-    summaryLines: lines.slice(0, 6),
   };
+}
+
+// Lines matching these are metadata, not mods
+const META_LINE = /^(Rarity|Quality|Sockets?|Item Level|Requirements|Str|Dex|Int|Level|Armour|Evasion|Energy Shield|Ward|Chaos Resistance|Radius|Limited to|Lore|Unique ID|LevelReq|Rune|Implicits)\s*:/i;
+const SKIP_LINE = /^(Corrupted|Mirrored|Split|Fractured Item|Synthesised Item|Unidentified|Superior|-{3,})$/i;
+// Strip PoB tag prefixes like {crafted}, {fractured}{rune}, {enchant}{rune} etc.
+const MOD_TAG = /^\{[^}]+\}(\{[^}]+\})*/;
+
+function parseItemMods(lines) {
+  // Find the "Implicits: N" line — everything after it is mods
+  let implicitCount = 0;
+  let implicitIdx = -1;
+  for (let i = 0; i < lines.length; i++) {
+    const m = lines[i].match(/^Implicits:\s*(\d+)/i);
+    if (m) { implicitCount = parseInt(m[1], 10); implicitIdx = i; break; }
+  }
+
+  const implicits = [];
+  const explicits = [];
+
+  if (implicitIdx < 0) return { implicits, explicits };
+
+  const modLines = lines.slice(implicitIdx + 1);
+  let modCount = 0;
+  for (const line of modLines) {
+    if (META_LINE.test(line) || SKIP_LINE.test(line)) continue;
+    const cleaned = line.replace(MOD_TAG, '').trim();
+    if (!cleaned) continue;
+    if (modCount < implicitCount) implicits.push(cleaned);
+    else explicits.push(cleaned);
+    modCount++;
+  }
+
+  return { implicits, explicits };
 }
 
 function looksLikeBaseType(line) {

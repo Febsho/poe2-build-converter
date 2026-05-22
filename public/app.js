@@ -8,25 +8,6 @@ let selectedKind = 'auto';
 let inspectedInput = null;  // the input string that was last inspected
 let availableSets = null;   // { skillSets, itemSets, treeSpecs }
 
-// Segmented input-type control
-document.querySelectorAll('#kind-seg .seg').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('#kind-seg .seg').forEach((b) => b.classList.remove('active'));
-    btn.classList.add('active');
-    selectedKind = btn.dataset.kind;
-  });
-});
-
-// Sidebar nav -> scroll + reveal
-document.querySelectorAll('.nav-item').forEach((item) => {
-  item.addEventListener('click', (e) => {
-    e.preventDefault();
-    document.querySelectorAll('.nav-item').forEach((n) => n.classList.remove('active'));
-    item.classList.add('active');
-    const el = $(item.dataset.target);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-});
 
 $('convert-btn').addEventListener('click', convert);
 $('download').addEventListener('click', download);
