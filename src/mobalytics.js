@@ -83,9 +83,10 @@ async function fetchPobCodeFromPage(slug, timeoutMs) {
   const url = `https://mobalytics.gg/poe-2/builds/${slug}`;
   const timeoutSec = Math.ceil(timeoutMs / 1000);
 
+  const curlBin = process.platform === 'win32' ? 'curl.exe' : 'curl';
   let stdout;
   try {
-    ({ stdout } = await execFileAsync('curl', [
+    ({ stdout } = await execFileAsync(curlBin, [
       '-sL',
       '--max-time', String(timeoutSec),
       '-H', 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
