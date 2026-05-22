@@ -240,7 +240,7 @@ function renderResults(data) {
   $('stat-unsupported').textContent = r.unsupported.length;
   $('stat-source').textContent      = source?.kind ?? '—';
 
-  renderOverviewTab(b, r, source);
+  renderOverviewTab(b, r, source, data.preview?.meta);
   renderSkillsTab(b.skills ?? [], data.preview?.skills ?? []);
   renderPassivesTab(b.passives ?? [], r, passiveNames);
   renderItemsTab(b.items ?? []);
@@ -275,13 +275,13 @@ function showQualityWarnings(build, report) {
   const msg    = $('quality-banner-msg');
   if (!banner || !msg) return;
 
-  const issues = [];
-  if (!build.skills?.length)                              issues.push('no skill gems');
-  if (!build.passives?.length)                            issues.push('no passive nodes');
-  if (!build.ascendancy)                                  issues.push('no ascendancy');
-  if (report.guessed.some((l) => /ascendancy/i.test(l))) issues.push('ascendancy unverified');
-  if (!build.items?.length)                               issues.push('no items');
-  if (report.unsupported.length > 3)                     issues.push(`${report.unsupported.length} unsupported entries`);
+  // Use server-authoritative warnings; add a client-side note for many unsupported entries
+  const issues = (report.warnings ?? [])
+    .map((w) => w.replace(/\.$/, ''));
+
+  if (report.unsupported.length > 3) {
+    issues.push(`${report.unsupported.length} unsupported entries`);
+  }
 
   if (issues.length) {
     msg.textContent = 'Heads up — ' + issues.join(' · ');
@@ -292,11 +292,11 @@ function showQualityWarnings(build, report) {
 }
 
 // ── Overview ───────────────────────────────────────────────────────────────
-function renderOverviewTab(build, report, source) {
+function renderOverviewTab(build, report, source, meta = {}) {
   const ascLine    = report.converted.find((l) => l.startsWith('ascendancy'));
   const ascMatch   = ascLine?.match(/^ascendancy "([^"]+)"/);
   const ascDisplay = ascMatch?.[1] || build.ascendancy || '';
-  const className  = build.meta?.className ?? '';
+  const className  = meta?.className ?? '';
 
   const sourceTagClass = SOURCE_TAG_CLASS[source?.kind] || '';
   const tags = [
@@ -530,7 +530,17 @@ function renderItemsTab(items) {
     if (item.unique_name) {
       nameCell = `<span class="item-name unique">★ ${esc(item.unique_name)}</span>`;
       if (item.additional_text) {
-        modsCell = `<div class="item-mods">${item.additional_text.split('\n').map(esc).join('<br>')}</div>`;
+        const lines = item.additional_text.split('\n');
+        // First line may be the base type (no prefix like [Implicit]/[Rune])
+        const firstIsBase = lines.length > 0 && !/^\[/.test(lines[0]);
+        const baseTypeLine = firstIsBase
+          ? `<span class="item-base-type">${esc(lines[0])}</span>`
+          : '';
+        const modLines = firstIsBase ? lines.slice(1) : lines;
+        const mods = modLines.length
+          ? `<div class="item-mods">${modLines.map(esc).join('<br>')}</div>`
+          : '';
+        modsCell = baseTypeLine + mods;
       }
     } else if (item.additional_text) {
       const lines = item.additional_text.split('\n');

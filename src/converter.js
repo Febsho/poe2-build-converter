@@ -404,8 +404,10 @@ function convertItems(build, report) {
     if (item) {
       if (item.isUnique && item.uniqueName) {
         buildItem.unique_name = item.uniqueName;
-        const modText = formatMods(item.implicits, item.explicits, item.runes);
-        if (modText) buildItem.additional_text = modText;
+        const baseType = (item.typeLine && item.typeLine !== item.uniqueName) ? item.typeLine : '';
+        const modText  = formatMods(item.implicits, item.explicits, item.runes);
+        const fullText = [baseType, modText].filter(Boolean).join('\n');
+        if (fullText) buildItem.additional_text = fullText;
         report.converted.push(`unique "${item.uniqueName}" in slot "${slot.name}"`);
       } else if (item.rarity && item.name) {
         const base = item.typeLine && item.typeLine !== item.name
