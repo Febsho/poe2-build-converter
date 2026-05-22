@@ -234,9 +234,10 @@ function renderSkillsTab(skills, previewSkills = []) {
   const html = skills.map((s) => {
     const id       = typeof s === 'string' ? s : s.id;
     const supports = typeof s === 'object' ? (s.support_skills ?? []) : [];
-    const supRows  = supports.map((sid) =>
-      `<li><span class="gem-ico">◈</span><span class="gem-name">${esc(gemName(sid))}</span></li>`
-    ).join('');
+    const supRows  = supports.map((sid) => {
+      const supportId = typeof sid === 'string' ? sid : (sid?.id ?? '');
+      return `<li><span class="gem-ico">◈</span><span class="gem-name">${esc(gemName(supportId))}</span></li>`;
+    }).join('');
     return `
       <li class="gem-group">
         <div class="gem-active">

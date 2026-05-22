@@ -175,9 +175,21 @@ function parseSkills(skills, targetId) {
         actives: gems.filter((g) => !g.isSupport),
         supports: gems.filter((g) => g.isSupport),
         allGems: gems,
+        additional_text: str(skill['@_additional_text'] || skill['@_additionalText'] || skill['@_comment'] || skill['@_description']) || undefined,
+        level_interval: parseXmlLevelInterval(skill['@_level_interval'] || skill['@_levelInterval']),
       };
     })
     .filter((g) => g.allGems.length > 0);
+}
+
+function parseXmlLevelInterval(val) {
+  if (!val) return undefined;
+  if (Array.isArray(val)) return val;
+  try {
+    const parsed = JSON.parse(String(val));
+    if (Array.isArray(parsed)) return parsed;
+  } catch {}
+  return undefined;
 }
 
 function parseGem(gem) {
@@ -199,6 +211,8 @@ function parseGem(gem) {
     quality: num(gem['@_quality']) || 0,
     enabled: gem['@_enabled'] !== false && gem['@_enabled'] !== 'false',
     isSupport,
+    additional_text: str(gem['@_additional_text'] || gem['@_additionalText'] || gem['@_comment'] || gem['@_description']) || undefined,
+    level_interval: parseXmlLevelInterval(gem['@_level_interval'] || gem['@_levelInterval']),
   };
 }
 

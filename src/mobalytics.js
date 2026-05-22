@@ -367,6 +367,8 @@ function parseMobalyticsSkillGroup(group, gemNameMap) {
     actives,
     supports,
     allGems: gems,
+    additional_text: group?.additional_text ?? group?.additionalText ?? group?.comment ?? group?.description ?? group?.notes ?? undefined,
+    level_interval: group?.level_interval ?? group?.levelInterval ?? undefined,
   };
 }
 
@@ -389,6 +391,8 @@ function parseMobalyticsGem(gem, gemType, weaponSet, gemNameMap) {
     enabled: true,
     isSupport,
     weaponSet,
+    additional_text: gem?.additional_text ?? gem?.additionalText ?? gem?.comment ?? gem?.description ?? gem?.notes ?? undefined,
+    level_interval: gem?.level_interval ?? gem?.levelInterval ?? undefined,
   };
 }
 

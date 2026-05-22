@@ -32,8 +32,13 @@ export function convertToBuild(build, opts = {}) {
   const skills = convertSkills(build, report);
   if (skills.length) out.skills = skills;
 
-  const passives = convertPassivesWithWeaponSets(build, report);
-  if (passives.length) out.passives = passives;
+  if (build.passives) {
+    out.passives = build.passives;
+    report.converted.push(`${build.passives.length} passives (kept as-is)`);
+  } else {
+    const passives = convertPassivesWithWeaponSets(build, report);
+    if (passives.length) out.passives = passives;
+  }
 
   const items = convertItems(build, report);
   if (items.length) out.items = items;
@@ -45,6 +50,10 @@ function pickName(build, opts, report) {
   if (opts.name?.trim()) {
     report.converted.push('name (provided by user)');
     return opts.name.trim();
+  }
+  if (build.name?.trim()) {
+    report.converted.push(`name (kept: "${build.name.trim()}")`);
+    return build.name.trim();
   }
   if (opts.sourceName?.trim()) {
     const name = opts.sourceName.trim();
@@ -61,6 +70,7 @@ function pickName(build, opts, report) {
 
 function buildDescription(build, opts) {
   if (opts.description?.trim()) return opts.description.trim();
+  if (build.description?.trim()) return build.description.trim();
   const bits = ['Generated from PoB.'];
   const m = build.meta ?? {};
   if (m.className) bits.push(`Class: ${m.className}.`);
@@ -73,6 +83,10 @@ function buildDescription(build, opts) {
 }
 
 function convertAscendancy(build, report) {
+  if (build.ascendancy) {
+    report.converted.push(`ascendancy "${build.ascendancy}" (kept as-is)`);
+    return build.ascendancy;
+  }
   const display = build.meta?.ascendClassName;
   if (!display || display === 'None') {
     report.warnings.push('No ascendancy found in the build.');
@@ -117,9 +131,25 @@ function convertSkills(build, report) {
 
   const out = [];
   for (const group of groups) {
+    if (!group) continue;
+
+    // 1. If it's already a GGG BuildSkill object, pass it through
+    if (typeof group === 'object' && 'id' in group && !('actives' in group)) {
+      out.push(group);
+      report.converted.push(`skill "${group.id}" (kept as-is)`);
+      continue;
+    }
+
+    // 2. If it's a string, convert to standard GGG object
+    if (typeof group === 'string') {
+      out.push({ id: group, level_interval: [0, 100], support_skills: [] });
+      report.converted.push(`skill "${group}"`);
+      continue;
+    }
+
     if (!group.enabled) continue;
 
-    const activeGems = group.actives.filter((active) => active.enabled);
+    const activeGems = (group.actives ?? []).filter((active) => active.enabled);
     if (!activeGems.length) continue;
 
     const primaryActive = activeGems.find((active) => active.gemId) ?? activeGems[0];
@@ -130,19 +160,52 @@ function convertSkills(build, report) {
       continue;
     }
 
-    const linkedActives = activeGems
-      .filter((active) => active !== primaryActive && active.gemId)
-      .map((active) => active.gemId);
-    const supports = group.supports
-      .filter((support) => support.enabled && support.gemId)
-      .map((support) => support.gemId);
-    const supportSkills = [...linkedActives, ...supports];
+    const supportSkills = [];
 
-    if (supportSkills.length) {
-      out.push({ id: primaryActive.gemId, support_skills: supportSkills });
-    } else {
-      out.push(primaryActive.gemId);
+    // 3. Process linked actives
+    const linkedActives = activeGems.filter((active) => active !== primaryActive && active.gemId);
+    for (const active of linkedActives) {
+      const activeText = active.additional_text ?? active.comment ?? active.description;
+      const activeInterval = active.level_interval ?? active.levelInterval;
+      if (activeText || activeInterval) {
+        const obj = { id: active.gemId };
+        if (activeInterval) obj.level_interval = activeInterval;
+        if (activeText) obj.additional_text = activeText;
+        supportSkills.push(obj);
+      } else {
+        supportSkills.push(active.gemId);
+      }
     }
+
+    // 4. Process supports
+    const supports = (group.supports ?? []).filter((support) => support.enabled && support.gemId);
+    for (const support of supports) {
+      const supportText = support.additional_text ?? support.comment ?? support.description;
+      const supportInterval = support.level_interval ?? support.levelInterval;
+      if (supportText || supportInterval) {
+        const obj = { id: support.gemId };
+        if (supportInterval) obj.level_interval = supportInterval;
+        if (supportText) obj.additional_text = supportText;
+        supportSkills.push(obj);
+      } else {
+        supportSkills.push(support.gemId);
+      }
+    }
+
+    const skillInterval = primaryActive.level_interval ?? primaryActive.levelInterval ?? group.level_interval ?? group.levelInterval ?? [0, 100];
+    const skillText = primaryActive.additional_text ?? primaryActive.comment ?? primaryActive.description ?? group.additional_text ?? group.comment ?? group.description;
+
+    const buildSkill = {
+      id: primaryActive.gemId,
+      level_interval: skillInterval,
+      support_skills: supportSkills
+    };
+
+    if (skillText) {
+      buildSkill.additional_text = skillText;
+    }
+
+    out.push(buildSkill);
     report.converted.push(`skill "${primaryActive.nameSpec || primaryActive.gemId}"`);
 
     for (const active of activeGems) {
@@ -280,6 +343,16 @@ function appendWeaponSetPassives(out, seenNodeIds, nodeIds, weaponSet) {
 }
 
 function convertItems(build, report) {
+  if (Array.isArray(build.items)) {
+    if (build.items.length === 0 || (build.items[0] && typeof build.items[0] === 'object' && 'inventory_id' in build.items[0])) {
+      for (const item of build.items) {
+        const name = item.unique_name || item.additional_text || item.inventory_id;
+        report.converted.push(`item "${name}" (kept as-is)`);
+      }
+      return build.items;
+    }
+  }
+
   const { list, slots, catalog } = build.items ?? { list: [], slots: [], catalog: {} };
   const itemLookup = catalog ?? Object.fromEntries((list ?? []).map((i) => [i.id, i]));
 

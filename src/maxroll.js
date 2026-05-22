@@ -227,10 +227,27 @@ function parseMaxrollPage(html, opts = {}) {
   };
 }
 
+function parseLevelInterval(name) {
+  if (!name || typeof name !== 'string') return [0, 100];
+  const m = name.match(/(\d+)\s*[-–—]\s*(\d+)/);
+  if (m) {
+    const start = parseInt(m[1], 10);
+    const end = parseInt(m[2], 10);
+    return [start === 1 ? 0 : start, end];
+  }
+  const mSingle = name.match(/(?:level|lvl|act)\s*(\d+)/i);
+  if (mSingle) {
+    const start = parseInt(mSingle[1], 10);
+    return [start, 100];
+  }
+  return [0, 100];
+}
+
 function parseMaxrollSkills(skillsData, stepIndex) {
   if (!skillsData?.steps?.length) return [];
   const idx = Math.min(Math.max(0, stepIndex ?? 0), skillsData.steps.length - 1);
   const step = skillsData.steps[idx];
+  const stepLevelInterval = parseLevelInterval(step.name);
 
   const result = [];
   for (const group of (step.skills ?? [])) {
@@ -245,6 +262,8 @@ function parseMaxrollSkills(skillsData, stepIndex) {
         quality: g.quality ?? 0,
         enabled: !g.corrupted,
         isSupport,
+        additional_text: g.additional_text ?? g.additionalText ?? g.comment ?? g.description ?? g.notes ?? undefined,
+        level_interval: g.level_interval ?? g.levelInterval ?? undefined,
       };
     });
     if (!gems.length) continue;
@@ -255,6 +274,8 @@ function parseMaxrollSkills(skillsData, stepIndex) {
       actives: gems.filter((g) => !g.isSupport),
       supports: gems.filter((g) => g.isSupport),
       allGems: gems,
+      additional_text: group.additional_text ?? group.additionalText ?? group.comment ?? group.description ?? group.notes ?? undefined,
+      level_interval: group.level_interval ?? group.levelInterval ?? stepLevelInterval,
     });
   }
   return result;

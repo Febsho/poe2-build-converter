@@ -114,10 +114,14 @@ function normalizeJsonInput(obj) {
     throw new Error('Expected a build object, got an array');
   }
   return {
+    name: obj.name ?? undefined,
+    description: obj.description ?? undefined,
+    ascendancy: obj.ascendancy ?? undefined,
     meta: obj.meta ?? {},
     skills: obj.skills ?? [],
+    passives: obj.passives ?? undefined, // Carry GGG passives forward if present
     tree: obj.tree ?? { nodes: [], specs: [] },
-    items: obj.items ?? { list: [], slots: [] },
+    items: Array.isArray(obj.items) ? obj.items : (obj.items ?? { list: [], slots: [] }),
     notes: obj.notes ?? '',
   };
 }
