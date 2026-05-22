@@ -1,6 +1,6 @@
 import { decodePobCode, parsePobXml, getAvailableSets } from './pobParser.js';
 import { isPobbinUrl, fetchPobbinCode } from './pobbin.js';
-import { isMobalyticsUrl, fetchMobalyticsData } from './mobalytics.js';
+import { isMobalyticsUrl, fetchMobalyticsData, inspectMobalyticsUrl } from './mobalytics.js';
 import { convertToBuild } from './converter.js';
 
 /**
@@ -24,7 +24,7 @@ export async function resolveInput(rawInput, { kind = 'auto', skillSetId, itemSe
   const setOpts = { skillSetId, itemSetId, specIndex };
 
   if (detected === 'mobalytics') {
-    const build = await fetchMobalyticsData(input);
+    const build = await fetchMobalyticsData(input, setOpts);
     return { build, source };
   }
 
@@ -58,9 +58,12 @@ export async function inspectInput(rawInput, { kind = 'auto' } = {}) {
 
   const detected = kind === 'auto' ? detectKind(input) : kind;
 
-  // Only PoB-format inputs have multiple sets; others get empty arrays.
-  if (detected === 'mobalytics' || detected === 'json') {
+  if (detected === 'json') {
     return { skillSets: [], itemSets: [], treeSpecs: [], meta: {} };
+  }
+
+  if (detected === 'mobalytics') {
+    return inspectMobalyticsUrl(input);
   }
 
   let xml;
