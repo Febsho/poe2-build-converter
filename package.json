@@ -1,0 +1,19 @@
+{
+  "name": "pob-to-poe2-buildplanner",
+  "version": "1.0.0",
+  "description": "Convert Path of Building / pobb.in builds into Path of Exile 2 .build Build Planner JSON files.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "fast-xml-parser": "^4.5.0"
+  }
+}
