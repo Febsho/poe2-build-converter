@@ -3,28 +3,21 @@ import { XMLParser } from 'fast-xml-parser';
 
 /**
  * Decode a Path of Building export code into its raw XML string.
- *
  * PoB export codes are URL-safe base64 of a zlib-compressed XML document.
- * Some sources use standard base64, some strip padding, and a few use raw
- * deflate without a zlib header, so we try a few decode strategies.
+ * Modern PoB prepends a version byte (0x01/0x02) before the zlib stream.
  */
 export function decodePobCode(code) {
-  if (typeof code !== 'string') {
-    throw new Error('PoB code must be a string');
-  }
+  if (typeof code !== 'string') throw new Error('PoB code must be a string');
 
-  // Strip whitespace/newlines that often sneak in from copy-paste.
   let cleaned = code.trim().replace(/\s+/g, '');
 
-  // Some people paste a full URL fragment or "code=..." prefix.
+  // Strip "code=..." prefix some sources include
   const eq = cleaned.lastIndexOf('=');
   if (cleaned.includes('code=') && eq !== -1 && eq < cleaned.length - 1) {
     cleaned = cleaned.slice(eq + 1);
   }
 
-  // Convert URL-safe base64 to standard base64.
   let b64 = cleaned.replace(/-/g, '+').replace(/_/g, '/');
-  // Restore padding.
   while (b64.length % 4 !== 0) b64 += '=';
 
   let compressed;
@@ -34,13 +27,10 @@ export function decodePobCode(code) {
     throw new Error('Input is not valid base64');
   }
 
-  if (compressed.length === 0) {
-    throw new Error('Decoded payload was empty');
-  }
+  if (compressed.length === 0) throw new Error('Decoded payload was empty');
 
+  // Try version-byte-skipped variants first (modern PoB prepends 0x01/0x02).
   const attempts = [
-    // Modern PoB prepends a version byte (0x01 / 0x02) before the zlib stream.
-    // Try skipping it first since it's now the common case.
     () => zlib.inflateSync(compressed.subarray(1)),
     () => zlib.inflateRawSync(compressed.subarray(1)),
     () => zlib.inflateSync(compressed),
@@ -72,28 +62,36 @@ export function decodePobCode(code) {
   return xml;
 }
 
+const ALWAYS_ARRAYS = new Set([
+  'PlayerStat', 'Spec', 'SkillSet', 'Skill', 'Gem',
+  'ItemSet', 'Slot', 'SocketIdURL', 'Item',
+]);
+
+const parser = new XMLParser({
+  ignoreAttributes: false,
+  attributeNamePrefix: '@_',
+  allowBooleanAttributes: true,
+  parseAttributeValue: true,
+  parseTagValue: true,
+  trimValues: true,
+  isArray: (name) => ALWAYS_ARRAYS.has(name),
+});
+
 /**
- * Parse PoB XML into a normalized, source-agnostic build object that the
- * converter can consume. Everything here is "what PoB gave us", not yet
- * mapped to the official PoE2 format.
+ * Parse PoB XML into a normalized build object.
+ * Supports both <PathOfBuilding2> (PoB2) and <PathOfBuilding> (PoB1) roots.
  */
 export function parsePobXml(xml) {
-  const parser = new XMLParser({
-    ignoreAttributes: false,
-    attributeNamePrefix: '@_',
-    allowBooleanAttributes: true,
-    parseAttributeValue: false,
-    trimValues: true,
-    // Keep these as arrays even when there is only one element.
-    isArray: (name) =>
-      ['Skill', 'Gem', 'Item', 'Slot', 'Spec', 'SkillSet', 'Node'].includes(name),
-  });
-
   const doc = parser.parse(xml);
-  const root = doc.PathOfBuilding ?? {};
+  // PoB2 exports use <PathOfBuilding2>; PoB1 uses <PathOfBuilding>
+  const root = doc.PathOfBuilding2 ?? doc.PathOfBuilding;
+  if (!root) throw new Error('Expected <PathOfBuilding2> root element');
+
+  const buildEl = root.Build;
+  if (!buildEl) throw new Error('Expected <Build> element under root');
 
   return {
-    meta: parseBuildMeta(root.Build),
+    meta: parseBuildMeta(buildEl),
     skills: parseSkills(root.Skills),
     tree: parseTree(root.Tree),
     items: parseItems(root.Items),
@@ -101,34 +99,29 @@ export function parsePobXml(xml) {
   };
 }
 
-function attr(node, name, fallback = undefined) {
-  if (!node) return fallback;
-  const v = node[`@_${name}`];
-  return v === undefined ? fallback : v;
-}
-
-function parseBuildMeta(build) {
-  if (!build) return {};
+function parseBuildMeta(b) {
   return {
-    level: toInt(attr(build, 'level')),
-    className: attr(build, 'className'),
-    ascendClassName: attr(build, 'ascendClassName'),
-    mainSocketGroup: toInt(attr(build, 'mainSocketGroup')),
-    bandit: attr(build, 'bandit'),
-    targetVersion: attr(build, 'targetVersion'),
+    level: num(b['@_level']),
+    className: str(b['@_className']),
+    ascendClassName: str(b['@_ascendClassName']),
+    mainSocketGroup: num(b['@_mainSocketGroup']),
+    targetVersion: str(b['@_targetVersion']),
+    viewMode: str(b['@_viewMode']),
   };
 }
 
 function parseSkills(skills) {
   if (!skills) return [];
 
-  // PoB may store multiple skill sets; prefer the active one, else the first.
+  const activeId = num(skills['@_activeSkillSet']) || 1;
   const sets = asArray(skills.SkillSet);
+
   let skillNodes;
   if (sets.length) {
-    const activeId = attr(skills, 'activeSkillSet');
     const active =
-      sets.find((s) => String(attr(s, 'id')) === String(activeId)) ?? sets[0];
+      sets.find((s) => num(s['@_id']) === activeId) ??
+      sets[activeId - 1] ??
+      sets[0];
     skillNodes = asArray(active.Skill);
   } else {
     skillNodes = asArray(skills.Skill);
@@ -137,17 +130,12 @@ function parseSkills(skills) {
   return skillNodes
     .map((skill) => {
       const gems = asArray(skill.Gem).map(parseGem);
-      // In PoB, a "Skill" is a socket group: typically the first active gem is
-      // the main skill and the rest are supports. Active vs support is flagged.
-      const actives = gems.filter((g) => !g.isSupport);
-      const supports = gems.filter((g) => g.isSupport);
       return {
-        slot: attr(skill, 'slot'),
-        enabled: attr(skill, 'enabled') !== 'false',
-        isMainGroup: attr(skill, 'mainActiveSkill') !== undefined,
-        label: attr(skill, 'label'),
-        actives,
-        supports,
+        slot: str(skill['@_slot']) || undefined,
+        enabled: skill['@_enabled'] !== false && skill['@_enabled'] !== 'false',
+        gems,
+        actives: gems.filter((g) => !g.isSupport),
+        supports: gems.filter((g) => g.isSupport),
         allGems: gems,
       };
     })
@@ -155,22 +143,23 @@ function parseSkills(skills) {
 }
 
 function parseGem(gem) {
-  const nameSpec = attr(gem, 'nameSpec') ?? attr(gem, 'name');
-  // PoB marks supports either via skillId starting "Support" or a flag.
-  const skillId = attr(gem, 'skillId') ?? attr(gem, 'gemId');
-  const variantId = attr(gem, 'variantId');
+  const gemId = str(gem['@_gemId']);
+  const nameSpec = str(gem['@_nameSpec']);
+  const skillId = str(gem['@_skillId']);
   const isSupport =
-    attr(gem, 'support') === 'true' ||
-    (typeof skillId === 'string' && /support/i.test(skillId)) ||
-    (typeof nameSpec === 'string' && /\bsupport\b/i.test(nameSpec));
+    gem['@_support'] === true ||
+    gem['@_support'] === 'true' ||
+    /support/i.test(skillId) ||
+    /\bsupport\b/i.test(nameSpec);
 
   return {
+    gemId,      // GGG metadata path — use directly in .build output
+    variantId: str(gem['@_variantId']),
     nameSpec,
     skillId,
-    variantId,
-    level: toInt(attr(gem, 'level')),
-    quality: toInt(attr(gem, 'quality')),
-    enabled: attr(gem, 'enabled') !== 'false',
+    level: num(gem['@_level']) || 1,
+    quality: num(gem['@_quality']) || 0,
+    enabled: gem['@_enabled'] !== false && gem['@_enabled'] !== 'false',
     isSupport,
   };
 }
@@ -179,151 +168,116 @@ function parseTree(tree) {
   if (!tree) return { nodes: [], specs: [] };
 
   const specs = asArray(tree.Spec).map((spec) => {
-    let nodes = [];
-
-    // PoB stores allocated nodes either as a comma-separated "nodes" attr,
-    // inside a tree URL, or as <Node> children.
-    const nodesAttr = attr(spec, 'nodes');
-    if (typeof nodesAttr === 'string' && nodesAttr.length) {
-      nodes = nodesAttr
-        .split(',')
-        .map((n) => n.trim())
-        .filter(Boolean);
-    }
-
-    const url = attr(spec, 'treeVersion') ? undefined : extractText(spec);
-    if (!nodes.length && typeof url === 'string') {
-      nodes = nodesFromTreeUrl(url);
-    }
+    const nodesAttr = spec['@_nodes'];
+    const nodes = typeof nodesAttr === 'string' && nodesAttr.length
+      ? nodesAttr.split(',').map((n) => parseInt(n.trim(), 10)).filter((n) => !isNaN(n))
+      : [];
 
     return {
-      treeVersion: attr(spec, 'treeVersion'),
-      ascendClassId: attr(spec, 'ascendClassId'),
-      classId: attr(spec, 'classId'),
+      treeVersion: str(spec['@_treeVersion']),
+      ascendClassId: num(spec['@_ascendClassId']),
+      ascendancyInternalId: str(spec['@_ascendancyInternalId']),
+      classId: num(spec['@_classId']),
       nodes,
     };
   });
 
-  // Surface the active spec's nodes (first spec is the default in PoB).
   const active = specs[0] ?? { nodes: [] };
   return { nodes: active.nodes, specs };
-}
-
-function nodesFromTreeUrl(url) {
-  // Tree-sharing URLs encode allocated nodes in a base64 blob after the last
-  // slash. Decoding the exact node IDs is version-specific and brittle, so we
-  // only attempt the simple comma-list case elsewhere. Return empty here and
-  // let the converter flag the tree as unresolved.
-  if (typeof url !== 'string' || !/passive-skill-tree|poeplanner|/.test(url)) {
-    return [];
-  }
-  return [];
 }
 
 function parseItems(items) {
   if (!items) return { list: [], slots: [] };
 
-  const list = asArray(items.Item).map((item) => {
-    const id = attr(item, 'id');
-    const rawText = extractText(item) ?? '';
-    return {
-      id: id !== undefined ? String(id) : undefined,
-      ...parseItemText(rawText),
-      raw: rawText,
-    };
-  });
+  const catalog = {};
+  for (const raw of asArray(items.Item)) {
+    const id = num(raw['@_id']);
+    if (id > 0) catalog[String(id)] = parsePobItem(raw, id);
+  }
 
-  // Slot -> item mapping lives in the active ItemSet.
+  const activeId = num(items['@_activeItemSet']) || 1;
   const sets = asArray(items.ItemSet);
   let slotNodes = [];
   if (sets.length) {
-    const activeId = attr(items, 'activeItemSet');
     const active =
-      sets.find((s) => String(attr(s, 'id')) === String(activeId)) ?? sets[0];
+      sets.find((s) => num(s['@_id']) === activeId) ??
+      sets[activeId - 1] ??
+      sets[0];
     slotNodes = asArray(active.Slot);
   } else {
     slotNodes = asArray(items.Slot);
   }
 
   const slots = slotNodes
-    .map((slot) => ({
-      name: attr(slot, 'name'),
-      itemId: attr(slot, 'itemId') ? String(attr(slot, 'itemId')) : undefined,
-    }))
-    .filter((s) => s.name && s.itemId && s.itemId !== '0');
+    .map((s) => ({ name: str(s['@_name']), itemId: String(num(s['@_itemId'])) }))
+    .filter((s) => s.name && s.itemId !== '0');
 
-  return { list, slots };
+  // Convert catalog to list for backward compat
+  const list = Object.values(catalog);
+
+  return { list, slots, catalog };
 }
 
-/**
- * PoB item blocks are plain text. We extract the rarity, names and the first
- * couple of lines so the converter can emit useful hints without claiming to
- * fully understand affixes.
- */
-function parseItemText(text) {
-  const lines = text
-    .split(/\r?\n/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+function parsePobItem(raw, id) {
+  const text =
+    typeof raw === 'string' ? raw : str(raw['#text']);
+  const lines = text.split('\n').map((l) => l.trim()).filter(Boolean);
 
-  let rarity;
-  let name;
-  let typeLine;
-
-  let cursor = 0;
-  if (lines[cursor]?.toLowerCase().startsWith('rarity:')) {
-    rarity = lines[cursor].split(':')[1]?.trim();
-    cursor++;
-  }
-  if (lines[cursor]) {
-    name = lines[cursor];
-    cursor++;
-  }
-  // For uniques/rares the next line is usually the base type.
-  if (lines[cursor] && !/:/.test(lines[cursor])) {
-    typeLine = lines[cursor];
+  let rarity = '', name = '', typeLine = '';
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].startsWith('Rarity:')) {
+      rarity = lines[i].slice('Rarity:'.length).trim();
+      if (i + 1 < lines.length) name = lines[i + 1];
+      if (i + 2 < lines.length && looksLikeBaseType(lines[i + 2])) {
+        typeLine = lines[i + 2];
+      }
+      break;
+    }
   }
 
-  const isUnique = (rarity ?? '').toUpperCase() === 'UNIQUE';
-
+  const isUnique = rarity.toUpperCase() === 'UNIQUE';
   return {
+    id: String(id),
     rarity,
     name,
     typeLine,
     isUnique,
     uniqueName: isUnique ? name : undefined,
+    raw: text,
     summaryLines: lines.slice(0, 6),
   };
+}
+
+function looksLikeBaseType(line) {
+  if (line.startsWith('-')) return false;
+  if (line.includes(': ')) return false;
+  return true;
 }
 
 function extractNotes(root) {
   const notes = root.Notes;
   if (typeof notes === 'string') return notes.trim();
   if (notes && typeof notes === 'object') {
-    const text = extractText(notes);
+    const text = notes['#text'];
     return typeof text === 'string' ? text.trim() : '';
   }
   return '';
 }
-
-// --- small helpers -------------------------------------------------------
 
 function asArray(v) {
   if (v === undefined || v === null) return [];
   return Array.isArray(v) ? v : [v];
 }
 
-function extractText(node) {
-  if (node === undefined || node === null) return undefined;
-  if (typeof node === 'string') return node;
-  if (typeof node === 'object') {
-    if (typeof node['#text'] === 'string') return node['#text'];
+function num(v, fallback = 0) {
+  if (typeof v === 'number') return v;
+  if (typeof v === 'string') {
+    const n = Number(v);
+    return isNaN(n) ? fallback : n;
   }
-  return undefined;
+  return fallback;
 }
 
-function toInt(v) {
-  if (v === undefined || v === null || v === '') return undefined;
-  const n = parseInt(v, 10);
-  return Number.isNaN(n) ? undefined : n;
+function str(v, fallback = '') {
+  return v == null ? fallback : String(v);
 }

@@ -1,84 +1,62 @@
-import {
-  KNOWN_POE2_ASCENDANCIES,
-  slotToInventoryId,
-  guessSkillMetadataId,
-  guessSupportMetadataId,
-} from './mappings.js';
+import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
-const FULL_INTERVAL = [0, 100];
+const require = createRequire(import.meta.url);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Real GGG passive and ascendancy data from poe2-build-forge
+const PASSIVES = require('./data/passives_default.json');
+const ASCENDANCIES = require('./data/ascendancies.json');
+
+// Build a reverse map: ascendancy display name -> internal key (e.g. "Deadeye" -> "Ranger1")
+const ASCENDANCY_BY_NAME = Object.fromEntries(
+  Object.entries(ASCENDANCIES).map(([key, val]) => [val.name, key])
+);
 
 /**
- * Convert a normalized PoB build (from pobParser) into the official PoE2
- * `.build` Build Planner object plus a classification report.
- *
- * The report tells the UI which pieces are:
- *   - converted:   structurally faithful, high confidence
- *   - guessed:     mapped via heuristics, IDs not officially confirmed
- *   - unsupported: could not be resolved; preserved as text where possible
- *
- * @param {object} build  normalized build from parsePobXml
- * @param {object} opts   { name, description } user overrides
+ * Convert a normalized PoB build (from parsePobXml) into a PoE2 .build object
+ * plus a classification report.
  */
 export function convertToBuild(build, opts = {}) {
-  const report = {
-    converted: [],
-    guessed: [],
-    unsupported: [],
-    warnings: [],
-  };
-
+  const report = { converted: [], guessed: [], unsupported: [], warnings: [] };
   const out = {};
 
-  // --- name ---------------------------------------------------------------
   out.name = pickName(build, opts, report);
-
-  // --- description --------------------------------------------------------
   out.description = buildDescription(build, opts);
   report.converted.push('description (generated from build metadata + notes)');
 
-  // --- ascendancy ---------------------------------------------------------
   const asc = convertAscendancy(build, report);
   if (asc) out.ascendancy = asc;
 
-  // --- skills -------------------------------------------------------------
   const skills = convertSkills(build, report);
   if (skills.length) out.skills = skills;
 
-  // --- passives -----------------------------------------------------------
   const passives = convertPassives(build, report);
   if (passives.length) out.passives = passives;
 
-  // --- items --------------------------------------------------------------
   const items = convertItems(build, report);
   if (items.length) out.items = items;
 
   return { build: out, report };
 }
 
-// ---------------------------------------------------------------------------
-
 function pickName(build, opts, report) {
-  if (opts.name && opts.name.trim()) {
+  if (opts.name?.trim()) {
     report.converted.push('name (provided by user)');
     return opts.name.trim();
   }
   const cls = build.meta?.className;
   const asc = build.meta?.ascendClassName;
-  const lvl = build.meta?.level;
-  const parts = [];
-  if (asc && asc !== 'None') parts.push(asc);
-  else if (cls) parts.push(cls);
-  if (lvl) parts.push(`Lvl ${lvl}`);
-  const name = parts.length ? parts.join(' ') : 'Imported PoB Build';
+  const meaningful = asc && asc !== 'None';
+  const name = meaningful ? `${cls} - ${asc}` : (cls || 'Imported Build');
   report.converted.push(`name (derived: "${name}")`);
   return name;
 }
 
 function buildDescription(build, opts) {
-  if (opts.description && opts.description.trim()) {
-    return opts.description.trim();
-  }
-  const bits = ['Generated from PoB / pobb.in.'];
+  if (opts.description?.trim()) return opts.description.trim();
+  const bits = ['Generated from PoB.'];
   const m = build.meta ?? {};
   if (m.className) bits.push(`Class: ${m.className}.`);
   if (m.level) bits.push(`Level: ${m.level}.`);
@@ -90,21 +68,33 @@ function buildDescription(build, opts) {
 }
 
 function convertAscendancy(build, report) {
-  const name = build.meta?.ascendClassName;
-  if (!name || name === 'None') {
+  const display = build.meta?.ascendClassName;
+  if (!display || display === 'None') {
     report.warnings.push('No ascendancy found in the build.');
     return undefined;
   }
-  if (KNOWN_POE2_ASCENDANCIES.has(name)) {
-    report.guessed.push(
-      `ascendancy "${name}" — using the display name; the official AscendancyId string is unconfirmed.`
-    );
-    return name;
+
+  // Try exact lookup: "Deadeye" -> "Ranger1"
+  const key = ASCENDANCY_BY_NAME[display];
+  if (key) {
+    report.converted.push(`ascendancy "${display}" -> "${key}"`);
+    return key;
   }
-  report.unsupported.push(
-    `ascendancy "${name}" is not a recognized PoE2 ascendancy (it may be a PoE1 build). Passed through as-is.`
-  );
-  return name;
+
+  // Try by className prefix + class_number fallback
+  const cls = build.meta?.className;
+  if (cls) {
+    const match = Object.entries(ASCENDANCIES).find(
+      ([k, v]) => k.startsWith(cls) && v.name === display
+    );
+    if (match) {
+      report.converted.push(`ascendancy "${display}" -> "${match[0]}"`);
+      return match[0];
+    }
+  }
+
+  report.guessed.push(`ascendancy "${display}" — could not map to internal key, passing display name through.`);
+  return display;
 }
 
 function convertSkills(build, report) {
@@ -114,150 +104,154 @@ function convertSkills(build, report) {
     return [];
   }
 
-  const skills = [];
+  const out = [];
   for (const group of groups) {
+    if (!group.enabled) continue;
+
     for (const active of group.actives) {
-      const skill = { level_interval: FULL_INTERVAL };
+      if (!active.enabled) continue;
 
-      const idGuess = guessSkillMetadataId(active);
-      const notes = [];
-      if (group.label) notes.push(group.label);
-      if (active.nameSpec) notes.push(`Gem: ${active.nameSpec}`);
-      if (active.level) notes.push(`Lvl ${active.level}`);
-      if (active.quality) notes.push(`Q${active.quality}%`);
+      // gemId is already the GGG metadata path — use directly.
+      if (active.gemId) {
+        const supports = group.supports
+          .filter((s) => s.enabled && s.gemId)
+          .map((s) => s.gemId);
 
-      if (idGuess) {
-        skill.id = idGuess.candidate;
-        report.guessed.push(
-          `skill "${active.nameSpec ?? active.skillId}" -> ${idGuess.candidate} (${idGuess.confidence} confidence; verify the Metadata path).`
-        );
-      } else {
-        notes.unshift('UNRESOLVED skill id');
-        report.unsupported.push(
-          `skill "${active.nameSpec ?? 'unknown'}" could not be mapped to a Metadata id; left in additional_text.`
-        );
-      }
-
-      // Supports for this group.
-      const supports = [];
-      for (const sup of group.supports) {
-        const supGuess = guessSupportMetadataId(sup);
-        const supNote = [sup.nameSpec, sup.level ? `Lvl ${sup.level}` : null]
-          .filter(Boolean)
-          .join(' ');
-        if (supGuess) {
-          supports.push({
-            id: supGuess.candidate,
-            level_interval: FULL_INTERVAL,
-            additional_text: supNote || undefined,
-          });
-          report.guessed.push(
-            `support "${sup.nameSpec ?? sup.skillId}" -> ${supGuess.candidate} (${supGuess.confidence} confidence).`
-          );
-        } else if (supNote) {
-          supports.push({ additional_text: `UNRESOLVED support: ${supNote}` });
-          report.unsupported.push(
-            `support "${sup.nameSpec ?? 'unknown'}" could not be mapped; left in additional_text.`
-          );
+        if (supports.length) {
+          out.push({ id: active.gemId, support_skills: supports });
+        } else {
+          out.push(active.gemId);
         }
+        report.converted.push(`skill "${active.nameSpec || active.gemId}"`);
+      } else {
+        // Fallback for PoB1 exports that don't have gemId
+        report.unsupported.push(
+          `skill "${active.nameSpec || 'unknown'}" — no gemId in PoB export; gem omitted.`
+        );
       }
-      if (supports.length) skill.support_skills = supports;
-
-      if (notes.length) skill.additional_text = notes.join(' | ');
-      skills.push(skill);
     }
   }
 
-  return skills;
+  return out;
 }
 
 function convertPassives(build, report) {
-  const nodes = build.tree?.nodes ?? [];
-  if (!nodes.length) {
-    if (build.tree?.specs?.length) {
-      report.unsupported.push(
-        'Passive tree was present but allocated nodes could not be extracted (tree stored as an encoded URL). No passives emitted.'
-      );
+  const specs = build.tree?.specs ?? [];
+  if (!specs.length || !specs.some((s) => s.nodes.length)) {
+    if (build.tree?.nodes?.length) {
+      // Single-spec path
     } else {
       report.warnings.push('No passive tree data found in the build.');
+      return [];
     }
+  }
+
+  // Use multi-spec approach from poe2-build-forge: derive level_interval from
+  // when a node first appears across specs (ordered by progression).
+  const allSpecs = specs.filter((s) => s.nodes.length > 0);
+
+  if (!allSpecs.length) {
+    report.warnings.push('No passive tree data found in the build.');
     return [];
   }
 
-  // PoB allocated-node IDs are numeric tree node IDs. Whether these match the
-  // exact strings the .build format expects for `passives` is unconfirmed, so
-  // we emit them but flag the whole set as guessed.
-  report.guessed.push(
-    `${nodes.length} passive node id(s) carried over from PoB. These are PoB tree node IDs; confirm they match the official PoE2 passive_id values.`
-  );
+  const finalSpec = allSpecs[allSpecs.length - 1];
+  const out = [];
+  let resolved = 0, unresolved = 0;
 
-  // Emit as objects so we can attach a clarifying note on the first one.
-  return nodes.map((id, idx) => {
-    if (idx === 0) {
-      return {
-        id: String(id),
-        level_interval: FULL_INTERVAL,
-        additional_text: 'Passive IDs imported from PoB tree node IDs (unverified).',
-      };
+  if (allSpecs.length === 1) {
+    for (const nodeId of finalSpec.nodes) {
+      const entry = PASSIVES[String(nodeId)];
+      if (!entry) { unresolved++; continue; }
+      if (entry.is_jewel_socket) continue;
+      out.push(entry.id);
+      resolved++;
     }
-    return String(id);
-  });
+  } else {
+    // Multi-spec: find earliest spec each node appears in
+    const startLevelForSpec = (i) => (i === 0 ? 1 : Math.round((100 * i) / allSpecs.length));
+    const earliest = new Map();
+    for (let i = 0; i < allSpecs.length; i++) {
+      for (const nodeId of allSpecs[i].nodes) {
+        if (!earliest.has(nodeId)) earliest.set(nodeId, i);
+      }
+    }
+
+    for (const nodeId of finalSpec.nodes) {
+      const entry = PASSIVES[String(nodeId)];
+      if (!entry) { unresolved++; continue; }
+      if (entry.is_jewel_socket) continue;
+
+      const startLevel = startLevelForSpec(earliest.get(nodeId) ?? allSpecs.length - 1);
+      if (startLevel <= 1) {
+        out.push(entry.id);
+      } else {
+        out.push({ id: entry.id, level_interval: [startLevel, 100] });
+      }
+      resolved++;
+    }
+  }
+
+  if (resolved) report.converted.push(`${resolved} passive nodes resolved from GGG data`);
+  if (unresolved) report.guessed.push(`${unresolved} passive node(s) not found in data — omitted`);
+
+  return out;
 }
 
 function convertItems(build, report) {
-  const { list, slots } = build.items ?? { list: [], slots: [] };
-  if (!slots.length) {
-    if (list.length) {
-      report.unsupported.push(
-        `${list.length} item(s) were present but no equipped slot mapping (ItemSet) was found; items not emitted.`
-      );
+  const { list, slots, catalog } = build.items ?? { list: [], slots: [], catalog: {} };
+  const itemLookup = catalog ?? Object.fromEntries((list ?? []).map((i) => [i.id, i]));
+
+  if (!slots?.length) {
+    if (list?.length) {
+      report.warnings.push(`${list.length} item(s) present but no slot mapping found.`);
     } else {
       report.warnings.push('No items found in the build.');
     }
     return [];
   }
 
-  const byId = new Map(list.map((it) => [it.id, it]));
-  const items = [];
-
+  const out = [];
   for (const slot of slots) {
-    const item = byId.get(slot.itemId);
-    const inventoryId = slotToInventoryId(slot.name);
-
-    const out = { level_interval: FULL_INTERVAL };
-    const notes = [];
-
-    if (inventoryId) {
-      out.inventory_id = inventoryId;
-      out.slot_x = 0;
-      out.slot_y = 0;
-      report.guessed.push(
-        `item slot "${slot.name}" -> inventory_id "${inventoryId}" (slot id convention unconfirmed for PoE2).`
-      );
-    } else {
-      notes.push(`UNRESOLVED slot: ${slot.name}`);
-      report.unsupported.push(
-        `item slot "${slot.name}" has no known PoE2 inventory_id mapping; described in additional_text.`
-      );
-    }
+    const inventoryId = translateSlotName(slot.name);
+    const item = itemLookup[slot.itemId];
+    const buildItem = { inventory_id: inventoryId, slot_x: 0, slot_y: 0 };
 
     if (item) {
       if (item.isUnique && item.uniqueName) {
-        out.unique_name = item.uniqueName;
-        report.converted.push(
-          `unique item "${item.uniqueName}" in slot "${slot.name}".`
-        );
+        buildItem.unique_name = item.uniqueName;
+        report.converted.push(`unique "${item.uniqueName}" in slot "${slot.name}"`);
+      } else if (item.rarity && item.name) {
+        const base = item.typeLine && item.typeLine !== item.name
+          ? `${item.rarity}: ${item.typeLine} ("${item.name}")`
+          : `${item.rarity}: ${item.name}`;
+        buildItem.additional_text = base;
+        report.converted.push(`item "${item.name}" in slot "${slot.name}"`);
       }
-      if (item.name) notes.push(item.name);
-      if (item.typeLine) notes.push(`Base: ${item.typeLine}`);
-      if (item.rarity) notes.push(`Rarity: ${item.rarity}`);
-    } else {
-      notes.push('item details not found');
     }
 
-    if (notes.length) out.additional_text = notes.join(' | ');
-    items.push(out);
+    out.push(buildItem);
   }
 
-  return items;
+  return out;
+}
+
+function translateSlotName(name) {
+  const map = {
+    'Weapon 1': 'Weapon1',
+    'Weapon 2': 'Weapon2',
+    'Weapon 1 Swap': 'Offhand1',
+    'Weapon 2 Swap': 'Offhand2',
+    'Body Armour': 'BodyArmour',
+    Helmet: 'Helm',
+    Gloves: 'Gloves',
+    Boots: 'Boots',
+    Belt: 'Belt',
+    Amulet: 'Amulet',
+    'Ring 1': 'Ring',
+    'Ring 2': 'Ring2',
+    'Flask 1': 'Flask1',
+    'Flask 2': 'Flask2',
+  };
+  return map[name] ?? name.replace(/\s+/g, '');
 }
