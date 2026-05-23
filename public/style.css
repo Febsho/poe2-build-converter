@@ -111,7 +111,7 @@ body {
 .panel-sub { color: var(--muted-2); font-size: 12.5px; margin: 4px 0 0; }
 
 /* Form controls */
-textarea, input[type="text"] {
+textarea, input[type="text"], input[type="number"], select {
   width: 100%;
   background: var(--bg-2);
   border: 1px solid var(--border-2);
@@ -127,7 +127,7 @@ textarea {
   font-family: ui-monospace, "Cascadia Code", "SF Mono", monospace;
   font-size: 12.5px;
 }
-textarea:focus, input[type="text"]:focus {
+textarea:focus, input[type="text"]:focus, input[type="number"]:focus, select:focus {
   outline: none;
   border-color: var(--accent-dim);
 }
@@ -626,7 +626,7 @@ code { background: var(--panel-2); padding: 1px 6px; border-radius: 4px; color: 
 
 /* ---------------- Quality warning banner ---------------- */
 .quality-banner {
-  display: flex;
+  display: none !important;
   align-items: center;
   gap: 10px;
   background: rgba(224, 185, 74, 0.07);
@@ -716,7 +716,8 @@ code { background: var(--panel-2); padding: 1px 6px; border-radius: 4px; color: 
   color: var(--muted);
 }
 .edit-field textarea,
-.edit-field input {
+.edit-field input,
+.edit-field select {
   width: 100%;
 }
 .edit-card {
@@ -734,10 +735,71 @@ code { background: var(--panel-2); padding: 1px 6px; border-radius: 4px; color: 
   font-weight: 600;
   color: var(--text);
 }
+.edit-card-subtitle {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 11px;
+}
 .edit-card-actions {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+}
+.skill-details {
+  display: block;
+}
+.skill-summary {
+  cursor: pointer;
+  list-style: none;
+  margin-bottom: 0;
+  position: relative;
+  padding-left: 22px;
+}
+
+.skill-summary > div:first-of-type {
+  flex: 1;
+  min-width: 0;
+}
+
+.skill-summary .edit-card-actions {
+  flex: 0 0 auto;
+}
+.skill-summary::-webkit-details-marker {
+  display: none;
+}
+.skill-summary::before {
+  content: ">";
+  color: var(--muted);
+  font-size: 12px;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.skill-details[open] > .skill-summary {
+  margin-bottom: 12px;
+}
+.skill-details[open] > .skill-summary::before {
+  content: "v";
+}
+.skill-details-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.support-details {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.support-summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.support-details:not([open]) .edit-subcards {
+  display: none;
 }
 
 .preview-edit-section {
@@ -750,6 +812,14 @@ code { background: var(--panel-2); padding: 1px 6px; border-radius: 4px; color: 
   text-transform: uppercase;
   color: var(--muted);
   letter-spacing: .04em;
+}
+
+.tab-subtitle {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
 }
 
 .gem-head {
@@ -800,6 +870,23 @@ code { background: var(--panel-2); padding: 1px 6px; border-radius: 4px; color: 
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 12px;
+}
+.readonly-input {
+  color: var(--text);
+  background: var(--bg-2);
+}
+.advanced-id {
+  gap: 8px;
+}
+.advanced-id summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 10.5px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+.advanced-id input {
+  margin-top: 8px;
 }
 .empty-msg.tight {
   padding: 8px 0 0;

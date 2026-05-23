@@ -95,6 +95,55 @@ test('parsePobXml and convertToBuild use ascendancy stored on the active tree sp
   assert.equal(report.warnings.some((line) => line.includes('No ascendancy found')), false);
 });
 
+test('convertToBuild prefers selected ascendancy passives when source class metadata is weak', () => {
+  const build = {
+    meta: { className: 'Witch' },
+    skills: [],
+    tree: { nodes: [3165], specs: [{ nodes: [3165] }] },
+    items: { list: [], slots: [], catalog: {} },
+  };
+
+  const { build: out, report } = convertToBuild(build);
+  assert.equal(out.ascendancy, 'Witch2');
+  assert.equal(report.warnings.some((line) => line.includes('No ascendancy found')), false);
+});
+
+test('parsePobXml includes PoB ascendancyNodes in converted passives', () => {
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<PathOfBuilding2>
+  <Build level="90" className="Witch" ascendClassName="Lich" />
+  <Tree activeSpec="1">
+    <Spec treeVersion="0_3" classId="3" ascendClassId="3" nodes="" ascendancyNodes="3165"/>
+  </Tree>
+</PathOfBuilding2>`;
+
+  const build = parsePobXml(xml);
+  assert.deepEqual(build.tree.activeSpec.ascendancyNodes, [3165]);
+
+  const { build: out } = convertToBuild(build);
+  assert.equal(out.passives.some((p) => p.id === 'AscendancyWitch2Small7'), true);
+});
+
+test('parsePobXml includes nested PoB node entries in converted passives', () => {
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<PathOfBuilding2>
+  <Build level="90" className="Witch" ascendClassName="Lich" />
+  <Tree activeSpec="1">
+    <Spec treeVersion="0_3" classId="3" ascendClassId="3" nodes="">
+      <AscendancyNodes>
+        <Node id="3165"/>
+      </AscendancyNodes>
+    </Spec>
+  </Tree>
+</PathOfBuilding2>`;
+
+  const build = parsePobXml(xml);
+  assert.deepEqual(build.tree.activeSpec.ascendancyNodes, [3165]);
+
+  const { build: out } = convertToBuild(build);
+  assert.equal(out.passives.some((p) => p.id === 'AscendancyWitch2Small7'), true);
+});
+
 test('parsePobXml infers support gem level from rank suffix when PoB level is missing', () => {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <PathOfBuilding>
@@ -294,6 +343,31 @@ test('convertToBuild formats support gem as object when it has custom additional
   const { build: out } = convertToBuild(build, {});
   assert.deepEqual(out.skills[0].support_skills, [
     { id: 'Metadata/Items/Gems/SupportGemPierce', level_interval: [0, 100], additional_text: 'Freeze Support' }
+  ]);
+});
+
+test('convertToBuild clamps skill and support gem levels to allowed maximums', () => {
+  const build = {
+    meta: { className: 'Witch' },
+    skills: [{
+      enabled: true,
+      actives: [
+        { gemId: 'Metadata/Items/Gems/SkillGemCastOnCritMeta', nameSpec: 'Cast on Critical', level: 21, enabled: true },
+        { gemId: 'Metadata/Items/Gems/SkillGemComet', nameSpec: 'Comet', level: 21, enabled: true },
+      ],
+      supports: [
+        { gemId: 'Metadata/Items/Gems/SupportGemChainTwo', nameSpec: 'Chain II', level: 20, enabled: true },
+        { gemId: 'Metadata/Items/Gems/SupportGemPinpointCritical', nameSpec: 'Pinpoint Critical', level: 20, enabled: true },
+      ],
+    }]
+  };
+
+  const { build: out } = convertToBuild(build, {});
+  assert.equal(out.skills[0].additional_text, 'Level 20');
+  assert.deepEqual(out.skills[0].support_skills, [
+    { id: 'Metadata/Items/Gems/SkillGemComet', level_interval: [0, 100], additional_text: 'Level 20' },
+    { id: 'Metadata/Items/Gems/SupportGemChainTwo', level_interval: [0, 100], additional_text: 'Level 2' },
+    { id: 'Metadata/Items/Gems/SupportGemPinpointCritical', level_interval: [0, 100], additional_text: 'Level 5' },
   ]);
 });
 

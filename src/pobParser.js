@@ -245,16 +245,18 @@ function parseTree(tree, targetSpecIndex) {
   if (!tree) return { nodes: [], specs: [] };
 
   const specs = asArray(tree.Spec).map((spec) => {
-    const nodesAttr = spec['@_nodes'];
-    const nodes = typeof nodesAttr === 'string' && nodesAttr.length
-      ? nodesAttr.split(',').map((n) => parseInt(n.trim(), 10)).filter((n) => !isNaN(n))
-      : [];
+    const mainNodes = parseNodeList(spec['@_nodes']);
+    const extraNodes = collectSpecNodeFields(spec).filter((nodeId) => !mainNodes.includes(nodeId));
+    const ascendancyNodes = uniqueNums(extraNodes);
+    const nodes = uniqueNums([...mainNodes, ...ascendancyNodes]);
 
     return {
       treeVersion: str(spec['@_treeVersion']),
       ascendClassId: num(spec['@_ascendClassId']),
       ascendancyInternalId: str(spec['@_ascendancyInternalId']),
       classId: num(spec['@_classId']),
+      mainNodes,
+      ascendancyNodes,
       nodes,
     };
   });
@@ -264,6 +266,52 @@ function parseTree(tree, targetSpecIndex) {
     : (num(tree['@_activeSpec']) > 0 ? num(tree['@_activeSpec']) - 1 : undefined);
   const active = (activeSpecIndex != null ? specs[activeSpecIndex] : null) ?? specs[0] ?? { nodes: [] };
   return { nodes: active.nodes, specs, activeSpec: active };
+}
+
+function parseNodeList(value) {
+  if (value == null || value === '') return [];
+  const values = Array.isArray(value) ? value : String(value).split(/[,\s;|]+/);
+  return values
+    .map((n) => parseInt(String(n).trim(), 10))
+    .filter((n) => Number.isInteger(n));
+}
+
+function collectSpecNodeFields(value, path = '') {
+  if (value == null) return [];
+
+  if (Array.isArray(value)) {
+    return value.flatMap((entry) => collectSpecNodeFields(entry, path));
+  }
+
+  if (typeof value !== 'object') {
+    return /node/i.test(path) ? parseNodeList(value) : [];
+  }
+
+  const out = [];
+  for (const [key, child] of Object.entries(value)) {
+    const cleanKey = key.replace(/^@_/, '');
+    const childPath = path ? `${path}.${cleanKey}` : cleanKey;
+    if (cleanKey === 'nodes') continue;
+
+    if (/node/i.test(childPath)) {
+      out.push(...parseNodeList(child));
+      if (child && typeof child === 'object') {
+        out.push(...parseNodeList(child['@_id']));
+        out.push(...parseNodeList(child['@_nodeId']));
+        out.push(...parseNodeList(child['@_hash']));
+      }
+    }
+
+    if (child && typeof child === 'object') {
+      out.push(...collectSpecNodeFields(child, childPath));
+    }
+  }
+
+  return uniqueNums(out);
+}
+
+function uniqueNums(values) {
+  return [...new Set(values.filter((n) => Number.isInteger(n)))];
 }
 
 function parseItems(items, targetId) {

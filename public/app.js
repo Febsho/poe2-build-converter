@@ -234,7 +234,9 @@ async function doConvert() {
 
 // ── Results rendering ──────────────────────────────────────────────────────
 function renderResults(data) {
-  const { build: b, report: r, source, passiveNames = {} } = data;
+  const { build: b, report: r, source, passiveNames = {}, passiveAscendancies = {}, ascendancyNames = {} } = data;
+  normalizeBuildGemLevels(b);
+  const splitPassives = splitAscendancyPassives(b.passives ?? [], passiveAscendancies);
 
   // Stat cards
   $('stat-converted').textContent   = r.converted.length;
@@ -242,11 +244,12 @@ function renderResults(data) {
   $('stat-unsupported').textContent = r.unsupported.length;
   $('stat-source').textContent      = source?.kind ?? '—';
 
-  renderOverviewTab(b, r, source, data.preview?.meta);
-  renderPreviewTab(b, r, source, data.preview?.meta, passiveNames);
-  renderSkillsTab(b.skills ?? [], data.preview?.skills ?? []);
-  renderPassivesTab(b.passives ?? [], r, passiveNames);
-  renderItemsTab(b.items ?? []);
+  renderOverviewTab(b, r, source, data.preview?.meta, ascendancyNames);
+  renderPreviewTab(b, r, source, data.preview?.meta, passiveNames, passiveAscendancies, ascendancyNames);
+  renderEditableSkills(b.skills ?? []);
+  renderEditablePassives(splitPassives.regular, r, passiveNames);
+  renderEditablePassives(splitPassives.ascendancy, r, passiveNames, 'tab-ascendancy', { title: 'Ascendancy Points', hideBuildOptions: true });
+  renderEditableItems(b.items ?? []);
   renderProblemsTab(r);
 
   // JSON tab — editable textarea
@@ -262,9 +265,7 @@ function renderResults(data) {
   $('download').disabled = false;
   $('results').classList.remove('hidden');
   switchTab('overview');
-
-  // Quality warnings (shown above results section)
-  showQualityWarnings(b, r);
+  $('quality-banner')?.classList.add('hidden');
 }
 
 // ── Quality warnings ───────────────────────────────────────────────────────
@@ -290,10 +291,10 @@ function showQualityWarnings(build, report) {
 }
 
 // ── Overview ───────────────────────────────────────────────────────────────
-function renderOverviewTab(build, report, source, meta = {}) {
+function renderOverviewTab(build, report, source, meta = {}, ascendancyNames = {}) {
   const ascLine    = report.converted.find((l) => l.startsWith('ascendancy'));
   const ascMatch   = ascLine?.match(/^ascendancy "([^"]+)"/);
-  const ascDisplay = ascMatch?.[1] || build.ascendancy || '';
+  const ascDisplay = ascendancyDisplayName(ascMatch?.[1] || build.ascendancy || '', ascendancyNames);
   const className  = meta?.className ?? '';
 
   const sourceTagClass = SOURCE_TAG_CLASS[source?.kind] || '';
@@ -348,53 +349,95 @@ function renderEditableSkills(skills, targetId = 'tab-skills') {
 
   const html = skills.map((skill, skillIndex) => {
     const normalizedSkill = normalizeBuildSkill(skill);
-    const supportsHtml = normalizedSkill.support_skills.map((support, supportIndex) => `
+    const skillMeta = parseGemAdditionalText(normalizedSkill.additional_text);
+    const supportsHtml = normalizedSkill.support_skills.map((support, supportIndex) => {
+      const supportMeta = parseGemAdditionalText(support.additional_text);
+      const supportName = gemName(support.id || `Support ${supportIndex + 1}`);
+      return `
       <div class="edit-subcard">
         <div class="edit-card-head">
-          <div class="edit-card-title">Support ${supportIndex + 1}</div>
+          <div>
+            <div class="edit-card-title">${esc(supportName)}</div>
+            <div class="edit-card-subtitle">Support ${supportIndex + 1}</div>
+          </div>
           <button class="ghost sm" type="button" onclick="removeSkillSupport(${skillIndex}, ${supportIndex})">Remove</button>
         </div>
         <div class="edit-grid">
           <label class="edit-field edit-field-wide">
-            <span class="edit-label">Id</span>
-            <input type="text" value="${escAttr(support.id ?? '')}" onchange="updateSkillSupportField(${skillIndex}, ${supportIndex}, 'id', this.value)" />
+            <span class="edit-label">Gem</span>
+            <input class="readonly-input" type="text" value="${escAttr(supportName)}" readonly />
           </label>
           <label class="edit-field">
-            <span class="edit-label">Level Range</span>
+            <span class="edit-label">Build Level Range</span>
             <input type="text" value="${escAttr(formatLevelInterval(support.level_interval))}" onchange="updateSkillSupportField(${skillIndex}, ${supportIndex}, 'level_interval', this.value)" />
           </label>
-          <label class="edit-field edit-field-full">
-            <span class="edit-label">Hover Text</span>
-            <textarea rows="2" onchange="updateSkillSupportField(${skillIndex}, ${supportIndex}, 'additional_text', this.value)">${esc(support.additional_text ?? '')}</textarea>
-          </label>
-        </div>
-      </div>
-    `).join('');
-
-    return `
-      <li class="gem-group edit-card">
-        <div class="edit-card-head">
-          <div class="edit-card-title">${esc(gemName(normalizedSkill.id || 'New Skill'))}</div>
-          <div class="edit-card-actions">
-            <button class="ghost sm" type="button" onclick="addSkillSupport(${skillIndex})">Add Support</button>
-            <button class="ghost sm" type="button" onclick="removeSkill(${skillIndex})">Remove</button>
-          </div>
-        </div>
-        <div class="edit-grid">
-          <label class="edit-field edit-field-wide">
-            <span class="edit-label">Skill Id</span>
-            <input type="text" value="${escAttr(normalizedSkill.id ?? '')}" onchange="updateSkillField(${skillIndex}, 'id', this.value)" />
+          <label class="edit-field">
+            <span class="edit-label">Gem Level</span>
+            <select onchange="updateSkillSupportField(${skillIndex}, ${supportIndex}, 'gem_level', this.value)">${gemLevelOptions(support.id, supportMeta.level, 'support')}</select>
           </label>
           <label class="edit-field">
-            <span class="edit-label">Level Range</span>
-            <input type="text" value="${escAttr(formatLevelInterval(normalizedSkill.level_interval))}" onchange="updateSkillField(${skillIndex}, 'level_interval', this.value)" />
+            <span class="edit-label">Quality %</span>
+            <input type="number" min="0" max="100" step="1" value="${escAttr(supportMeta.quality)}" onchange="updateSkillSupportField(${skillIndex}, ${supportIndex}, 'gem_quality', this.value)" />
           </label>
           <label class="edit-field edit-field-full">
-            <span class="edit-label">Hover Text</span>
-            <textarea rows="2" onchange="updateSkillField(${skillIndex}, 'additional_text', this.value)">${esc(normalizedSkill.additional_text ?? '')}</textarea>
+            <span class="edit-label">Notes</span>
+            <textarea rows="2" onchange="updateSkillSupportField(${skillIndex}, ${supportIndex}, 'gem_notes', this.value)">${esc(supportMeta.notes)}</textarea>
           </label>
+          <details class="advanced-id edit-field edit-field-full">
+            <summary>Advanced id</summary>
+            <input type="text" value="${escAttr(support.id ?? '')}" onchange="updateSkillSupportField(${skillIndex}, ${supportIndex}, 'id', this.value)" />
+          </details>
         </div>
-        <div class="edit-subcards">${supportsHtml || '<div class="empty-msg tight">No supports yet.</div>'}</div>
+      </div>
+    `;
+    }).join('');
+
+    return `
+      <li class="gem-group">
+        <details class="edit-card skill-details" open>
+          <summary class="edit-card-head skill-summary">
+            <div>
+              <div class="edit-card-title">${esc(gemName(normalizedSkill.id || 'New Skill'))}</div>
+              <div class="edit-card-subtitle">${normalizedSkill.support_skills.length} supports</div>
+            </div>
+            <div class="edit-card-actions" onclick="event.stopPropagation()">
+              <button class="ghost sm" type="button" onclick="event.preventDefault(); event.stopPropagation(); addSkillSupport(${skillIndex})">Add Support</button>
+              <button class="ghost sm" type="button" onclick="event.preventDefault(); event.stopPropagation(); removeSkill(${skillIndex})">Remove</button>
+            </div>
+          </summary>
+          <div class="skill-details-body">
+            <div class="edit-grid">
+              <label class="edit-field edit-field-wide">
+                <span class="edit-label">Gem</span>
+                <input class="readonly-input" type="text" value="${escAttr(gemName(normalizedSkill.id || 'New Skill'))}" readonly />
+              </label>
+              <label class="edit-field">
+                <span class="edit-label">Build Level Range</span>
+                <input type="text" value="${escAttr(formatLevelInterval(normalizedSkill.level_interval))}" onchange="updateSkillField(${skillIndex}, 'level_interval', this.value)" />
+              </label>
+              <label class="edit-field">
+                <span class="edit-label">Gem Level</span>
+                <select onchange="updateSkillField(${skillIndex}, 'gem_level', this.value)">${gemLevelOptions(normalizedSkill.id, skillMeta.level, 'skill')}</select>
+              </label>
+              <label class="edit-field">
+                <span class="edit-label">Quality %</span>
+                <input type="number" min="0" max="100" step="1" value="${escAttr(skillMeta.quality)}" onchange="updateSkillField(${skillIndex}, 'gem_quality', this.value)" />
+              </label>
+              <label class="edit-field edit-field-full">
+                <span class="edit-label">Notes</span>
+                <textarea rows="2" onchange="updateSkillField(${skillIndex}, 'gem_notes', this.value)">${esc(skillMeta.notes)}</textarea>
+              </label>
+              <details class="advanced-id edit-field edit-field-full">
+                <summary>Advanced id</summary>
+                <input type="text" value="${escAttr(normalizedSkill.id ?? '')}" onchange="updateSkillField(${skillIndex}, 'id', this.value)" />
+              </details>
+            </div>
+            <details class="support-details">
+              <summary class="support-summary">Supports (${normalizedSkill.support_skills.length})</summary>
+              <div class="edit-subcards">${supportsHtml || '<div class="empty-msg tight">No supports yet.</div>'}</div>
+            </details>
+          </div>
+        </details>
       </li>`;
   }).join('');
 
@@ -403,12 +446,14 @@ function renderEditableSkills(skills, targetId = 'tab-skills') {
 }
 
 // ── Passives ───────────────────────────────────────────────────────────────
-function renderEditablePassives(passives, report, passiveNames = {}, targetId = 'tab-passives') {
-  const total        = passives.length;
-  const withInterval = passives.filter((p) => typeof p === 'object' && p.level_interval).length;
-  const mainPassives = passives.filter((p) => !isWeaponSetPassive(p));
-  const weaponSet1   = passives.filter((p) => getWeaponSet(p) === 1);
-  const weaponSet2   = passives.filter((p) => getWeaponSet(p) === 2);
+function renderEditablePassives(passives, report, passiveNames = {}, targetId = 'tab-passives', options = {}) {
+  const entries      = passives.map((entry, fallbackIndex) => normalizePassiveEntry(entry, fallbackIndex));
+  const values       = entries.map((entry) => entry.passive);
+  const total        = values.length;
+  const showBuildOptions = !options.hideBuildOptions;
+  const withInterval = showBuildOptions ? values.filter((p) => typeof p === 'object' && p.level_interval).length : 0;
+  const weaponSet1   = showBuildOptions ? values.filter((p) => getWeaponSet(p) === 1) : [];
+  const weaponSet2   = showBuildOptions ? values.filter((p) => getWeaponSet(p) === 2) : [];
 
   const line       = report.guessed.find((l) => /passive node/i.test(l));
   const unresolved = line ? (parseInt(line.match(/(\d+)/)?.[1] ?? '0', 10)) : 0;
@@ -418,6 +463,7 @@ function renderEditablePassives(passives, report, passiveNames = {}, targetId = 
 
   $(targetId).innerHTML = `
     <div class="tab-section-header">${copyBtn}${addBtn}</div>
+    ${options.title ? `<h3 class="tab-subtitle">${esc(options.title)}</h3>` : ''}
     <div class="passives-summary">
       <div class="pass-block">
         <span class="pass-num green">${total}</span>
@@ -439,15 +485,23 @@ function renderEditablePassives(passives, report, passiveNames = {}, targetId = 
           <span class="pass-label">Weapon Set Nodes</span>
         </div>` : ''}
     </div>
-    ${passives.length ? `<div class="passives-sections editable-passives">
-      ${passives.map((passive, index) => renderEditablePassive(passive, index, passiveNames)).join('')}
+    ${entries.length ? `<div class="passives-sections editable-passives">
+      ${entries.map((entry) => renderEditablePassive(entry.passive, entry.index, passiveNames, options)).join('')}
     </div>` : ''}
   `;
 }
 
-function renderEditablePassive(passive, index, passiveNames = {}) {
+function normalizePassiveEntry(entry, fallbackIndex) {
+  if (entry && typeof entry === 'object' && Object.hasOwn(entry, 'passive') && Object.hasOwn(entry, 'index')) {
+    return entry;
+  }
+  return { passive: entry, index: fallbackIndex };
+}
+
+function renderEditablePassive(passive, index, passiveNames = {}, options = {}) {
   const normalized = normalizePassive(passive);
   const displayName = passiveNames[normalized.id] || formatPassiveId(normalized.id);
+  const showBuildOptions = !options.hideBuildOptions;
   return `
     <div class="passive-section edit-card">
       <div class="edit-card-head">
@@ -459,21 +513,28 @@ function renderEditablePassive(passive, index, passiveNames = {}) {
           <span class="edit-label">Passive Id</span>
           <input type="text" value="${escAttr(normalized.id ?? '')}" onchange="updatePassiveField(${index}, 'id', this.value)" />
         </label>
-        <label class="edit-field">
-          <span class="edit-label">Level Range</span>
-          <input type="text" value="${escAttr(formatLevelInterval(normalized.levelInterval))}" onchange="updatePassiveField(${index}, 'level_interval', this.value)" />
-        </label>
-        <label class="edit-field">
-          <span class="edit-label">Weapon Set</span>
-          <input type="text" value="${escAttr(normalized.weaponSet ?? '')}" onchange="updatePassiveField(${index}, 'weapon_set', this.value)" />
-        </label>
+        ${showBuildOptions ? renderLevelIntervalControls(normalized.levelInterval, 'updatePassiveLevelIntervalPart', index) : ''}
+        ${showBuildOptions ? `
+          <label class="edit-field">
+            <span class="edit-label">Weapon Set</span>
+            <select onchange="updatePassiveField(${index}, 'weapon_set', this.value)">
+              ${weaponSetOptions(normalized.weaponSet)}
+            </select>
+          </label>` : ''}
         <label class="edit-field edit-field-full">
           <span class="edit-label">Hover Text</span>
           <textarea rows="2" onchange="updatePassiveField(${index}, 'additional_text', this.value)">${esc(normalized.additional_text ?? '')}</textarea>
         </label>
       </div>
-      ${normalized.levelInterval ? renderPassiveBar(normalized.levelInterval) : ''}
+      ${showBuildOptions && normalized.levelInterval ? renderPassiveBar(normalized.levelInterval) : ''}
     </div>`;
+}
+
+function weaponSetOptions(selectedValue) {
+  const selected = selectedValue === 1 || selectedValue === 2 ? String(selectedValue) : '';
+  return ['', '1', '2']
+    .map((value) => `<option value="${value}"${value === selected ? ' selected' : ''}>${value || 'None'}</option>`)
+    .join('');
 }
 
 function renderPassiveBar(levelInterval) {
@@ -510,10 +571,7 @@ function renderEditableItems(items, targetId = 'tab-items') {
           <span class="edit-label">Slot</span>
           <input type="text" value="${escAttr(item.inventory_id ?? '')}" onchange="updateItemField(${index}, 'inventory_id', this.value)" />
         </label>
-        <label class="edit-field">
-          <span class="edit-label">Level Range</span>
-          <input type="text" value="${escAttr(formatLevelInterval(item.level_interval))}" onchange="updateItemField(${index}, 'level_interval', this.value)" />
-        </label>
+        ${renderLevelIntervalControls(item.level_interval, 'updateItemLevelIntervalPart', index)}
         <label class="edit-field edit-field-wide">
           <span class="edit-label">Unique Name</span>
           <input type="text" value="${escAttr(item.unique_name ?? '')}" onchange="updateItemField(${index}, 'unique_name', this.value)" />
@@ -532,7 +590,8 @@ function renderEditableItems(items, targetId = 'tab-items') {
 }
 
 // ── Problems ───────────────────────────────────────────────────────────────
-function renderPreviewTab(build, report, source, meta = {}, passiveNames = {}) {
+function renderPreviewTab(build, report, source, meta = {}, passiveNames = {}, passiveAscendancies = {}, ascendancyNames = {}) {
+  const splitPassives = splitAscendancyPassives(build.passives ?? [], passiveAscendancies);
   $('tab-preview').innerHTML = `
     <div class="edit-grid edit-grid-overview">
       <label class="edit-field">
@@ -541,7 +600,7 @@ function renderPreviewTab(build, report, source, meta = {}, passiveNames = {}) {
       </label>
       <label class="edit-field">
         <span class="edit-label">Ascendancy</span>
-        <input type="text" value="${escAttr(build.ascendancy ?? '')}" onchange="updateBuildRootField('ascendancy', this.value)" />
+        ${renderAscendancySelect(build.ascendancy ?? '', ascendancyNames)}
       </label>
       <label class="edit-field edit-field-full">
         <span class="edit-label">Description</span>
@@ -557,14 +616,63 @@ function renderPreviewTab(build, report, source, meta = {}, passiveNames = {}) {
       <div id="preview-passives-edit"></div>
     </div>
     <div class="preview-edit-section">
+      <h3>Ascendancy</h3>
+      <div id="preview-ascendancy-edit"></div>
+    </div>
+    <div class="preview-edit-section">
       <h3>Items</h3>
       <div id="preview-items-edit"></div>
     </div>
   `;
 
   renderEditableSkills(build.skills ?? [], 'preview-skills-edit');
-  renderEditablePassives(build.passives ?? [], report, passiveNames, 'preview-passives-edit');
+  renderEditablePassives(splitPassives.regular, report, passiveNames, 'preview-passives-edit');
+  renderEditablePassives(splitPassives.ascendancy, report, passiveNames, 'preview-ascendancy-edit', { title: 'Ascendancy Points', hideBuildOptions: true });
   renderEditableItems(build.items ?? [], 'preview-items-edit');
+}
+
+function renderAscendancySelect(current, ascendancyNames = {}) {
+  const selected = String(current ?? '');
+  const entries = Object.entries(ascendancyNames);
+  if (!entries.length) {
+    return `<input type="text" value="${escAttr(selected)}" onchange="updateBuildRootField('ascendancy', this.value)" />`;
+  }
+
+  const hasSelected = !selected || entries.some(([id]) => id === selected);
+  const customOption = hasSelected ? '' : `<option value="${escAttr(selected)}" selected>${esc(selected)}</option>`;
+  const options = entries
+    .map(([id, name]) => `<option value="${escAttr(id)}"${id === selected ? ' selected' : ''}>${esc(name)}</option>`)
+    .join('');
+
+  return `<select onchange="updateBuildRootField('ascendancy', this.value)">
+    <option value="">None</option>
+    ${customOption}
+    ${options}
+  </select>`;
+}
+
+function ascendancyDisplayName(value, ascendancyNames = {}) {
+  return ascendancyNames[value] || value;
+}
+
+function splitAscendancyPassives(passives, passiveAscendancies = {}) {
+  const regular = [];
+  const ascendancy = [];
+
+  passives.forEach((passive, index) => {
+    const id = typeof passive === 'string' ? passive : passive?.id;
+    const entry = { passive, index };
+    if (isAscendancyPassiveId(id, passiveAscendancies)) ascendancy.push(entry);
+    else regular.push(entry);
+  });
+
+  return { regular, ascendancy };
+}
+
+function isAscendancyPassiveId(id, passiveAscendancies = {}) {
+  if (!id) return false;
+  const normalized = String(id).trim();
+  return Boolean(passiveAscendancies[normalized] || /^Ascendancy[A-Za-z]+\d/.test(normalized));
 }
 
 function renderSkillsTab(skills) {
@@ -783,12 +891,17 @@ async function clipboardWrite(text, btn) {
 // ── Display helpers ────────────────────────────────────────────────────────
 function rerenderEditablePanels() {
   if (!lastData || !lastBuild) return;
+  normalizeBuildGemLevels(lastBuild);
   const passiveNames = lastData.passiveNames ?? {};
-  renderOverviewTab(lastBuild, lastData.report, lastData.source, lastData.preview?.meta);
-  renderPreviewTab(lastBuild, lastData.report, lastData.source, lastData.preview?.meta, passiveNames);
-  renderSkillsTab(lastBuild.skills ?? [], []);
-  renderPassivesTab(lastBuild.passives ?? [], lastData.report, passiveNames);
-  renderItemsTab(lastBuild.items ?? []);
+  const passiveAscendancies = lastData.passiveAscendancies ?? {};
+  const ascendancyNames = lastData.ascendancyNames ?? {};
+  const splitPassives = splitAscendancyPassives(lastBuild.passives ?? [], passiveAscendancies);
+  renderOverviewTab(lastBuild, lastData.report, lastData.source, lastData.preview?.meta, ascendancyNames);
+  renderPreviewTab(lastBuild, lastData.report, lastData.source, lastData.preview?.meta, passiveNames, passiveAscendancies, ascendancyNames);
+  renderEditableSkills(lastBuild.skills ?? []);
+  renderEditablePassives(splitPassives.regular, lastData.report, passiveNames);
+  renderEditablePassives(splitPassives.ascendancy, lastData.report, passiveNames, 'tab-ascendancy', { title: 'Ascendancy Points', hideBuildOptions: true });
+  renderEditableItems(lastBuild.items ?? []);
   syncJsonEditorFromBuild();
 }
 
@@ -824,6 +937,204 @@ function parseLevelIntervalInput(value) {
   return Number.isFinite(single) ? [single, 100] : [0, 100];
 }
 
+function renderLevelIntervalControls(interval, updateHandlerName, index) {
+  const [start, end] = normalizeLevelIntervalValue(interval);
+  return `
+    <label class="edit-field">
+      <span class="edit-label">Start Level</span>
+      <select onchange="${updateHandlerName}(${index}, 'start', this.value)">
+        ${levelIntervalOptions(start)}
+      </select>
+    </label>
+    <label class="edit-field">
+      <span class="edit-label">End Level</span>
+      <select onchange="${updateHandlerName}(${index}, 'end', this.value)">
+        ${levelIntervalOptions(end)}
+      </select>
+    </label>`;
+}
+
+function levelIntervalOptions(selectedValue) {
+  const selected = clampBuildLevel(selectedValue);
+  const options = [];
+  for (let level = 0; level <= 100; level += 1) {
+    options.push(`<option value="${level}"${level === selected ? ' selected' : ''}>${level}</option>`);
+  }
+  return options.join('');
+}
+
+function updateLevelIntervalPart(interval, part, value) {
+  let [start, end] = normalizeLevelIntervalValue(interval).map(clampBuildLevel);
+  const next = clampBuildLevel(value);
+  if (part === 'start') start = next;
+  else end = next;
+  if (start > end) {
+    if (part === 'start') end = start;
+    else start = end;
+  }
+  return [start, end];
+}
+
+function clampBuildLevel(value) {
+  const level = Number(value);
+  if (!Number.isFinite(level)) return 0;
+  return Math.max(0, Math.min(100, Math.floor(level)));
+}
+
+function parseGemAdditionalText(value) {
+  const raw = String(value ?? '').trim();
+  const parts = raw
+    ? raw.split('|').map((part) => part.trim()).filter(Boolean)
+    : [];
+  let level = '';
+  let quality = '';
+  const notes = [];
+
+  for (const part of parts) {
+    const levelMatch = part.match(/^Level\s+(\d+)$/i);
+    if (levelMatch) {
+      level = levelMatch[1];
+      continue;
+    }
+    const qualityMatch = part.match(/^Quality\s+(\d+)%?$/i);
+    if (qualityMatch) {
+      quality = qualityMatch[1];
+      continue;
+    }
+    const note = part
+      .replace(/\bLevel\s+\d+\b/ig, '')
+      .replace(/\bQuality\s+\d+%?/ig, '')
+      .replace(/\s*\|\s*/g, ' ')
+      .trim();
+    if (note) notes.push(note);
+  }
+
+  if (!level) {
+    const match = raw.match(/\bLevel\s+(\d+)\b/i);
+    if (match) level = match[1];
+  }
+  if (!quality) {
+    const match = raw.match(/\bQuality\s+(\d+)%?/i);
+    if (match) quality = match[1];
+  }
+
+  return { level, quality, notes: notes.join(' | ') };
+}
+
+function buildGemAdditionalText(meta) {
+  const parts = [];
+  const level = String(meta?.level ?? '').trim();
+  const quality = String(meta?.quality ?? '').trim();
+  const notes = String(meta?.notes ?? '').trim();
+  if (level) parts.push(`Level ${level}`);
+  if (quality) parts.push(`Quality ${quality}%`);
+  if (notes) parts.push(notes);
+  return parts.join(' | ');
+}
+
+function updateGemAdditionalField(gem, field, value, role = 'skill') {
+  const meta = parseGemAdditionalText(gem.additional_text);
+  if (field === 'gem_level') meta.level = normalizeGemLevelSelection(gem.id, value, role);
+  if (field === 'gem_quality') meta.quality = String(value ?? '').trim();
+  if (field === 'gem_notes') meta.notes = String(value ?? '').trim();
+  const text = buildGemAdditionalText(meta);
+  if (text) gem.additional_text = text;
+  else delete gem.additional_text;
+}
+
+function normalizeGemLevelSelection(gemId, value, role = 'skill') {
+  const raw = String(value ?? '').trim();
+  if (!raw) return '';
+  const level = Number(raw);
+  if (!Number.isFinite(level) || level <= 0) return '';
+  const max = gemMaxLevel(gemId, role);
+  return String(Math.min(Math.floor(level), max));
+}
+
+function displayGemLevelSelection(gemId, value, role = 'skill') {
+  const normalized = normalizeGemLevelSelection(gemId, value, role);
+  if (normalized) return normalized;
+  return isSupportGemId(gemId) ? '1' : '';
+}
+
+function gemLevelOptions(gemId, selectedValue, role = 'skill') {
+  const selected = displayGemLevelSelection(gemId, selectedValue, role);
+  const max = gemMaxLevel(gemId, role);
+  const options = ['<option value=""></option>'];
+  for (let level = 1; level <= max; level += 1) {
+    const value = String(level);
+    options.push(`<option value="${value}"${value === selected ? ' selected' : ''}>${value}</option>`);
+  }
+  return options.join('');
+}
+
+function gemMaxLevel(gemId, role = 'skill') {
+  const id = String(gemId ?? '');
+  if (isSupportGemId(id)) return inferSupportGemMaxLevel(id);
+  if (isSkillGemId(id)) return 20;
+  return role === 'support' ? 5 : 20;
+}
+
+function isSkillGemId(id) {
+  return /(?:^|\/)SkillGem/i.test(String(id ?? ''));
+}
+
+function isSupportGemId(id) {
+  return /(?:^|\/)SupportGem/i.test(String(id ?? ''));
+}
+
+function inferSupportGemMaxLevel(gemId) {
+  const name = gemName(gemId);
+  const idPart = String(gemId ?? '').split('/').pop() ?? '';
+  const suffixCandidates = [name, idPart];
+  for (const candidate of suffixCandidates) {
+    const numeric = String(candidate).match(/\b([1-5])\s*$/);
+    if (numeric) return Number(numeric[1]);
+    const roman = String(candidate).match(/\b(I|II|III|IV|V)\s*$/i);
+    if (roman) return ROMAN_SUPPORT_LEVELS[roman[1].toUpperCase()] ?? 5;
+  }
+
+  const wordSuffix = idPart.match(/(One|Two|Three|Four|Five)$/);
+  if (wordSuffix) return WORD_SUPPORT_LEVELS[wordSuffix[1]] ?? 5;
+  return 5;
+}
+
+const ROMAN_SUPPORT_LEVELS = {
+  I: 1,
+  II: 2,
+  III: 3,
+  IV: 4,
+  V: 5,
+};
+
+const WORD_SUPPORT_LEVELS = {
+  One: 1,
+  Two: 2,
+  Three: 3,
+  Four: 4,
+  Five: 5,
+};
+
+function normalizeBuildGemLevels(build) {
+  if (!build?.skills) return;
+  for (const skill of build.skills) {
+    if (!skill || typeof skill !== 'object') continue;
+    normalizeGemAdditionalLevel(skill, 'skill');
+    for (const support of skill.support_skills ?? []) {
+      if (support && typeof support === 'object') normalizeGemAdditionalLevel(support, 'support');
+    }
+  }
+}
+
+function normalizeGemAdditionalLevel(gem, role = 'skill') {
+  const meta = parseGemAdditionalText(gem.additional_text);
+  const level = displayGemLevelSelection(gem.id, meta.level, role);
+  if (level === meta.level) return;
+  const text = buildGemAdditionalText({ ...meta, level });
+  if (text) gem.additional_text = text;
+  else delete gem.additional_text;
+}
+
 function normalizeBuildSkill(skill) {
   return {
     id: skill?.id ?? '',
@@ -850,6 +1161,9 @@ function updateSkillField(index, field, value) {
   if (!lastBuild?.skills?.[index]) return;
   const skill = normalizeBuildSkill(lastBuild.skills[index]);
   if (field === 'level_interval') skill.level_interval = parseLevelIntervalInput(value);
+  else if (field === 'gem_level' || field === 'gem_quality' || field === 'gem_notes') {
+    updateGemAdditionalField(skill, field, value, 'skill');
+  }
   else if (field === 'additional_text') {
     if (value.trim()) skill.additional_text = value;
     else delete skill.additional_text;
@@ -866,6 +1180,9 @@ function updateSkillSupportField(skillIndex, supportIndex, field, value) {
   const support = skill.support_skills[supportIndex];
   if (!support) return;
   if (field === 'level_interval') support.level_interval = parseLevelIntervalInput(value);
+  else if (field === 'gem_level' || field === 'gem_quality' || field === 'gem_notes') {
+    updateGemAdditionalField(support, field, value, 'support');
+  }
   else if (field === 'additional_text') {
     if (value.trim()) support.additional_text = value;
     else delete support.additional_text;
@@ -914,7 +1231,7 @@ function updatePassiveField(index, field, value) {
   if (field === 'level_interval') passive.level_interval = parseLevelIntervalInput(value);
   else if (field === 'weapon_set') {
     const num = Number(value);
-    if (Number.isFinite(num) && num > 0) passive.weapon_set = num;
+    if (num === 1 || num === 2) passive.weapon_set = num;
     else delete passive.weapon_set;
   } else if (field === 'additional_text') {
     if (value.trim()) passive.additional_text = value;
@@ -922,6 +1239,16 @@ function updatePassiveField(index, field, value) {
   } else {
     passive[field] = value;
   }
+  lastBuild.passives[index] = passive;
+  rerenderEditablePanels();
+}
+
+function updatePassiveLevelIntervalPart(index, part, value) {
+  if (!lastBuild?.passives?.[index]) return;
+  const passive = typeof lastBuild.passives[index] === 'string'
+    ? { id: lastBuild.passives[index], level_interval: [0, 100] }
+    : { ...lastBuild.passives[index] };
+  passive.level_interval = updateLevelIntervalPart(passive.level_interval, part, value);
   lastBuild.passives[index] = passive;
   rerenderEditablePanels();
 }
@@ -953,6 +1280,14 @@ function updateItemField(index, field, value) {
   rerenderEditablePanels();
 }
 
+function updateItemLevelIntervalPart(index, part, value) {
+  if (!lastBuild?.items?.[index]) return;
+  const item = { ...lastBuild.items[index] };
+  item.level_interval = updateLevelIntervalPart(item.level_interval, part, value);
+  lastBuild.items[index] = item;
+  rerenderEditablePanels();
+}
+
 function addItem() {
   if (!lastBuild) return;
   lastBuild.items = lastBuild.items ?? [];
@@ -974,9 +1309,11 @@ window.removeSkill = removeSkill;
 window.addSkillSupport = addSkillSupport;
 window.removeSkillSupport = removeSkillSupport;
 window.updatePassiveField = updatePassiveField;
+window.updatePassiveLevelIntervalPart = updatePassiveLevelIntervalPart;
 window.addPassive = addPassive;
 window.removePassive = removePassive;
 window.updateItemField = updateItemField;
+window.updateItemLevelIntervalPart = updateItemLevelIntervalPart;
 window.addItem = addItem;
 window.removeItem = removeItem;
 

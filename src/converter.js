@@ -20,6 +20,20 @@ const ASCENDANCY_BY_PASSIVE_ID = Object.fromEntries(
 );
 
 const DEFAULT_LEVEL_INTERVAL = [0, 100];
+const ROMAN_SUPPORT_LEVELS = {
+  I: 1,
+  II: 2,
+  III: 3,
+  IV: 4,
+  V: 5,
+};
+const WORD_SUPPORT_LEVELS = {
+  One: 1,
+  Two: 2,
+  Three: 3,
+  Four: 4,
+  Five: 5,
+};
 const CLASS_BY_ID = {
   1: 'Warrior',
   2: 'Ranger',
@@ -58,11 +72,46 @@ function normalizeLevelInterval(interval) {
 function buildGemLevelText(gem) {
   if (!gem) return '';
   const parts = [];
-  const level   = Number(gem.level);
+  const level   = normalizeGemLevel(gem);
   const quality = Number(gem.quality);
   if (Number.isFinite(level)   && level   > 1) parts.push(`Level ${level}`);
   if (Number.isFinite(quality) && quality > 0) parts.push(`Quality ${quality}%`);
   return parts.join(' | ');
+}
+
+function normalizeGemLevel(gem) {
+  const level = Number(gem?.level);
+  if (!Number.isFinite(level) || level <= 0) return level;
+  return Math.min(Math.floor(level), gemMaxLevel(gem?.gemId, gem?.support));
+}
+
+function gemMaxLevel(gemId, supportFlag = false) {
+  const id = String(gemId ?? '');
+  if (isSupportGemId(id)) return inferSupportGemMaxLevel(id);
+  if (isSkillGemId(id)) return 20;
+  return supportFlag ? 5 : 20;
+}
+
+function isSkillGemId(id) {
+  return /(?:^|\/)SkillGem/i.test(String(id ?? ''));
+}
+
+function isSupportGemId(id) {
+  return /(?:^|\/)SupportGem/i.test(String(id ?? ''));
+}
+
+function inferSupportGemMaxLevel(gemId) {
+  const idPart = String(gemId ?? '').split('/').pop() ?? '';
+  const numeric = idPart.match(/\b([1-5])\s*$/);
+  if (numeric) return Number(numeric[1]);
+
+  const roman = idPart.match(/\b(I|II|III|IV|V)\s*$/i);
+  if (roman) return ROMAN_SUPPORT_LEVELS[roman[1].toUpperCase()] ?? 5;
+
+  const word = idPart.match(/(One|Two|Three|Four|Five)$/);
+  if (word) return WORD_SUPPORT_LEVELS[word[1]] ?? 5;
+
+  return 5;
 }
 
 /**
@@ -138,7 +187,7 @@ function convertAscendancy(build, report) {
     report.converted.push(`ascendancy "${build.ascendancy}" (kept as-is)`);
     return build.ascendancy;
   }
-  const internal = pickInternalAscendancy(build);
+  const internal = pickDirectInternalAscendancy(build);
   if (internal) {
     report.converted.push(`ascendancy "${internal}" (from build tree)`);
     return internal;
@@ -150,6 +199,13 @@ function convertAscendancy(build, report) {
       report.guessed.push(`ascendancy "${fromPassives}" inferred from selected ascendancy passives.`);
       return fromPassives;
     }
+
+    const fromClassId = inferAscendancyFromClassId(build);
+    if (fromClassId) {
+      report.guessed.push(`ascendancy "${fromClassId}" inferred from class and ascendancy number.`);
+      return fromClassId;
+    }
+
     report.warnings.push('No ascendancy found in the build.');
     return undefined;
   }
@@ -185,11 +241,17 @@ function convertAscendancy(build, report) {
     return fromPassives;
   }
 
+  const fromClassId = inferAscendancyFromClassId(build);
+  if (fromClassId) {
+    report.guessed.push(`ascendancy "${fromClassId}" inferred from class and ascendancy number.`);
+    return fromClassId;
+  }
+
   report.guessed.push(`ascendancy "${display}" — could not map to internal key, passing display name through.`);
   return display;
 }
 
-function pickInternalAscendancy(build) {
+function pickDirectInternalAscendancy(build) {
   const meta = build.meta ?? {};
   const specs = [
     build.tree?.activeSpec,
@@ -197,12 +259,23 @@ function pickInternalAscendancy(build) {
   ].filter(Boolean);
 
   const direct = [
+    meta.ascendancy,
+    meta.ascendancyId,
     meta.ascendancyInternalId,
     meta.ascendClassName,
+    build.tree?.ascendancy,
+    build.tree?.ascendancyInternalId,
     ...specs.map((spec) => spec.ascendancyInternalId),
   ].find((candidate) => candidate && ASCENDANCIES[candidate]);
-  if (direct) return direct;
+  return direct;
+}
 
+function inferAscendancyFromClassId(build) {
+  const meta = build.meta ?? {};
+  const specs = [
+    build.tree?.activeSpec,
+    ...(build.tree?.specs ?? []),
+  ].filter(Boolean);
   const classCandidates = [
     meta.className,
     CLASS_BY_ID[meta.classId],
@@ -429,14 +502,15 @@ function convertPassivesWithWeaponSets(build, report) {
 
   const weaponSet1 = appendWeaponSetPassives(out, seenNodeIds, weaponSet1Nodes, 1);
   const weaponSet2 = appendWeaponSetPassives(out, seenNodeIds, weaponSet2Nodes, 2);
+  const ascendancy = appendAscendancyPassives(out, seenNodeIds, build.tree);
   const resolved = localReport.converted
     .map((line) => line.match(/^(\d+) passive nodes resolved from GGG data$/))
     .find(Boolean);
   const guessed = localReport.guessed
     .map((line) => line.match(/^(\d+) passive node\(s\) not found in data/))
     .find(Boolean);
-  const resolvedCount = (resolved ? Number(resolved[1]) : 0) + weaponSet1.resolved + weaponSet2.resolved;
-  const unresolvedCount = (guessed ? Number(guessed[1]) : 0) + weaponSet1.unresolved + weaponSet2.unresolved;
+  const resolvedCount = (resolved ? Number(resolved[1]) : 0) + weaponSet1.resolved + weaponSet2.resolved + ascendancy.resolved;
+  const unresolvedCount = (guessed ? Number(guessed[1]) : 0) + weaponSet1.unresolved + weaponSet2.unresolved + ascendancy.unresolved;
 
   report.warnings.push(...localReport.warnings);
   report.converted.push(...localReport.converted.filter((line) => !/passive nodes resolved from GGG data$/.test(line)));
@@ -470,6 +544,32 @@ function appendWeaponSetPassives(out, seenNodeIds, nodeIds, weaponSet) {
   }
 
   return { resolved, unresolved };
+}
+
+function appendAscendancyPassives(out, seenNodeIds, tree) {
+  const activeAscendancyNodes = tree?.activeSpec?.ascendancyNodes ?? [];
+  const specAscendancyNodes = (tree?.specs ?? []).flatMap((spec) => spec.ascendancyNodes ?? []);
+  const nodeIds = uniqueNums([...activeAscendancyNodes, ...specAscendancyNodes]);
+  let resolved = 0;
+  let unresolved = 0;
+
+  for (const nodeId of nodeIds) {
+    if (seenNodeIds.has(nodeId)) continue;
+    const entry = PASSIVES[String(nodeId)];
+    if (!entry || entry.is_jewel_socket) {
+      unresolved++;
+      continue;
+    }
+    out.push({ id: entry.id, level_interval: [...DEFAULT_LEVEL_INTERVAL] });
+    seenNodeIds.add(nodeId);
+    resolved++;
+  }
+
+  return { resolved, unresolved };
+}
+
+function uniqueNums(values) {
+  return [...new Set(values.filter((n) => Number.isInteger(n)))];
 }
 
 function convertItems(build, report) {
