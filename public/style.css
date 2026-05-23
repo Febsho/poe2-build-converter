@@ -675,6 +675,7 @@ code { background: var(--panel-2); padding: 1px 6px; border-radius: 4px; color: 
 .tab-section-header {
   display: flex;
   justify-content: flex-end;
+  gap: 8px;
   margin-bottom: 12px;
 }
 .section-copy-btn { font-size: 11px !important; padding: 4px 10px !important; }
@@ -688,3 +689,79 @@ code { background: var(--panel-2); padding: 1px 6px; border-radius: 4px; color: 
 
 /* ---------------- Items — empty/muted slot ---------------- */
 .item-name.muted { color: var(--muted); font-style: italic; }
+
+.edit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.edit-grid-overview {
+  margin-bottom: 18px;
+  padding: 14px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.edit-field-wide { grid-column: span 2; }
+.edit-field-full { grid-column: 1 / -1; }
+.edit-label {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--muted);
+}
+.edit-field textarea,
+.edit-field input {
+  width: 100%;
+}
+.edit-card {
+  padding: 14px;
+}
+.edit-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.edit-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.edit-card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.edit-subcards {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.edit-subcard {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+}
+.empty-msg.tight {
+  padding: 8px 0 0;
+  font-size: 12px;
+}
+
+@media (max-width: 900px) {
+  .edit-grid {
+    grid-template-columns: 1fr;
+  }
+  .edit-field-wide,
+  .edit-field-full {
+    grid-column: auto;
+  }
+}

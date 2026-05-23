@@ -47,6 +47,7 @@ const $ = (id) => document.getElementById(id);
 let lastBuild      = null;
 let lastData       = null;
 let lastBuildRaw   = '';
+let lastImportedBuildRaw = '';
 let lastFilename   = 'MyBuild.build';
 let selectedKind   = 'auto';
 let inspectedInput = null;
@@ -123,6 +124,7 @@ $('example-btn')?.addEventListener('click', () => {
 $('json')?.addEventListener('input', onJsonEdit);
 $('json-format')?.addEventListener('click', formatJson);
 $('json-reset')?.addEventListener('click', resetJson);
+$('json-apply')?.addEventListener('click', applyJsonToPreview);
 
 // Quality banner dismiss
 $('quality-banner-close')?.addEventListener('click', () => {
@@ -247,13 +249,8 @@ function renderResults(data) {
   renderProblemsTab(r);
 
   // JSON tab — editable textarea
-  lastBuildRaw = JSON.stringify(b, null, 2);
-  const jsonEl = $('json');
-  if (jsonEl) {
-    jsonEl.value = lastBuildRaw;
-    const statusEl = $('json-status');
-    if (statusEl) statusEl.textContent = '';
-  }
+  lastImportedBuildRaw = JSON.stringify(b, null, 2);
+  syncJsonEditorFromBuild(true);
 
   // Problems badge
   const issues = r.guessed.length + r.unsupported.length;
@@ -316,6 +313,20 @@ function renderOverviewTab(build, report, source, meta = {}) {
   const issues  = report.guessed.length + report.unsupported.length;
 
   $('tab-overview').innerHTML = `
+    <div class="edit-grid edit-grid-overview">
+      <label class="edit-field">
+        <span class="edit-label">Build Name</span>
+        <input type="text" value="${escAttr(build.name ?? '')}" onchange="updateBuildRootField('name', this.value)" />
+      </label>
+      <label class="edit-field">
+        <span class="edit-label">Ascendancy</span>
+        <input type="text" value="${escAttr(build.ascendancy ?? '')}" onchange="updateBuildRootField('ascendancy', this.value)" />
+      </label>
+      <label class="edit-field edit-field-full">
+        <span class="edit-label">Description</span>
+        <textarea rows="3" onchange="updateBuildRootField('description', this.value)">${esc(build.description ?? '')}</textarea>
+      </label>
+    </div>
     <div class="ov-header">
       <div class="ov-title-row">
         ${avatar}
@@ -340,92 +351,68 @@ function renderOverviewTab(build, report, source, meta = {}) {
 // ── Skills ─────────────────────────────────────────────────────────────────
 function renderSkillsTab(skills, previewSkills = []) {
   const copyBtn = `<button class="section-copy-btn ghost sm" onclick="copySection('skills')">Copy JSON</button>`;
-
-  if (previewSkills.length) {
-    const html = previewSkills.map((group) => {
-      const active      = group.actives?.[0];
-      const primaryName = displayGemName(active) || 'Unknown Skill';
-      const extraActives = (group.actives ?? []).slice(1);
-
-      const supportRows = (group.supports ?? []).map((gem) =>
-        `<li>
-          <span class="gem-ico">◈</span>
-          <span class="gem-name">${esc(displayGemName(gem))}</span>
-          ${renderGemLevelTag(gem)}
-        </li>`
-      ).join('');
-
-      const extraActiveRows = extraActives.map((gem) =>
-        `<li>
-          <span class="gem-ico">◆</span>
-          <span class="gem-name">${esc(displayGemName(gem))}</span>
-          ${renderGemLevelTag(gem)}
-        </li>`
-      ).join('');
-
-      const intervalTag = renderIntervalTag(group.level_interval);
-
-      return `
-        <li class="gem-group">
-          <div class="gem-active">
-            <span class="gem-ico">◆</span>
-            <span class="gem-name">${esc(primaryName)}</span>
-            ${renderGemLevelTag(active)}
-            ${intervalTag}
-          </div>
-          ${(group.slot || extraActiveRows || supportRows) ? `
-            <div class="gem-meta-row">
-              ${group.slot ? `<span class="tag">${esc(group.slot)}</span>` : ''}
-            </div>` : ''}
-          ${(extraActiveRows || supportRows)
-            ? `<ul class="gem-supports">${extraActiveRows}${supportRows}</ul>`
-            : ''}
-        </li>`;
-    }).join('');
-
-    $('tab-skills').innerHTML =
-      `<div class="tab-section-header">${copyBtn}</div><ul class="gem-list">${html}</ul>`;
-    return;
-  }
+  const addBtn = `<button class="section-copy-btn ghost sm" onclick="addSkill()">Add Skill</button>`;
 
   if (!skills.length) {
     $('tab-skills').innerHTML =
-      `<div class="tab-section-header">${copyBtn}</div><p class="empty-msg">No skills found in this build.</p>`;
+      `<div class="tab-section-header">${copyBtn}${addBtn}</div><p class="empty-msg">No skills found in this build.</p>`;
     return;
   }
 
-  const html = skills.map((s) => {
-    const id            = typeof s === 'string' ? s : s.id;
-    const supports      = typeof s === 'object' ? (s.support_skills ?? []) : [];
-    const interval      = typeof s === 'object' ? s.level_interval : null;
-    const additionalTxt = typeof s === 'object' ? s.additional_text : null;
-
-    const supRows = supports.map((sid) => {
-      const supportId  = typeof sid === 'string' ? sid : (sid?.id ?? '');
-      const supportTxt = typeof sid === 'object' ? (sid.additional_text ?? '') : '';
-      return `<li>
-        <span class="gem-ico">◈</span>
-        <span class="gem-name">${esc(gemName(supportId))}</span>
-        ${supportTxt ? `<span class="tag">${esc(supportTxt.slice(0, 30))}</span>` : ''}
-      </li>`;
-    }).join('');
+  const html = skills.map((skill, skillIndex) => {
+    const normalizedSkill = normalizeBuildSkill(skill);
+    const supportsHtml = normalizedSkill.support_skills.map((support, supportIndex) => `
+      <div class="edit-subcard">
+        <div class="edit-card-head">
+          <div class="edit-card-title">Support ${supportIndex + 1}</div>
+          <button class="ghost sm" type="button" onclick="removeSkillSupport(${skillIndex}, ${supportIndex})">Remove</button>
+        </div>
+        <div class="edit-grid">
+          <label class="edit-field edit-field-wide">
+            <span class="edit-label">Id</span>
+            <input type="text" value="${escAttr(support.id ?? '')}" onchange="updateSkillSupportField(${skillIndex}, ${supportIndex}, 'id', this.value)" />
+          </label>
+          <label class="edit-field">
+            <span class="edit-label">Level Range</span>
+            <input type="text" value="${escAttr(formatLevelInterval(support.level_interval))}" onchange="updateSkillSupportField(${skillIndex}, ${supportIndex}, 'level_interval', this.value)" />
+          </label>
+          <label class="edit-field edit-field-full">
+            <span class="edit-label">Hover Text</span>
+            <textarea rows="2" onchange="updateSkillSupportField(${skillIndex}, ${supportIndex}, 'additional_text', this.value)">${esc(support.additional_text ?? '')}</textarea>
+          </label>
+        </div>
+      </div>
+    `).join('');
 
     return `
-      <li class="gem-group">
-        <div class="gem-active">
-          <span class="gem-ico">◆</span>
-          <span class="gem-name">${esc(gemName(id))}</span>
-          ${renderIntervalTag(interval)}
+      <li class="gem-group edit-card">
+        <div class="edit-card-head">
+          <div class="edit-card-title">${esc(gemName(normalizedSkill.id || 'New Skill'))}</div>
+          <div class="edit-card-actions">
+            <button class="ghost sm" type="button" onclick="addSkillSupport(${skillIndex})">Add Support</button>
+            <button class="ghost sm" type="button" onclick="removeSkill(${skillIndex})">Remove</button>
+          </div>
         </div>
-        ${additionalTxt
-          ? `<div class="gem-meta-row"><span class="gem-additional">${esc(additionalTxt)}</span></div>`
-          : ''}
-        ${supRows ? `<ul class="gem-supports">${supRows}</ul>` : ''}
+        <div class="edit-grid">
+          <label class="edit-field edit-field-wide">
+            <span class="edit-label">Skill Id</span>
+            <input type="text" value="${escAttr(normalizedSkill.id ?? '')}" onchange="updateSkillField(${skillIndex}, 'id', this.value)" />
+          </label>
+          <label class="edit-field">
+            <span class="edit-label">Level Range</span>
+            <input type="text" value="${escAttr(formatLevelInterval(normalizedSkill.level_interval))}" onchange="updateSkillField(${skillIndex}, 'level_interval', this.value)" />
+          </label>
+          <label class="edit-field edit-field-full">
+            <span class="edit-label">Hover Text</span>
+            <textarea rows="2" onchange="updateSkillField(${skillIndex}, 'additional_text', this.value)">${esc(normalizedSkill.additional_text ?? '')}</textarea>
+          </label>
+        </div>
+        <div class="edit-subcards">${supportsHtml || '<div class="empty-msg tight">No supports yet.</div>'}</div>
       </li>`;
   }).join('');
 
   $('tab-skills').innerHTML =
-    `<div class="tab-section-header">${copyBtn}</div><ul class="gem-list">${html}</ul>`;
+    `<div class="tab-section-header">${copyBtn}${addBtn}</div><ul class="gem-list">${html}</ul>`;
 }
 
 // ── Passives ───────────────────────────────────────────────────────────────
@@ -439,16 +426,11 @@ function renderPassivesTab(passives, report, passiveNames = {}) {
   const line       = report.guessed.find((l) => /passive node/i.test(l));
   const unresolved = line ? (parseInt(line.match(/(\d+)/)?.[1] ?? '0', 10)) : 0;
 
-  const sections = [
-    renderPassiveSection('Main Tree',    mainPassives, passiveNames),
-    renderPassiveSection('Weapon Set 1', weaponSet1,   passiveNames),
-    renderPassiveSection('Weapon Set 2', weaponSet2,   passiveNames),
-  ].filter(Boolean).join('');
-
   const copyBtn = `<button class="section-copy-btn ghost sm" onclick="copySection('passives')">Copy JSON</button>`;
+  const addBtn  = `<button class="section-copy-btn ghost sm" onclick="addPassive()">Add Passive</button>`;
 
   $('tab-passives').innerHTML = `
-    <div class="tab-section-header">${copyBtn}</div>
+    <div class="tab-section-header">${copyBtn}${addBtn}</div>
     <div class="passives-summary">
       <div class="pass-block">
         <span class="pass-num green">${total}</span>
@@ -470,34 +452,40 @@ function renderPassivesTab(passives, report, passiveNames = {}) {
           <span class="pass-label">Weapon Set Nodes</span>
         </div>` : ''}
     </div>
-    ${sections ? `<div class="passives-sections">${sections}</div>` : ''}
+    ${passives.length ? `<div class="passives-sections editable-passives">
+      ${passives.map((passive, index) => renderEditablePassive(passive, index, passiveNames)).join('')}
+    </div>` : ''}
   `;
 }
 
-function renderPassiveSection(title, passives, passiveNames = {}) {
-  if (!passives.length) return '';
+function renderEditablePassive(passive, index, passiveNames = {}) {
+  const normalized = normalizePassive(passive);
+  const displayName = passiveNames[normalized.id] || formatPassiveId(normalized.id);
   return `
-    <div class="passive-section">
-      <div class="passive-section-head">
-        <h3>${esc(title)}</h3>
-        <span class="tag">${passives.length}</span>
+    <div class="passive-section edit-card">
+      <div class="edit-card-head">
+        <div class="edit-card-title">${esc(displayName || `Passive ${index + 1}`)}</div>
+        <button class="ghost sm" type="button" onclick="removePassive(${index})">Remove</button>
       </div>
-      <ul class="passive-list">
-        ${passives.map((p) => {
-          const passive     = normalizePassive(p);
-          const displayName = passiveNames[passive.id] || formatPassiveId(passive.id);
-          return `
-            <li class="passive-item">
-              <div class="passive-item-main">
-                <span class="passive-id">${esc(displayName)}</span>
-                ${passive.levelInterval
-                  ? `<span class="passive-meta">Lvl ${passive.levelInterval[0]}+</span>`
-                  : ''}
-              </div>
-              ${passive.levelInterval ? renderPassiveBar(passive.levelInterval) : ''}
-            </li>`;
-        }).join('')}
-      </ul>
+      <div class="edit-grid">
+        <label class="edit-field edit-field-wide">
+          <span class="edit-label">Passive Id</span>
+          <input type="text" value="${escAttr(normalized.id ?? '')}" onchange="updatePassiveField(${index}, 'id', this.value)" />
+        </label>
+        <label class="edit-field">
+          <span class="edit-label">Level Range</span>
+          <input type="text" value="${escAttr(formatLevelInterval(normalized.levelInterval))}" onchange="updatePassiveField(${index}, 'level_interval', this.value)" />
+        </label>
+        <label class="edit-field">
+          <span class="edit-label">Weapon Set</span>
+          <input type="text" value="${escAttr(normalized.weaponSet ?? '')}" onchange="updatePassiveField(${index}, 'weapon_set', this.value)" />
+        </label>
+        <label class="edit-field edit-field-full">
+          <span class="edit-label">Hover Text</span>
+          <textarea rows="2" onchange="updatePassiveField(${index}, 'additional_text', this.value)">${esc(normalized.additional_text ?? '')}</textarea>
+        </label>
+      </div>
+      ${normalized.levelInterval ? renderPassiveBar(normalized.levelInterval) : ''}
     </div>`;
 }
 
@@ -515,53 +503,45 @@ function renderPassiveBar(levelInterval) {
 // ── Items ──────────────────────────────────────────────────────────────────
 function renderItemsTab(items) {
   const copyBtn = `<button class="section-copy-btn ghost sm" onclick="copySection('items')">Copy JSON</button>`;
+  const addBtn  = `<button class="section-copy-btn ghost sm" onclick="addItem()">Add Item</button>`;
 
   if (!items.length) {
     $('tab-items').innerHTML =
-      `<div class="tab-section-header">${copyBtn}</div><p class="empty-msg">No items found in this build.</p>`;
+      `<div class="tab-section-header">${copyBtn}${addBtn}</div><p class="empty-msg">No items found in this build.</p>`;
     return;
   }
 
-  const rows = items.map((item) => {
-    const slot = esc(prettySlot(item.inventory_id));
-    let nameCell = '<span class="item-name muted">(empty)</span>';
-    let modsCell = '';
-
-    if (item.unique_name) {
-      nameCell = `<span class="item-name unique">★ ${esc(item.unique_name)}</span>`;
-      if (item.additional_text) {
-        const lines = item.additional_text.split('\n');
-        // First line may be the base type (no prefix like [Implicit]/[Rune])
-        const firstIsBase = lines.length > 0 && !/^\[/.test(lines[0]);
-        const baseTypeLine = firstIsBase
-          ? `<span class="item-base-type">${esc(lines[0])}</span>`
-          : '';
-        const modLines = firstIsBase ? lines.slice(1) : lines;
-        const mods = modLines.length
-          ? `<div class="item-mods">${modLines.map(esc).join('<br>')}</div>`
-          : '';
-        modsCell = baseTypeLine + mods;
-      }
-    } else if (item.additional_text) {
-      const lines = item.additional_text.split('\n');
-      nameCell = `<span class="item-name">${esc(lines[0])}</span>`;
-      if (lines.length > 1) {
-        modsCell = `<div class="item-mods">${lines.slice(1).map(esc).join('<br>')}</div>`;
-      }
-    }
-
-    return `<tr>
-      <td class="item-slot">${slot}</td>
-      <td>${nameCell}${modsCell}</td>
-    </tr>`;
+  const rows = items.map((item, index) => {
+    const slotLabel = prettySlot(item.inventory_id);
+    return `<div class="passive-section edit-card">
+      <div class="edit-card-head">
+        <div class="edit-card-title">${esc(slotLabel || `Item ${index + 1}`)}</div>
+        <button class="ghost sm" type="button" onclick="removeItem(${index})">Remove</button>
+      </div>
+      <div class="edit-grid">
+        <label class="edit-field">
+          <span class="edit-label">Slot</span>
+          <input type="text" value="${escAttr(item.inventory_id ?? '')}" onchange="updateItemField(${index}, 'inventory_id', this.value)" />
+        </label>
+        <label class="edit-field">
+          <span class="edit-label">Level Range</span>
+          <input type="text" value="${escAttr(formatLevelInterval(item.level_interval))}" onchange="updateItemField(${index}, 'level_interval', this.value)" />
+        </label>
+        <label class="edit-field edit-field-wide">
+          <span class="edit-label">Unique Name</span>
+          <input type="text" value="${escAttr(item.unique_name ?? '')}" onchange="updateItemField(${index}, 'unique_name', this.value)" />
+        </label>
+        <label class="edit-field edit-field-full">
+          <span class="edit-label">Hover Text</span>
+          <textarea rows="5" onchange="updateItemField(${index}, 'additional_text', this.value)">${esc(item.additional_text ?? '')}</textarea>
+        </label>
+      </div>
+    </div>`;
   }).join('');
 
   $('tab-items').innerHTML = `
-    <div class="tab-section-header">${copyBtn}</div>
-    <table class="items-table">
-      <thead><tr><th>Slot</th><th>Item</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>`;
+    <div class="tab-section-header">${copyBtn}${addBtn}</div>
+    <div class="passives-sections editable-items">${rows}</div>`;
 }
 
 // ── Problems ───────────────────────────────────────────────────────────────
@@ -639,9 +619,30 @@ function resetJson() {
   const jsonEl   = $('json');
   const statusEl = $('json-status');
   if (!jsonEl) return;
-  jsonEl.value = lastBuildRaw;
-  try { lastBuild = JSON.parse(lastBuildRaw); } catch {}
+  jsonEl.value = lastImportedBuildRaw;
+  try { lastBuild = JSON.parse(lastImportedBuildRaw); } catch {}
   if (statusEl) statusEl.textContent = '';
+  rerenderEditablePanels();
+}
+
+function applyJsonToPreview() {
+  const jsonEl = $('json');
+  if (!jsonEl) return;
+  try {
+    lastBuild = JSON.parse(jsonEl.value);
+    rerenderEditablePanels();
+    const statusEl = $('json-status');
+    if (statusEl) {
+      statusEl.textContent = 'Applied';
+      statusEl.className = 'json-status ok';
+    }
+  } catch {
+    const statusEl = $('json-status');
+    if (statusEl) {
+      statusEl.textContent = 'Fix JSON first';
+      statusEl.className = 'json-status error';
+    }
+  }
 }
 
 // ── Download / copy ────────────────────────────────────────────────────────
@@ -664,11 +665,11 @@ async function copyJson() {
 }
 
 async function copySection(section) {
-  if (!lastData?.build) return;
+  if (!lastBuild) return;
   const payload = {};
-  if (section === 'skills')   payload.skills   = lastData.build.skills   ?? [];
-  if (section === 'passives') payload.passives  = lastData.build.passives ?? [];
-  if (section === 'items')    payload.items     = lastData.build.items    ?? [];
+  if (section === 'skills')   payload.skills   = lastBuild.skills   ?? [];
+  if (section === 'passives') payload.passives = lastBuild.passives ?? [];
+  if (section === 'items')    payload.items    = lastBuild.items    ?? [];
   await clipboardWrite(JSON.stringify(payload, null, 2));
 }
 
@@ -686,6 +687,204 @@ async function clipboardWrite(text, btn) {
 }
 
 // ── Display helpers ────────────────────────────────────────────────────────
+function rerenderEditablePanels() {
+  if (!lastData || !lastBuild) return;
+  const passiveNames = lastData.passiveNames ?? {};
+  renderOverviewTab(lastBuild, lastData.report, lastData.source, lastData.preview?.meta);
+  renderSkillsTab(lastBuild.skills ?? [], []);
+  renderPassivesTab(lastBuild.passives ?? [], lastData.report, passiveNames);
+  renderItemsTab(lastBuild.items ?? []);
+  syncJsonEditorFromBuild();
+}
+
+function syncJsonEditorFromBuild(clearStatus = false) {
+  const jsonEl = $('json');
+  const statusEl = $('json-status');
+  if (!jsonEl || !lastBuild) return;
+  lastBuildRaw = JSON.stringify(lastBuild, null, 2);
+  jsonEl.value = lastBuildRaw;
+  if (statusEl && clearStatus) statusEl.textContent = '';
+}
+
+function formatLevelInterval(interval) {
+  const normalized = normalizeLevelIntervalValue(interval);
+  return `${normalized[0]}-${normalized[1]}`;
+}
+
+function normalizeLevelIntervalValue(interval) {
+  if (Array.isArray(interval) && interval.length === 2) {
+    const start = Number(interval[0]);
+    const end = Number(interval[1]);
+    if (Number.isFinite(start) && Number.isFinite(end)) return [start, end];
+  }
+  return [0, 100];
+}
+
+function parseLevelIntervalInput(value) {
+  const raw = String(value ?? '').trim();
+  if (!raw) return [0, 100];
+  const match = raw.match(/^(\d+)\s*[-,]\s*(\d+)$/);
+  if (match) return [Number(match[1]), Number(match[2])];
+  const single = Number(raw);
+  return Number.isFinite(single) ? [single, 100] : [0, 100];
+}
+
+function normalizeBuildSkill(skill) {
+  return {
+    id: skill?.id ?? '',
+    level_interval: normalizeLevelIntervalValue(skill?.level_interval),
+    additional_text: skill?.additional_text ?? '',
+    support_skills: (skill?.support_skills ?? []).map((support) => typeof support === 'string'
+      ? { id: support, level_interval: [0, 100], additional_text: '' }
+      : {
+          id: support?.id ?? '',
+          level_interval: normalizeLevelIntervalValue(support?.level_interval),
+          additional_text: support?.additional_text ?? '',
+        }),
+  };
+}
+
+function updateBuildRootField(field, value) {
+  if (!lastBuild) return;
+  if (value.trim()) lastBuild[field] = value;
+  else delete lastBuild[field];
+  rerenderEditablePanels();
+}
+
+function updateSkillField(index, field, value) {
+  if (!lastBuild?.skills?.[index]) return;
+  const skill = normalizeBuildSkill(lastBuild.skills[index]);
+  if (field === 'level_interval') skill.level_interval = parseLevelIntervalInput(value);
+  else if (field === 'additional_text') {
+    if (value.trim()) skill.additional_text = value;
+    else delete skill.additional_text;
+  } else {
+    skill[field] = value;
+  }
+  lastBuild.skills[index] = skill;
+  rerenderEditablePanels();
+}
+
+function updateSkillSupportField(skillIndex, supportIndex, field, value) {
+  if (!lastBuild?.skills?.[skillIndex]) return;
+  const skill = normalizeBuildSkill(lastBuild.skills[skillIndex]);
+  const support = skill.support_skills[supportIndex];
+  if (!support) return;
+  if (field === 'level_interval') support.level_interval = parseLevelIntervalInput(value);
+  else if (field === 'additional_text') {
+    if (value.trim()) support.additional_text = value;
+    else delete support.additional_text;
+  } else {
+    support[field] = value;
+  }
+  skill.support_skills[supportIndex] = support;
+  lastBuild.skills[skillIndex] = skill;
+  rerenderEditablePanels();
+}
+
+function addSkill() {
+  if (!lastBuild) return;
+  lastBuild.skills = lastBuild.skills ?? [];
+  lastBuild.skills.push({ id: '', level_interval: [0, 100], support_skills: [] });
+  rerenderEditablePanels();
+}
+
+function removeSkill(index) {
+  if (!lastBuild?.skills) return;
+  lastBuild.skills.splice(index, 1);
+  rerenderEditablePanels();
+}
+
+function addSkillSupport(skillIndex) {
+  if (!lastBuild?.skills?.[skillIndex]) return;
+  const skill = normalizeBuildSkill(lastBuild.skills[skillIndex]);
+  skill.support_skills.push({ id: '', level_interval: [0, 100], additional_text: '' });
+  lastBuild.skills[skillIndex] = skill;
+  rerenderEditablePanels();
+}
+
+function removeSkillSupport(skillIndex, supportIndex) {
+  if (!lastBuild?.skills?.[skillIndex]) return;
+  const skill = normalizeBuildSkill(lastBuild.skills[skillIndex]);
+  skill.support_skills.splice(supportIndex, 1);
+  lastBuild.skills[skillIndex] = skill;
+  rerenderEditablePanels();
+}
+
+function updatePassiveField(index, field, value) {
+  if (!lastBuild?.passives?.[index]) return;
+  const passive = typeof lastBuild.passives[index] === 'string'
+    ? { id: lastBuild.passives[index], level_interval: [0, 100] }
+    : { ...lastBuild.passives[index] };
+  if (field === 'level_interval') passive.level_interval = parseLevelIntervalInput(value);
+  else if (field === 'weapon_set') {
+    const num = Number(value);
+    if (Number.isFinite(num) && num > 0) passive.weapon_set = num;
+    else delete passive.weapon_set;
+  } else if (field === 'additional_text') {
+    if (value.trim()) passive.additional_text = value;
+    else delete passive.additional_text;
+  } else {
+    passive[field] = value;
+  }
+  lastBuild.passives[index] = passive;
+  rerenderEditablePanels();
+}
+
+function addPassive() {
+  if (!lastBuild) return;
+  lastBuild.passives = lastBuild.passives ?? [];
+  lastBuild.passives.push({ id: '', level_interval: [0, 100] });
+  rerenderEditablePanels();
+}
+
+function removePassive(index) {
+  if (!lastBuild?.passives) return;
+  lastBuild.passives.splice(index, 1);
+  rerenderEditablePanels();
+}
+
+function updateItemField(index, field, value) {
+  if (!lastBuild?.items?.[index]) return;
+  const item = { ...lastBuild.items[index] };
+  if (field === 'level_interval') item.level_interval = parseLevelIntervalInput(value);
+  else if (field === 'additional_text' || field === 'unique_name') {
+    if (value.trim()) item[field] = value;
+    else delete item[field];
+  } else {
+    item[field] = value;
+  }
+  lastBuild.items[index] = item;
+  rerenderEditablePanels();
+}
+
+function addItem() {
+  if (!lastBuild) return;
+  lastBuild.items = lastBuild.items ?? [];
+  lastBuild.items.push({ inventory_id: '', slot_x: 0, slot_y: 0, level_interval: [0, 100] });
+  rerenderEditablePanels();
+}
+
+function removeItem(index) {
+  if (!lastBuild?.items) return;
+  lastBuild.items.splice(index, 1);
+  rerenderEditablePanels();
+}
+
+window.updateBuildRootField = updateBuildRootField;
+window.updateSkillField = updateSkillField;
+window.updateSkillSupportField = updateSkillSupportField;
+window.addSkill = addSkill;
+window.removeSkill = removeSkill;
+window.addSkillSupport = addSkillSupport;
+window.removeSkillSupport = removeSkillSupport;
+window.updatePassiveField = updatePassiveField;
+window.addPassive = addPassive;
+window.removePassive = removePassive;
+window.updateItemField = updateItemField;
+window.addItem = addItem;
+window.removeItem = removeItem;
+
 function gemName(id) {
   const part = (id ?? '').split('/').pop() ?? id;
   return part
@@ -735,12 +934,13 @@ function prettySlot(id) {
 
 function normalizePassive(passive) {
   if (typeof passive === 'string') {
-    return { id: passive, levelInterval: null, weaponSet: null };
+    return { id: passive, levelInterval: [0, 100], weaponSet: null, additional_text: '' };
   }
   return {
     id:            passive.id,
-    levelInterval: passive.level_interval ?? null,
+    levelInterval: passive.level_interval ?? [0, 100],
     weaponSet:     passive.weapon_set     ?? null,
+    additional_text: passive.additional_text ?? '',
   };
 }
 
@@ -778,4 +978,8 @@ function esc(str) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+function escAttr(str) {
+  return esc(str).replace(/'/g, '&#39;');
 }
