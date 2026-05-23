@@ -1,4 +1,4 @@
-# pob2build
+# Path of Exile 2 Build Converter
 
 Convert Path of Building exports, pobb.in links, Mobalytics builds, and Maxroll guides into official **Path of Exile 2 `.build`** files that you can drop straight into the in-game Build Planner.
 
