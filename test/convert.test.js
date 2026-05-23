@@ -207,10 +207,10 @@ test('convertToBuild emits weapon-set passive nodes after the main tree', () => 
 
   const { build: out, report } = convertToBuild(build, {});
   assert.deepEqual(out.passives, [
-    'lightning14',
-    'AscendancyRanger3Small6',
-    { id: 'AscendancyRanger1Notable3', weapon_set: 1 },
-    { id: 'AscendancyRanger3Notable5', weapon_set: 2 },
+    { id: 'lightning14', level_interval: [0, 100] },
+    { id: 'AscendancyRanger3Small6', level_interval: [0, 100] },
+    { id: 'AscendancyRanger1Notable3', weapon_set: 1, level_interval: [0, 100] },
+    { id: 'AscendancyRanger3Notable5', weapon_set: 2, level_interval: [0, 100] },
   ]);
   assert.ok(report.converted.some((line) => line.includes('4 passive nodes resolved')));
 });
@@ -235,10 +235,10 @@ test('convertToBuild folds extra active gems into the same skill group', () => {
     id: 'Metadata/Items/Gems/SkillGemCastOnCritMeta',
     level_interval: [0, 100],
     support_skills: [
-      'Metadata/Items/Gems/SkillGemComet',
-      'Metadata/Items/Gems/SkillGemLivingBomb',
-      'Metadata/Items/Gems/SupportGemPinpointCritical',
-      'Metadata/Items/Gems/SupportGemAddedEnergyRetention',
+      { id: 'Metadata/Items/Gems/SkillGemComet', level_interval: [0, 100] },
+      { id: 'Metadata/Items/Gems/SkillGemLivingBomb', level_interval: [0, 100] },
+      { id: 'Metadata/Items/Gems/SupportGemPinpointCritical', level_interval: [0, 100] },
+      { id: 'Metadata/Items/Gems/SupportGemAddedEnergyRetention', level_interval: [0, 100] },
     ],
   }]);
 });
@@ -273,7 +273,7 @@ test('convertToBuild formats support gem as object when it has custom additional
   };
   const { build: out } = convertToBuild(build, {});
   assert.deepEqual(out.skills[0].support_skills, [
-    { id: 'Metadata/Items/Gems/SupportGemPierce', additional_text: 'Freeze Support' }
+    { id: 'Metadata/Items/Gems/SupportGemPierce', level_interval: [0, 100], additional_text: 'Freeze Support' }
   ]);
 });
 
@@ -296,7 +296,18 @@ test('convertToBuild passes already-compliant GGG BuildSkill objects directly th
     ]
   };
   const { build: out } = convertToBuild(build, {});
-  assert.deepEqual(out.skills[0], build.skills[0]);
+  assert.deepEqual(out.skills[0], {
+    ...build.skills[0],
+    level_interval: [0, 25],
+    support_skills: [
+      { id: 'Metadata/Items/Gems/SupportGemPrimalArmament', level_interval: [0, 100] },
+      {
+        id: 'Metadata/Items/Gems/SupportGemPierce',
+        level_interval: [0, 100],
+        additional_text: 'Freeze Support'
+      }
+    ]
+  });
 });
 
 test('resolveInput auto-detects a PoB export code', async () => {
@@ -336,7 +347,11 @@ test('convertToBuild passes already-compliant GGG passives directly through', ()
     ]
   };
   const { build: out, report } = convertToBuild(build, {});
-  assert.deepEqual(out.passives, build.passives);
+  assert.deepEqual(out.passives, [
+    { id: 'projectiles18', level_interval: [0, 25] },
+    { id: 'duelist_mercenary_notable1', level_interval: [0, 100] },
+    { id: 'strength34', level_interval: [25, 100], additional_text: 'Respec later' }
+  ]);
   assert.ok(report.converted.some((line) => line.includes('3 passives (kept as-is)')));
 });
 
@@ -349,7 +364,10 @@ test('convertToBuild passes already-compliant GGG items directly through', () =>
     ]
   };
   const { build: out, report } = convertToBuild(build, {});
-  assert.deepEqual(out.items, build.items);
+  assert.deepEqual(out.items, [
+    { inventory_id: 'Weapon1', unique_name: 'Mageblood', slot_x: 0, slot_y: 0, level_interval: [0, 100] },
+    { inventory_id: 'Helm', additional_text: 'Iron Hat', slot_x: 0, slot_y: 0, level_interval: [0, 100] }
+  ]);
   assert.ok(report.converted.some((line) => line.includes('item "Mageblood" (kept as-is)')));
 });
 
@@ -379,8 +397,20 @@ test('resolveInput and convertToBuild round-trips a GGG compliant .build JSON', 
 
   assert.equal(out.name, 'My Custom Mercenary Build');
   assert.equal(out.ascendancy, 'Mercenary2');
-  assert.deepEqual(out.skills, inputJson.skills);
-  assert.deepEqual(out.passives, inputJson.passives);
-  assert.deepEqual(out.items, inputJson.items);
+  assert.deepEqual(out.skills, [
+    {
+      id: 'Metadata/Items/Gem/SkillGemFragmentationRounds',
+      level_interval: [0, 25],
+      support_skills: [
+        { id: 'Metadata/Items/Gems/SupportGemPrimalArmament', level_interval: [0, 100] }
+      ]
+    }
+  ]);
+  assert.deepEqual(out.passives, [
+    { id: 'projectiles18', level_interval: [0, 25] },
+    { id: 'duelist_mercenary_notable1', level_interval: [0, 100] }
+  ]);
+  assert.deepEqual(out.items, [
+    { inventory_id: 'Weapon1', unique_name: 'Super Bow', slot_x: 0, slot_y: 0, level_interval: [0, 100] }
+  ]);
 });
-

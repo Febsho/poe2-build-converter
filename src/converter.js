@@ -14,9 +14,22 @@ const ASCENDANCY_BY_NAME = Object.fromEntries(
   Object.entries(ASCENDANCIES).map(([key, val]) => [val.name, key])
 );
 
+const DEFAULT_LEVEL_INTERVAL = [0, 100];
+
 /** Returns true if the interval is the implicit default [0, 100] (always-show). */
 function isDefaultInterval(interval) {
   return Array.isArray(interval) && interval[0] === 0 && interval[1] === 100;
+}
+
+function normalizeLevelInterval(interval) {
+  if (Array.isArray(interval) && interval.length === 2) {
+    const start = Number(interval[0]);
+    const end = Number(interval[1]);
+    if (Number.isFinite(start) && Number.isFinite(end)) {
+      return [start, end];
+    }
+  }
+  return [...DEFAULT_LEVEL_INTERVAL];
 }
 
 /**
@@ -52,7 +65,7 @@ export function convertToBuild(build, opts = {}) {
   if (skills.length) out.skills = skills;
 
   if (build.passives) {
-    out.passives = build.passives;
+    out.passives = build.passives.map(enrichBuildPassive);
     report.converted.push(`${build.passives.length} passives (kept as-is)`);
   } else {
     const passives = convertPassivesWithWeaponSets(build, report);
@@ -154,14 +167,14 @@ function convertSkills(build, report) {
 
     // 1. If it's already a GGG BuildSkill object, pass it through
     if (typeof group === 'object' && 'id' in group && !('actives' in group)) {
-      out.push(group);
+      out.push(enrichBuildSkill(group));
       report.converted.push(`skill "${group.id}" (kept as-is)`);
       continue;
     }
 
     // 2. If it's a string, convert to minimal GGG BuildSkill object
     if (typeof group === 'string') {
-      out.push({ id: group, support_skills: [] });
+      out.push({ id: group, level_interval: [...DEFAULT_LEVEL_INTERVAL], support_skills: [] });
       report.converted.push(`skill "${group}"`);
       continue;
     }
@@ -191,11 +204,11 @@ function convertSkills(build, report) {
       const nonDefaultInterval = activeInterval && !isDefaultInterval(activeInterval) ? activeInterval : null;
       if (activeText || nonDefaultInterval) {
         const obj = { id: active.gemId };
-        if (nonDefaultInterval) obj.level_interval = nonDefaultInterval;
+        obj.level_interval = normalizeLevelInterval(nonDefaultInterval);
         if (activeText) obj.additional_text = activeText;
         supportSkills.push(obj);
       } else {
-        supportSkills.push(active.gemId);
+        supportSkills.push({ id: active.gemId, level_interval: [...DEFAULT_LEVEL_INTERVAL] });
       }
     }
 
@@ -209,11 +222,11 @@ function convertSkills(build, report) {
       const nonDefaultInterval = supportInterval && !isDefaultInterval(supportInterval) ? supportInterval : null;
       if (supportText || nonDefaultInterval) {
         const obj = { id: support.gemId };
-        if (nonDefaultInterval) obj.level_interval = nonDefaultInterval;
+        obj.level_interval = normalizeLevelInterval(nonDefaultInterval);
         if (supportText) obj.additional_text = supportText;
         supportSkills.push(obj);
       } else {
-        supportSkills.push(support.gemId);
+        supportSkills.push({ id: support.gemId, level_interval: [...DEFAULT_LEVEL_INTERVAL] });
       }
     }
 
@@ -224,12 +237,9 @@ function convertSkills(build, report) {
 
     const buildSkill = {
       id: primaryActive.gemId,
+      level_interval: normalizeLevelInterval(skillInterval),
       support_skills: supportSkills
     };
-
-    if (skillInterval && !isDefaultInterval(skillInterval)) {
-      buildSkill.level_interval = skillInterval;
-    }
 
     if (skillText) {
       buildSkill.additional_text = skillText;
@@ -280,7 +290,7 @@ function convertPassives(build, report) {
       const entry = PASSIVES[String(nodeId)];
       if (!entry) { unresolved++; continue; }
       if (entry.is_jewel_socket) continue;
-      out.push(entry.id);
+      out.push({ id: entry.id, level_interval: [...DEFAULT_LEVEL_INTERVAL] });
       resolved++;
     }
   } else {
@@ -299,11 +309,7 @@ function convertPassives(build, report) {
       if (entry.is_jewel_socket) continue;
 
       const startLevel = startLevelForSpec(earliest.get(nodeId) ?? allSpecs.length - 1);
-      if (startLevel <= 1) {
-        out.push(entry.id);
-      } else {
-        out.push({ id: entry.id, level_interval: [startLevel, 100] });
-      }
+      out.push({ id: entry.id, level_interval: [startLevel <= 1 ? 0 : startLevel, 100] });
       resolved++;
     }
   }
@@ -364,7 +370,7 @@ function appendWeaponSetPassives(out, seenNodeIds, nodeIds, weaponSet) {
       unresolved++;
       continue;
     }
-    out.push({ id: passive, weapon_set: weaponSet });
+    out.push({ id: passive, weapon_set: weaponSet, level_interval: [...DEFAULT_LEVEL_INTERVAL] });
     seenNodeIds.add(nodeId);
     resolved++;
   }
@@ -379,7 +385,7 @@ function convertItems(build, report) {
         const name = item.unique_name || item.additional_text || item.inventory_id;
         report.converted.push(`item "${name}" (kept as-is)`);
       }
-      return build.items;
+      return build.items.map(enrichBuildItem);
     }
   }
 
@@ -399,7 +405,12 @@ function convertItems(build, report) {
   for (const slot of slots) {
     const inventoryId = translateSlotName(slot.name);
     const item = itemLookup[slot.itemId];
-    const buildItem = { inventory_id: inventoryId, slot_x: 0, slot_y: 0 };
+    const buildItem = {
+      inventory_id: inventoryId,
+      slot_x: 0,
+      slot_y: 0,
+      level_interval: normalizeLevelInterval(item?.level_interval ?? item?.levelInterval ?? slot.level_interval ?? slot.levelInterval),
+    };
 
     if (item) {
       if (item.isUnique && item.uniqueName) {
@@ -431,6 +442,41 @@ function formatMods(implicits = [], explicits = [], runes = []) {
   for (const m of implicits) lines.push(`[Implicit] ${m}`);
   for (const m of explicits) lines.push(m);
   return lines.join('\n');
+}
+
+function enrichBuildSkill(skill) {
+  return {
+    ...skill,
+    level_interval: normalizeLevelInterval(skill.level_interval ?? skill.levelInterval),
+    support_skills: (skill.support_skills ?? []).map(enrichBuildSupport),
+  };
+}
+
+function enrichBuildSupport(support) {
+  if (typeof support === 'string') {
+    return { id: support, level_interval: [...DEFAULT_LEVEL_INTERVAL] };
+  }
+  return {
+    ...support,
+    level_interval: normalizeLevelInterval(support.level_interval ?? support.levelInterval),
+  };
+}
+
+function enrichBuildPassive(passive) {
+  if (typeof passive === 'string') {
+    return { id: passive, level_interval: [...DEFAULT_LEVEL_INTERVAL] };
+  }
+  return {
+    ...passive,
+    level_interval: normalizeLevelInterval(passive.level_interval ?? passive.levelInterval),
+  };
+}
+
+function enrichBuildItem(item) {
+  return {
+    ...item,
+    level_interval: normalizeLevelInterval(item.level_interval ?? item.levelInterval),
+  };
 }
 
 function translateSlotName(name) {
