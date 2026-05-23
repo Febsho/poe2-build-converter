@@ -128,10 +128,14 @@ export function parsePobXml(xml, { skillSetId, itemSetId, specIndex } = {}) {
   const buildEl = root.Build;
   if (!buildEl) throw new Error('Expected <Build> element under root');
 
+  const tree = parseTree(root.Tree, specIndex);
+  const meta = parseBuildMeta(buildEl);
+  enrichMetaFromTree(meta, tree);
+
   return {
-    meta: parseBuildMeta(buildEl),
+    meta,
     skills: parseSkills(root.Skills, skillSetId),
-    tree: parseTree(root.Tree, specIndex),
+    tree,
     items: parseItems(root.Items, itemSetId),
     notes: extractNotes(root),
   };
@@ -142,10 +146,31 @@ function parseBuildMeta(b) {
     level: num(b['@_level']),
     className: str(b['@_className']),
     ascendClassName: str(b['@_ascendClassName']),
+    ascendClassId: num(b['@_ascendClassId']),
+    ascendancyInternalId: str(b['@_ascendancyInternalId']),
+    classId: num(b['@_classId']),
     mainSocketGroup: num(b['@_mainSocketGroup']),
     targetVersion: str(b['@_targetVersion']),
     viewMode: str(b['@_viewMode']),
   };
+}
+
+function enrichMetaFromTree(meta, tree) {
+  const specs = tree?.specs ?? [];
+  const active = tree?.activeSpec ?? specs.find((s) => s.ascendancyInternalId || s.ascendClassId || s.classId);
+  if (!active) return meta;
+
+  if (!meta.ascendancyInternalId && active.ascendancyInternalId) {
+    meta.ascendancyInternalId = active.ascendancyInternalId;
+  }
+  if (!meta.ascendClassId && active.ascendClassId) {
+    meta.ascendClassId = active.ascendClassId;
+  }
+  if (!meta.classId && active.classId) {
+    meta.classId = active.classId;
+  }
+
+  return meta;
 }
 
 function parseSkills(skills, targetId) {
@@ -234,8 +259,11 @@ function parseTree(tree, targetSpecIndex) {
     };
   });
 
-  const active = (targetSpecIndex != null ? specs[targetSpecIndex] : null) ?? specs[0] ?? { nodes: [] };
-  return { nodes: active.nodes, specs };
+  const activeSpecIndex = targetSpecIndex != null
+    ? targetSpecIndex
+    : (num(tree['@_activeSpec']) > 0 ? num(tree['@_activeSpec']) - 1 : undefined);
+  const active = (activeSpecIndex != null ? specs[activeSpecIndex] : null) ?? specs[0] ?? { nodes: [] };
+  return { nodes: active.nodes, specs, activeSpec: active };
 }
 
 function parseItems(items, targetId) {

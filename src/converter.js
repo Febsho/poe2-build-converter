@@ -13,8 +13,27 @@ const ASCENDANCIES = require('./data/ascendancies.json');
 const ASCENDANCY_BY_NAME = Object.fromEntries(
   Object.entries(ASCENDANCIES).map(([key, val]) => [val.name, key])
 );
+const ASCENDANCY_BY_PASSIVE_ID = Object.fromEntries(
+  Object.values(PASSIVES)
+    .filter((entry) => entry.id && entry.ascendancy)
+    .map((entry) => [entry.id, entry.ascendancy])
+);
 
 const DEFAULT_LEVEL_INTERVAL = [0, 100];
+const CLASS_BY_ID = {
+  1: 'Warrior',
+  2: 'Ranger',
+  3: 'Witch',
+  4: 'Mercenary',
+  5: 'Monk',
+  6: 'Sorceress',
+  7: 'Druid',
+  8: 'Huntress',
+  9: 'Templar',
+  10: 'Duelist',
+  11: 'Shadow',
+  12: 'Marauder',
+};
 
 /** Returns true if the interval is the implicit default [0, 100] (always-show). */
 function isDefaultInterval(interval) {
@@ -119,8 +138,18 @@ function convertAscendancy(build, report) {
     report.converted.push(`ascendancy "${build.ascendancy}" (kept as-is)`);
     return build.ascendancy;
   }
+  const internal = pickInternalAscendancy(build);
+  if (internal) {
+    report.converted.push(`ascendancy "${internal}" (from build tree)`);
+    return internal;
+  }
   const display = build.meta?.ascendClassName;
   if (!display || display === 'None') {
+    const fromPassives = inferAscendancyFromPassives(build);
+    if (fromPassives) {
+      report.guessed.push(`ascendancy "${fromPassives}" inferred from selected ascendancy passives.`);
+      return fromPassives;
+    }
     report.warnings.push('No ascendancy found in the build.');
     return undefined;
   }
@@ -150,8 +179,73 @@ function convertAscendancy(build, report) {
     }
   }
 
+  const fromPassives = inferAscendancyFromPassives(build);
+  if (fromPassives) {
+    report.guessed.push(`ascendancy "${fromPassives}" inferred from selected ascendancy passives.`);
+    return fromPassives;
+  }
+
   report.guessed.push(`ascendancy "${display}" — could not map to internal key, passing display name through.`);
   return display;
+}
+
+function pickInternalAscendancy(build) {
+  const meta = build.meta ?? {};
+  const specs = [
+    build.tree?.activeSpec,
+    ...(build.tree?.specs ?? []),
+  ].filter(Boolean);
+
+  const direct = [
+    meta.ascendancyInternalId,
+    meta.ascendClassName,
+    ...specs.map((spec) => spec.ascendancyInternalId),
+  ].find((candidate) => candidate && ASCENDANCIES[candidate]);
+  if (direct) return direct;
+
+  const classCandidates = [
+    meta.className,
+    CLASS_BY_ID[meta.classId],
+    ...specs.flatMap((spec) => [spec.className, CLASS_BY_ID[spec.classId]]),
+  ].filter(Boolean);
+
+  const numberCandidates = [
+    meta.ascendClassId,
+    ...specs.map((spec) => spec.ascendClassId),
+  ].filter((n) => Number.isFinite(Number(n)) && Number(n) > 0);
+
+  for (const cls of classCandidates) {
+    for (const number of numberCandidates) {
+      const key = `${cls}${Number(number)}`;
+      if (ASCENDANCIES[key]) return key;
+    }
+  }
+
+  return undefined;
+}
+
+function inferAscendancyFromPassives(build) {
+  const counts = new Map();
+  const rawNodes = [
+    ...(build.tree?.nodes ?? []),
+    ...(build.tree?.weaponSet1Nodes ?? []),
+    ...(build.tree?.weaponSet2Nodes ?? []),
+    ...(build.tree?.specs ?? []).flatMap((spec) => spec.nodes ?? []),
+  ];
+
+  for (const nodeId of rawNodes) {
+    const asc = PASSIVES[String(nodeId)]?.ascendancy;
+    if (asc && ASCENDANCIES[asc]) counts.set(asc, (counts.get(asc) ?? 0) + 1);
+  }
+
+  for (const passive of build.passives ?? []) {
+    const id = typeof passive === 'string' ? passive : passive?.id;
+    if (!id) continue;
+    const asc = ASCENDANCY_BY_PASSIVE_ID[id];
+    if (asc && ASCENDANCIES[asc]) counts.set(asc, (counts.get(asc) ?? 0) + 1);
+  }
+
+  return [...counts.entries()].sort((a, b) => b[1] - a[1])[0]?.[0];
 }
 
 function convertSkills(build, report) {

@@ -75,6 +75,26 @@ test('parsePobXml extracts meta, skills, tree, items, notes', () => {
   assert.match(build.notes, /endgame mapper/);
 });
 
+test('parsePobXml and convertToBuild use ascendancy stored on the active tree spec', () => {
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<PathOfBuilding2>
+  <Build level="95" className="Sorceress" />
+  <Tree activeSpec="2">
+    <Spec treeVersion="0_3" classId="6" ascendClassId="1" ascendancyInternalId="Sorceress1" nodes=""/>
+    <Spec treeVersion="0_3" classId="6" ascendClassId="2" ascendancyInternalId="Sorceress2" nodes="38304"/>
+  </Tree>
+</PathOfBuilding2>`;
+
+  const build = parsePobXml(xml);
+  assert.equal(build.meta.ascendancyInternalId, 'Sorceress2');
+  assert.equal(build.meta.ascendClassId, 2);
+  assert.equal(build.tree.activeSpec.ascendancyInternalId, 'Sorceress2');
+
+  const { build: out, report } = convertToBuild(build);
+  assert.equal(out.ascendancy, 'Sorceress2');
+  assert.equal(report.warnings.some((line) => line.includes('No ascendancy found')), false);
+});
+
 test('parsePobXml infers support gem level from rank suffix when PoB level is missing', () => {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <PathOfBuilding>

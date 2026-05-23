@@ -243,6 +243,7 @@ function renderResults(data) {
   $('stat-source').textContent      = source?.kind ?? '—';
 
   renderOverviewTab(b, r, source, data.preview?.meta);
+  renderPreviewTab(b, r, source, data.preview?.meta, passiveNames);
   renderSkillsTab(b.skills ?? [], data.preview?.skills ?? []);
   renderPassivesTab(b.passives ?? [], r, passiveNames);
   renderItemsTab(b.items ?? []);
@@ -313,20 +314,6 @@ function renderOverviewTab(build, report, source, meta = {}) {
   const issues  = report.guessed.length + report.unsupported.length;
 
   $('tab-overview').innerHTML = `
-    <div class="edit-grid edit-grid-overview">
-      <label class="edit-field">
-        <span class="edit-label">Build Name</span>
-        <input type="text" value="${escAttr(build.name ?? '')}" onchange="updateBuildRootField('name', this.value)" />
-      </label>
-      <label class="edit-field">
-        <span class="edit-label">Ascendancy</span>
-        <input type="text" value="${escAttr(build.ascendancy ?? '')}" onchange="updateBuildRootField('ascendancy', this.value)" />
-      </label>
-      <label class="edit-field edit-field-full">
-        <span class="edit-label">Description</span>
-        <textarea rows="3" onchange="updateBuildRootField('description', this.value)">${esc(build.description ?? '')}</textarea>
-      </label>
-    </div>
     <div class="ov-header">
       <div class="ov-title-row">
         ${avatar}
@@ -349,12 +336,12 @@ function renderOverviewTab(build, report, source, meta = {}) {
 }
 
 // ── Skills ─────────────────────────────────────────────────────────────────
-function renderSkillsTab(skills, previewSkills = []) {
+function renderEditableSkills(skills, targetId = 'tab-skills') {
   const copyBtn = `<button class="section-copy-btn ghost sm" onclick="copySection('skills')">Copy JSON</button>`;
   const addBtn = `<button class="section-copy-btn ghost sm" onclick="addSkill()">Add Skill</button>`;
 
   if (!skills.length) {
-    $('tab-skills').innerHTML =
+    $(targetId).innerHTML =
       `<div class="tab-section-header">${copyBtn}${addBtn}</div><p class="empty-msg">No skills found in this build.</p>`;
     return;
   }
@@ -411,12 +398,12 @@ function renderSkillsTab(skills, previewSkills = []) {
       </li>`;
   }).join('');
 
-  $('tab-skills').innerHTML =
+  $(targetId).innerHTML =
     `<div class="tab-section-header">${copyBtn}${addBtn}</div><ul class="gem-list">${html}</ul>`;
 }
 
 // ── Passives ───────────────────────────────────────────────────────────────
-function renderPassivesTab(passives, report, passiveNames = {}) {
+function renderEditablePassives(passives, report, passiveNames = {}, targetId = 'tab-passives') {
   const total        = passives.length;
   const withInterval = passives.filter((p) => typeof p === 'object' && p.level_interval).length;
   const mainPassives = passives.filter((p) => !isWeaponSetPassive(p));
@@ -429,7 +416,7 @@ function renderPassivesTab(passives, report, passiveNames = {}) {
   const copyBtn = `<button class="section-copy-btn ghost sm" onclick="copySection('passives')">Copy JSON</button>`;
   const addBtn  = `<button class="section-copy-btn ghost sm" onclick="addPassive()">Add Passive</button>`;
 
-  $('tab-passives').innerHTML = `
+  $(targetId).innerHTML = `
     <div class="tab-section-header">${copyBtn}${addBtn}</div>
     <div class="passives-summary">
       <div class="pass-block">
@@ -501,12 +488,12 @@ function renderPassiveBar(levelInterval) {
 }
 
 // ── Items ──────────────────────────────────────────────────────────────────
-function renderItemsTab(items) {
+function renderEditableItems(items, targetId = 'tab-items') {
   const copyBtn = `<button class="section-copy-btn ghost sm" onclick="copySection('items')">Copy JSON</button>`;
   const addBtn  = `<button class="section-copy-btn ghost sm" onclick="addItem()">Add Item</button>`;
 
   if (!items.length) {
-    $('tab-items').innerHTML =
+    $(targetId).innerHTML =
       `<div class="tab-section-header">${copyBtn}${addBtn}</div><p class="empty-msg">No items found in this build.</p>`;
     return;
   }
@@ -539,12 +526,119 @@ function renderItemsTab(items) {
     </div>`;
   }).join('');
 
-  $('tab-items').innerHTML = `
+  $(targetId).innerHTML = `
     <div class="tab-section-header">${copyBtn}${addBtn}</div>
     <div class="passives-sections editable-items">${rows}</div>`;
 }
 
 // ── Problems ───────────────────────────────────────────────────────────────
+function renderPreviewTab(build, report, source, meta = {}, passiveNames = {}) {
+  $('tab-preview').innerHTML = `
+    <div class="edit-grid edit-grid-overview">
+      <label class="edit-field">
+        <span class="edit-label">Build Name</span>
+        <input type="text" value="${escAttr(build.name ?? '')}" onchange="updateBuildRootField('name', this.value)" />
+      </label>
+      <label class="edit-field">
+        <span class="edit-label">Ascendancy</span>
+        <input type="text" value="${escAttr(build.ascendancy ?? '')}" onchange="updateBuildRootField('ascendancy', this.value)" />
+      </label>
+      <label class="edit-field edit-field-full">
+        <span class="edit-label">Description</span>
+        <textarea rows="3" onchange="updateBuildRootField('description', this.value)">${esc(build.description ?? '')}</textarea>
+      </label>
+    </div>
+    <div class="preview-edit-section">
+      <h3>Skills</h3>
+      <div id="preview-skills-edit"></div>
+    </div>
+    <div class="preview-edit-section">
+      <h3>Passives</h3>
+      <div id="preview-passives-edit"></div>
+    </div>
+    <div class="preview-edit-section">
+      <h3>Items</h3>
+      <div id="preview-items-edit"></div>
+    </div>
+  `;
+
+  renderEditableSkills(build.skills ?? [], 'preview-skills-edit');
+  renderEditablePassives(build.passives ?? [], report, passiveNames, 'preview-passives-edit');
+  renderEditableItems(build.items ?? [], 'preview-items-edit');
+}
+
+function renderSkillsTab(skills) {
+  const copyBtn = `<button class="section-copy-btn ghost sm" onclick="copySection('skills')">Copy JSON</button>`;
+  if (!skills.length) {
+    $('tab-skills').innerHTML = `<div class="tab-section-header">${copyBtn}</div><p class="empty-msg">No skills found in this build.</p>`;
+    return;
+  }
+
+  const html = skills.map((skill) => {
+    const normalized = normalizeBuildSkill(skill);
+    const supports = normalized.support_skills.map((support) => {
+      const level = normalizeLevelIntervalValue(support.level_interval)[0];
+      const label = support.additional_text ? `${gemName(support.id)} - ${support.additional_text}` : gemName(support.id);
+      return `<li><span>${esc(label)}</span><span class="tag">Lvl ${level}</span></li>`;
+    }).join('');
+    const level = normalizeLevelIntervalValue(normalized.level_interval)[0];
+
+    return `<li class="gem-group">
+      <div class="gem-head"><strong>${esc(gemName(normalized.id))}</strong><span class="tag">Lvl ${level}</span></div>
+      ${normalized.additional_text ? `<div class="muted small">${esc(normalized.additional_text)}</div>` : ''}
+      ${supports ? `<ul class="gem-supports">${supports}</ul>` : ''}
+    </li>`;
+  }).join('');
+
+  $('tab-skills').innerHTML = `<div class="tab-section-header">${copyBtn}</div><ul class="gem-list">${html}</ul>`;
+}
+
+function renderPassivesTab(passives, report, passiveNames = {}) {
+  const total = passives.length;
+  const weaponSet1 = passives.filter((p) => getWeaponSet(p) === 1);
+  const weaponSet2 = passives.filter((p) => getWeaponSet(p) === 2);
+  const copyBtn = `<button class="section-copy-btn ghost sm" onclick="copySection('passives')">Copy JSON</button>`;
+
+  $('tab-passives').innerHTML = `
+    <div class="tab-section-header">${copyBtn}</div>
+    <div class="passives-summary">
+      <div class="pass-block"><span class="pass-num green">${total}</span><span class="pass-label">Resolved Nodes</span></div>
+      ${(weaponSet1.length || weaponSet2.length) ? `<div class="pass-block"><span class="pass-num">${weaponSet1.length + weaponSet2.length}</span><span class="pass-label">Weapon Set Nodes</span></div>` : ''}
+    </div>
+    ${passives.length ? `<div class="passives-sections">
+      ${passives.map((passive) => {
+        const normalized = normalizePassive(passive);
+        const name = passiveNames[normalized.id] || formatPassiveId(normalized.id);
+        const tags = [
+          normalized.weaponSet ? `<span class="tag">Weapon ${normalized.weaponSet}</span>` : '',
+          normalized.levelInterval ? renderIntervalTag(normalized.levelInterval) : '',
+        ].filter(Boolean).join('');
+        return `<div class="passive-section"><div><strong>${esc(name)}</strong><div class="muted small">${esc(normalized.id)}</div></div><div>${tags}</div></div>`;
+      }).join('')}
+    </div>` : ''}
+  `;
+}
+
+function renderItemsTab(items) {
+  const copyBtn = `<button class="section-copy-btn ghost sm" onclick="copySection('items')">Copy JSON</button>`;
+  if (!items.length) {
+    $('tab-items').innerHTML = `<div class="tab-section-header">${copyBtn}</div><p class="empty-msg">No items found in this build.</p>`;
+    return;
+  }
+
+  const rows = items.map((item) => `
+    <div class="item-row">
+      <div class="item-slot">${esc(prettySlot(item.inventory_id))}</div>
+      <div>
+        <strong>${esc(item.unique_name || item.inventory_id || 'Item')}</strong>
+        ${item.additional_text ? `<div class="item-lines">${esc(item.additional_text).replace(/\n/g, '<br>')}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  $('tab-items').innerHTML = `<div class="tab-section-header">${copyBtn}</div><div class="items-table">${rows}</div>`;
+}
+
 function renderProblemsTab(r) {
   const section = (cls, icon, title, items) => `
     <div class="problems-section ${cls}">
@@ -691,6 +785,7 @@ function rerenderEditablePanels() {
   if (!lastData || !lastBuild) return;
   const passiveNames = lastData.passiveNames ?? {};
   renderOverviewTab(lastBuild, lastData.report, lastData.source, lastData.preview?.meta);
+  renderPreviewTab(lastBuild, lastData.report, lastData.source, lastData.preview?.meta, passiveNames);
   renderSkillsTab(lastBuild.skills ?? [], []);
   renderPassivesTab(lastBuild.passives ?? [], lastData.report, passiveNames);
   renderItemsTab(lastBuild.items ?? []);

@@ -739,6 +739,56 @@ code { background: var(--panel-2); padding: 1px 6px; border-radius: 4px; color: 
   gap: 8px;
   flex-wrap: wrap;
 }
+
+.preview-edit-section {
+  margin-top: 18px;
+}
+
+.preview-edit-section h3 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  text-transform: uppercase;
+  color: var(--muted);
+  letter-spacing: .04em;
+}
+
+.gem-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.gem-supports {
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+.gem-supports li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 5px 0;
+}
+
+.item-row {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 14px;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.item-slot {
+  color: var(--muted);
+}
+
+.item-lines {
+  margin-top: 6px;
+  color: var(--muted);
+  line-height: 1.45;
+}
 .edit-subcards {
   margin-top: 14px;
   display: flex;
