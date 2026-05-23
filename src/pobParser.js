@@ -248,7 +248,7 @@ function parseTree(tree, targetSpecIndex) {
     const mainNodes = parseNodeList(spec['@_nodes']);
     const extraNodes = collectSpecNodeFields(spec).filter((nodeId) => !mainNodes.includes(nodeId));
     const ascendancyNodes = uniqueNums(extraNodes);
-    const nodes = uniqueNums([...mainNodes, ...ascendancyNodes]);
+    const nodes = uniqueNums(mainNodes);
 
     return {
       treeVersion: str(spec['@_treeVersion']),

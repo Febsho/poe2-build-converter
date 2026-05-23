@@ -20,6 +20,7 @@ const ASCENDANCY_BY_PASSIVE_ID = Object.fromEntries(
 );
 
 const DEFAULT_LEVEL_INTERVAL = [0, 100];
+const MAX_ASCENDANCY_PASSIVES = 8;
 const ROMAN_SUPPORT_LEVELS = {
   I: 1,
   II: 2,
@@ -303,7 +304,9 @@ function inferAscendancyFromPassives(build) {
     ...(build.tree?.nodes ?? []),
     ...(build.tree?.weaponSet1Nodes ?? []),
     ...(build.tree?.weaponSet2Nodes ?? []),
+    ...(build.tree?.activeSpec?.ascendancyNodes ?? []),
     ...(build.tree?.specs ?? []).flatMap((spec) => spec.nodes ?? []),
+    ...(build.tree?.specs ?? []).flatMap((spec) => spec.ascendancyNodes ?? []),
   ];
 
   for (const nodeId of rawNodes) {
@@ -457,6 +460,7 @@ function convertPassives(build, report) {
       const entry = PASSIVES[String(nodeId)];
       if (!entry) { unresolved++; continue; }
       if (entry.is_jewel_socket) continue;
+      if (entry.ascendancy) continue;
       out.push({ id: entry.id, level_interval: [...DEFAULT_LEVEL_INTERVAL] });
       resolved++;
     }
@@ -474,6 +478,7 @@ function convertPassives(build, report) {
       const entry = PASSIVES[String(nodeId)];
       if (!entry) { unresolved++; continue; }
       if (entry.is_jewel_socket) continue;
+      if (entry.ascendancy) continue;
 
       const startLevel = startLevelForSpec(earliest.get(nodeId) ?? allSpecs.length - 1);
       out.push({ id: entry.id, level_interval: [startLevel <= 1 ? 0 : startLevel, 100] });
@@ -496,7 +501,9 @@ function convertPassivesWithWeaponSets(build, report) {
 
   for (const spec of build.tree?.specs ?? []) {
     for (const nodeId of spec.nodes ?? []) {
-      seenNodeIds.add(nodeId);
+      if (!PASSIVES[String(nodeId)]?.ascendancy) {
+        seenNodeIds.add(nodeId);
+      }
     }
   }
 
@@ -517,6 +524,9 @@ function convertPassivesWithWeaponSets(build, report) {
   report.guessed.push(...localReport.guessed.filter((line) => !/passive node\(s\) not found in data/.test(line)));
   if (resolvedCount) report.converted.push(`${resolvedCount} passive nodes resolved from GGG data`);
   if (unresolvedCount) report.guessed.push(`${unresolvedCount} passive node(s) not found in data - omitted`);
+  if (ascendancy.capped) {
+    report.warnings.push(`${ascendancy.capped} extra ascendancy node(s) omitted; Path of Exile 2 builds can allocate at most ${MAX_ASCENDANCY_PASSIVES} ascendancy points.`);
+  }
 
   return out;
 }
@@ -524,6 +534,7 @@ function convertPassivesWithWeaponSets(build, report) {
 function convertPassiveNode(nodeId) {
   const entry = PASSIVES[String(nodeId)];
   if (!entry || entry.is_jewel_socket) return null;
+  if (entry.ascendancy) return null;
   return entry.id;
 }
 
@@ -549,9 +560,14 @@ function appendWeaponSetPassives(out, seenNodeIds, nodeIds, weaponSet) {
 function appendAscendancyPassives(out, seenNodeIds, tree) {
   const activeAscendancyNodes = tree?.activeSpec?.ascendancyNodes ?? [];
   const specAscendancyNodes = (tree?.specs ?? []).flatMap((spec) => spec.ascendancyNodes ?? []);
-  const nodeIds = uniqueNums([...activeAscendancyNodes, ...specAscendancyNodes]);
+  const fallbackAscendancyNodes = [
+    ...(tree?.nodes ?? []),
+    ...(tree?.specs ?? []).flatMap((spec) => spec.nodes ?? []),
+  ].filter((nodeId) => PASSIVES[String(nodeId)]?.ascendancy);
+  const nodeIds = uniqueNums([...activeAscendancyNodes, ...specAscendancyNodes, ...fallbackAscendancyNodes]);
   let resolved = 0;
   let unresolved = 0;
+  let capped = 0;
 
   for (const nodeId of nodeIds) {
     if (seenNodeIds.has(nodeId)) continue;
@@ -560,12 +576,17 @@ function appendAscendancyPassives(out, seenNodeIds, tree) {
       unresolved++;
       continue;
     }
+    if (!entry.ascendancy) continue;
+    if (resolved >= MAX_ASCENDANCY_PASSIVES) {
+      capped++;
+      continue;
+    }
     out.push({ id: entry.id, level_interval: [...DEFAULT_LEVEL_INTERVAL] });
     seenNodeIds.add(nodeId);
     resolved++;
   }
 
-  return { resolved, unresolved };
+  return { resolved, unresolved, capped };
 }
 
 function uniqueNums(values) {

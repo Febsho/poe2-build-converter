@@ -119,9 +119,32 @@ test('parsePobXml includes PoB ascendancyNodes in converted passives', () => {
 
   const build = parsePobXml(xml);
   assert.deepEqual(build.tree.activeSpec.ascendancyNodes, [3165]);
+  assert.deepEqual(build.tree.activeSpec.nodes, []);
 
   const { build: out } = convertToBuild(build);
   assert.equal(out.passives.some((p) => p.id === 'AscendancyWitch2Small7'), true);
+});
+
+test('convertToBuild caps PoB ascendancy passives at eight nodes', () => {
+  const ascendancyNodes = [
+    3165, 8415, 23416, 26282, 26383,
+    27667, 30071, 30117, 31223, 47442,
+  ].join(',');
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<PathOfBuilding2>
+  <Build level="90" className="Witch" ascendClassName="Lich" />
+  <Tree activeSpec="1">
+    <Spec treeVersion="0_3" classId="3" ascendClassId="2" nodes="" ascendancyNodes="${ascendancyNodes}"/>
+  </Tree>
+</PathOfBuilding2>`;
+
+  const build = parsePobXml(xml);
+  const { build: out, report } = convertToBuild(build);
+  const ascendancyPassives = out.passives.filter((passive) => /^Ascendancy/.test(passive.id));
+
+  assert.equal(ascendancyPassives.length, 8);
+  assert.equal(ascendancyPassives.some((passive) => passive.id === 'AscendancyWitch2Notable8'), false);
+  assert.equal(report.warnings.some((line) => line.includes('extra ascendancy node')), true);
 });
 
 test('parsePobXml includes nested PoB node entries in converted passives', () => {
@@ -268,18 +291,18 @@ test('convertToBuild keeps explicit user name over source name', () => {
 test('convertToBuild emits weapon-set passive nodes after the main tree', () => {
   const build = parsePobXml(SAMPLE_XML);
   build.tree = {
-    nodes: [4, 16],
-    specs: [{ nodes: [4, 16] }],
-    weaponSet1Nodes: [30, 4],
-    weaponSet2Nodes: [40],
+    nodes: [4, 60],
+    specs: [{ nodes: [4, 60] }],
+    weaponSet1Nodes: [65, 4],
+    weaponSet2Nodes: [71],
   };
 
   const { build: out, report } = convertToBuild(build, {});
   assert.deepEqual(out.passives, [
     { id: 'lightning14', level_interval: [0, 100] },
-    { id: 'AscendancyRanger3Small6', level_interval: [0, 100] },
-    { id: 'AscendancyRanger1Notable3', weapon_set: 1, level_interval: [0, 100] },
-    { id: 'AscendancyRanger3Notable5', weapon_set: 2, level_interval: [0, 100] },
+    { id: 'blind2', level_interval: [0, 100] },
+    { id: 'chill_and_freeze19_', weapon_set: 1, level_interval: [0, 100] },
+    { id: 'physical58', weapon_set: 2, level_interval: [0, 100] },
   ]);
   assert.ok(report.converted.some((line) => line.includes('4 passive nodes resolved')));
 });
