@@ -1,0 +1,8865 @@
+[
+  {
+    "id": "wands-withered-wand",
+    "name": "Withered Wand",
+    "class": "Wands",
+    "level": 0,
+    "implicit": "Grants Skill: Chaos Bolt"
+  },
+  {
+    "id": "wands-bone-wand",
+    "name": "Bone Wand",
+    "class": "Wands",
+    "level": 2,
+    "implicit": "Grants Skill: Level 1 Bone Blast"
+  },
+  {
+    "id": "wands-attuned-wand",
+    "name": "Attuned Wand",
+    "class": "Wands",
+    "level": 2,
+    "implicit": "Grants Skill: Level 1 Mana Drain"
+  },
+  {
+    "id": "wands-siphoning-wand",
+    "name": "Siphoning Wand",
+    "class": "Wands",
+    "level": 11,
+    "implicit": "Grants Skill: Level 4 Power Siphon"
+  },
+  {
+    "id": "wands-volatile-wand",
+    "name": "Volatile Wand",
+    "class": "Wands",
+    "level": 16,
+    "implicit": "Grants Skill: Level 5 Volatile Dead"
+  },
+  {
+    "id": "wands-galvanic-wand",
+    "name": "Galvanic Wand",
+    "class": "Wands",
+    "level": 25,
+    "implicit": "Grants Skill: Level 7 Galvanic Field"
+  },
+  {
+    "id": "wands-acrid-wand",
+    "name": "Acrid Wand",
+    "class": "Wands",
+    "level": 33,
+    "implicit": "Grants Skill: Level 9 Decompose"
+  },
+  {
+    "id": "wands-offering-wand",
+    "name": "Offering Wand",
+    "class": "Wands",
+    "level": 38,
+    "implicit": "Grants Skill: Level 10 Exsanguinate"
+  },
+  {
+    "id": "wands-frigid-wand",
+    "name": "Frigid Wand",
+    "class": "Wands",
+    "level": 45,
+    "implicit": "Grants Skill: Level 11 Chaos Bolt"
+  },
+  {
+    "id": "wands-torture-wand",
+    "name": "Torture Wand",
+    "class": "Wands",
+    "level": 49,
+    "implicit": "Grants Skill: Level 12 Chaos Bolt"
+  },
+  {
+    "id": "wands-critical-wand",
+    "name": "Critical Wand",
+    "class": "Wands",
+    "level": 52,
+    "implicit": "Grants Skill: Level 13 Chaos Bolt"
+  },
+  {
+    "id": "wands-primordial-wand",
+    "name": "Primordial Wand",
+    "class": "Wands",
+    "level": 56,
+    "implicit": "Grants Skill: Level 13 Wither"
+  },
+  {
+    "id": "wands-dueling-wand",
+    "name": "Dueling Wand",
+    "class": "Wands",
+    "level": 65,
+    "implicit": "Grants Skill: Level 15 Spellslinger"
+  },
+  {
+    "id": "one-hand-maces-wooden-club",
+    "name": "Wooden Club",
+    "class": "One Hand Maces",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "damageMin": 6,
+      "damageMax": 10,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-smithing-hammer",
+    "name": "Smithing Hammer",
+    "class": "One Hand Maces",
+    "level": 4,
+    "implicit": "local weapon implicit hidden % base damage is fire [50]",
+    "stats": {
+      "damageMin": 5.5,
+      "damageMax": 9,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-slim-mace",
+    "name": "Slim Mace",
+    "class": "One Hand Maces",
+    "level": 10,
+    "implicit": null,
+    "stats": {
+      "damageMin": 11,
+      "damageMax": 17,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "one-hand-maces-spiked-club",
+    "name": "Spiked Club",
+    "class": "One Hand Maces",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "damageMin": 15,
+      "damageMax": 24,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-warpick",
+    "name": "Warpick",
+    "class": "One Hand Maces",
+    "level": 22,
+    "implicit": "+(5—10)% to Critical Damage Bonus",
+    "stats": {
+      "damageMin": 18,
+      "damageMax": 24,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-plated-mace",
+    "name": "Plated Mace",
+    "class": "One Hand Maces",
+    "level": 26,
+    "implicit": null,
+    "stats": {
+      "damageMin": 18,
+      "damageMax": 38,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "one-hand-maces-brigand-mace",
+    "name": "Brigand Mace",
+    "class": "One Hand Maces",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "damageMin": 28,
+      "damageMax": 38,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-construct-hammer",
+    "name": "Construct Hammer",
+    "class": "One Hand Maces",
+    "level": 36,
+    "implicit": "40% chance to Daze on Hit",
+    "stats": {
+      "damageMin": 31,
+      "damageMax": 38,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "one-hand-maces-morning-star",
+    "name": "Morning Star",
+    "class": "One Hand Maces",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "damageMin": 33,
+      "damageMax": 49,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-jade-club",
+    "name": "Jade Club",
+    "class": "One Hand Maces",
+    "level": 49,
+    "implicit": "Always Hits",
+    "stats": {
+      "damageMin": 31,
+      "damageMax": 51,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-lumen-mace",
+    "name": "Lumen Mace",
+    "class": "One Hand Maces",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "damageMin": 36,
+      "damageMax": 60,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-execratus-hammer",
+    "name": "Execratus Hammer",
+    "class": "One Hand Maces",
+    "level": 55,
+    "implicit": null,
+    "stats": {
+      "damageMin": 40,
+      "damageMax": 60,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-torment-club",
+    "name": "Torment Club",
+    "class": "One Hand Maces",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "damageMin": 44,
+      "damageMax": 73,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-kalguuran-forgehammer",
+    "name": "Kalguuran Forgehammer",
+    "class": "One Hand Maces",
+    "level": 47,
+    "implicit": "Has 3 Sockets",
+    "stats": {
+      "damageMin": 30,
+      "damageMax": 49,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-calescent-hammer",
+    "name": "Calescent Hammer",
+    "class": "One Hand Maces",
+    "level": 45,
+    "implicit": "local weapon implicit hidden % base damage is fire [50]",
+    "stats": {
+      "damageMin": 22,
+      "damageMax": 37,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-flared-mace",
+    "name": "Flared Mace",
+    "class": "One Hand Maces",
+    "level": 48,
+    "implicit": null,
+    "stats": {
+      "damageMin": 33,
+      "damageMax": 50,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "one-hand-maces-battle-pick",
+    "name": "Battle Pick",
+    "class": "One Hand Maces",
+    "level": 51,
+    "implicit": "+(5—10)% to Critical Damage Bonus",
+    "stats": {
+      "damageMin": 35,
+      "damageMax": 47,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-marching-mace",
+    "name": "Marching Mace",
+    "class": "One Hand Maces",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "damageMin": 33,
+      "damageMax": 69,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "one-hand-maces-bandit-mace",
+    "name": "Bandit Mace",
+    "class": "One Hand Maces",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "damageMin": 45,
+      "damageMax": 61,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-structured-hammer",
+    "name": "Structured Hammer",
+    "class": "One Hand Maces",
+    "level": 62,
+    "implicit": "40% chance to Daze on Hit",
+    "stats": {
+      "damageMin": 49,
+      "damageMax": 60,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "one-hand-maces-flanged-mace",
+    "name": "Flanged Mace",
+    "class": "One Hand Maces",
+    "level": 67,
+    "implicit": null,
+    "stats": {
+      "damageMin": 45,
+      "damageMax": 67,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "one-hand-maces-crown-mace",
+    "name": "Crown Mace",
+    "class": "One Hand Maces",
+    "level": 72,
+    "implicit": null,
+    "stats": {
+      "damageMin": 43,
+      "damageMax": 89,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "one-hand-maces-molten-hammer",
+    "name": "Molten Hammer",
+    "class": "One Hand Maces",
+    "level": 77,
+    "implicit": "local weapon implicit hidden % base damage is fire [50]",
+    "stats": {
+      "damageMin": 35.5,
+      "damageMax": 59,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-strife-pick",
+    "name": "Strife Pick",
+    "class": "One Hand Maces",
+    "level": 78,
+    "implicit": "+(5—10)% to Critical Damage Bonus",
+    "stats": {
+      "damageMin": 49,
+      "damageMax": 66,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-fortified-hammer",
+    "name": "Fortified Hammer",
+    "class": "One Hand Maces",
+    "level": 79,
+    "implicit": "40% chance to Daze on Hit",
+    "stats": {
+      "damageMin": 60,
+      "damageMax": 73,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "one-hand-maces-marauding-mace",
+    "name": "Marauding Mace",
+    "class": "One Hand Maces",
+    "level": 77,
+    "implicit": null,
+    "stats": {
+      "damageMin": 51,
+      "damageMax": 84,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-maces-akoyan-club",
+    "name": "Akoyan Club",
+    "class": "One Hand Maces",
+    "level": 78,
+    "implicit": "Always Hits",
+    "stats": {
+      "damageMin": 46,
+      "damageMax": 76,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "sceptres-rattling-sceptre",
+    "name": "Rattling Sceptre",
+    "class": "Sceptres",
+    "level": 0,
+    "implicit": "Grants Skill: Skeletal Warrior"
+  },
+  {
+    "id": "sceptres-stoic-sceptre",
+    "name": "Stoic Sceptre",
+    "class": "Sceptres",
+    "level": 6,
+    "implicit": "Grants Skill: Level 3 Discipline"
+  },
+  {
+    "id": "sceptres-lupine-sceptre",
+    "name": "Lupine Sceptre",
+    "class": "Sceptres",
+    "level": 12,
+    "implicit": "Grants Skill: Level 4 Skeletal Warrior"
+  },
+  {
+    "id": "sceptres-omen-sceptre",
+    "name": "Omen Sceptre",
+    "class": "Sceptres",
+    "level": 16,
+    "implicit": "Grants Skill: Level 5 Malice"
+  },
+  {
+    "id": "sceptres-ochre-sceptre",
+    "name": "Ochre Sceptre",
+    "class": "Sceptres",
+    "level": 21,
+    "implicit": "Grants Skill: Level 6 Skeletal Warrior"
+  },
+  {
+    "id": "sceptres-shrine-sceptre",
+    "name": "Shrine Sceptre",
+    "class": "Sceptres",
+    "level": 26,
+    "implicit": "Grants Skill: Level 8 Purity of Fire"
+  },
+  {
+    "id": "sceptres-shrine-sceptre",
+    "name": "Shrine Sceptre",
+    "class": "Sceptres",
+    "level": 26,
+    "implicit": "Grants Skill: Level 8 Purity of Ice"
+  },
+  {
+    "id": "sceptres-shrine-sceptre",
+    "name": "Shrine Sceptre",
+    "class": "Sceptres",
+    "level": 26,
+    "implicit": "Grants Skill: Level 8 Purity of Lightning"
+  },
+  {
+    "id": "sceptres-devouring-sceptre",
+    "name": "Devouring Sceptre",
+    "class": "Sceptres",
+    "level": 33,
+    "implicit": "Grants Skill: Level 9 Skeletal Warrior"
+  },
+  {
+    "id": "sceptres-clasped-sceptre",
+    "name": "Clasped Sceptre",
+    "class": "Sceptres",
+    "level": 36,
+    "implicit": "Grants Skill: Level 10 Heart of Ice"
+  },
+  {
+    "id": "sceptres-devotional-sceptre",
+    "name": "Devotional Sceptre",
+    "class": "Sceptres",
+    "level": 45,
+    "implicit": "Grants Skill: Level 11 Skeletal Warrior"
+  },
+  {
+    "id": "sceptres-wrath-sceptre",
+    "name": "Wrath Sceptre",
+    "class": "Sceptres",
+    "level": 49,
+    "implicit": "Grants Skill: Level 12 Fulmination"
+  },
+  {
+    "id": "sceptres-aromatic-sceptre",
+    "name": "Aromatic Sceptre",
+    "class": "Sceptres",
+    "level": 52,
+    "implicit": "Grants Skill: Level 13 Skeletal Warrior"
+  },
+  {
+    "id": "sceptres-pious-sceptre",
+    "name": "Pious Sceptre",
+    "class": "Sceptres",
+    "level": 58,
+    "implicit": "Grants Skill: Level 14 Skeletal Warrior"
+  },
+  {
+    "id": "sceptres-hallowed-sceptre",
+    "name": "Hallowed Sceptre",
+    "class": "Sceptres",
+    "level": 65,
+    "implicit": "Grants Skill: Level 15 Skeletal Warrior"
+  },
+  {
+    "id": "sceptres-shrine-sceptre",
+    "name": "Shrine Sceptre",
+    "class": "Sceptres",
+    "level": 26,
+    "implicit": "Grants Skill: Level 8 Impurity"
+  },
+  {
+    "id": "spears-hardwood-spear",
+    "name": "Hardwood Spear",
+    "class": "Spears",
+    "level": 0,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 5,
+      "damageMax": 9,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "spears-ironhead-spear",
+    "name": "Ironhead Spear",
+    "class": "Spears",
+    "level": 5,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 9,
+      "damageMax": 12,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "spears-hunting-spear",
+    "name": "Hunting Spear",
+    "class": "Spears",
+    "level": 10,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 10,
+      "damageMax": 17,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "spears-winged-spear",
+    "name": "Winged Spear",
+    "class": "Spears",
+    "level": 16,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 12,
+      "damageMax": 22,
+      "aps": 1.7
+    }
+  },
+  {
+    "id": "spears-war-spear",
+    "name": "War Spear",
+    "class": "Spears",
+    "level": 21,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 16,
+      "damageMax": 27,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "spears-forked-spear",
+    "name": "Forked Spear",
+    "class": "Spears",
+    "level": 26,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 13,
+      "damageMax": 38,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "spears-barbed-spear",
+    "name": "Barbed Spear",
+    "class": "Spears",
+    "level": 33,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 20,
+      "damageMax": 38,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "spears-broad-spear",
+    "name": "Broad Spear",
+    "class": "Spears",
+    "level": 40,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 32,
+      "damageMax": 48,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "spears-crossblade-spear",
+    "name": "Crossblade Spear",
+    "class": "Spears",
+    "level": 45,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 25,
+      "damageMax": 52,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "spears-seaglass-spear",
+    "name": "Seaglass Spear",
+    "class": "Spears",
+    "level": 51,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 29,
+      "damageMax": 53,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "spears-sword-spear",
+    "name": "Sword Spear",
+    "class": "Spears",
+    "level": 52,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 30,
+      "damageMax": 56,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "spears-striking-spear",
+    "name": "Striking Spear",
+    "class": "Spears",
+    "level": 55,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 11.5,
+      "damageMax": 45.5,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "spears-helix-spear",
+    "name": "Helix Spear",
+    "class": "Spears",
+    "level": 65,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 37,
+      "damageMax": 68,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "spears-steelhead-spear",
+    "name": "Steelhead Spear",
+    "class": "Spears",
+    "level": 45,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 33,
+      "damageMax": 44,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "spears-coursing-spear",
+    "name": "Coursing Spear",
+    "class": "Spears",
+    "level": 48,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 31,
+      "damageMax": 52,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "spears-swift-spear",
+    "name": "Swift Spear",
+    "class": "Spears",
+    "level": 51,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 32,
+      "damageMax": 53,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "spears-branched-spear",
+    "name": "Branched Spear",
+    "class": "Spears",
+    "level": 54,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 23,
+      "damageMax": 69,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "spears-jagged-spear",
+    "name": "Jagged Spear",
+    "class": "Spears",
+    "level": 59,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 33,
+      "damageMax": 61,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "spears-massive-spear",
+    "name": "Massive Spear",
+    "class": "Spears",
+    "level": 62,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 46,
+      "damageMax": 69,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "spears-orichalcum-spear",
+    "name": "Orichalcum Spear",
+    "class": "Spears",
+    "level": 67,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 46,
+      "damageMax": 62,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "spears-soaring-spear",
+    "name": "Soaring Spear",
+    "class": "Spears",
+    "level": 70,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 35,
+      "damageMax": 65,
+      "aps": 1.7
+    }
+  },
+  {
+    "id": "spears-pronged-spear",
+    "name": "Pronged Spear",
+    "class": "Spears",
+    "level": 72,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 30,
+      "damageMax": 89,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "spears-stalking-spear",
+    "name": "Stalking Spear",
+    "class": "Spears",
+    "level": 77,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 47,
+      "damageMax": 79,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "spears-flying-spear",
+    "name": "Flying Spear",
+    "class": "Spears",
+    "level": 78,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 46,
+      "damageMax": 77,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "spears-grand-spear",
+    "name": "Grand Spear",
+    "class": "Spears",
+    "level": 79,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 56,
+      "damageMax": 84,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "spears-spiked-spear",
+    "name": "Spiked Spear",
+    "class": "Spears",
+    "level": 77,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 41,
+      "damageMax": 76,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "spears-guardian-spear",
+    "name": "Guardian Spear",
+    "class": "Spears",
+    "level": 75,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 38,
+      "damageMax": 79,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "spears-akoyan-spear",
+    "name": "Akoyan Spear",
+    "class": "Spears",
+    "level": 78,
+    "implicit": "Grants Skill: Spear Throw",
+    "stats": {
+      "damageMin": 39,
+      "damageMax": 72,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "bows-crude-bow",
+    "name": "Crude Bow",
+    "class": "Bows",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "damageMin": 6,
+      "damageMax": 9,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "bows-shortbow",
+    "name": "Shortbow",
+    "class": "Bows",
+    "level": 5,
+    "implicit": null,
+    "stats": {
+      "damageMin": 7,
+      "damageMax": 14,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "bows-warden-bow",
+    "name": "Warden Bow",
+    "class": "Bows",
+    "level": 11,
+    "implicit": "(20—30)% chance to Chain an additional time",
+    "stats": {
+      "damageMin": 12,
+      "damageMax": 20,
+      "aps": 1.15
+    }
+  },
+  {
+    "id": "bows-recurve-bow",
+    "name": "Recurve Bow",
+    "class": "Bows",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "damageMin": 15,
+      "damageMax": 31,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "bows-composite-bow",
+    "name": "Composite Bow",
+    "class": "Bows",
+    "level": 22,
+    "implicit": null,
+    "stats": {
+      "damageMin": 19,
+      "damageMax": 31,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "bows-dualstring-bow",
+    "name": "Dualstring Bow",
+    "class": "Bows",
+    "level": 28,
+    "implicit": "+50% Surpassing chance to fire an additional Arrow",
+    "stats": {
+      "damageMin": 19,
+      "damageMax": 35,
+      "aps": 1.15
+    }
+  },
+  {
+    "id": "bows-cultist-bow",
+    "name": "Cultist Bow",
+    "class": "Bows",
+    "level": 33,
+    "implicit": "local weapon implicit hidden added maximum chaos damage [19]local weapon implicit hidden added minimum chaos damage [7]",
+    "stats": {
+      "damageMin": 22,
+      "damageMax": 36,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "bows-zealot-bow",
+    "name": "Zealot Bow",
+    "class": "Bows",
+    "level": 39,
+    "implicit": null,
+    "stats": {
+      "damageMin": 31,
+      "damageMax": 47,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "bows-artillery-bow",
+    "name": "Artillery Bow",
+    "class": "Bows",
+    "level": 45,
+    "implicit": "50% reduced Projectile Range",
+    "stats": {
+      "damageMin": 39,
+      "damageMax": 72,
+      "aps": 1.15
+    }
+  },
+  {
+    "id": "bows-tribal-bow",
+    "name": "Tribal Bow",
+    "class": "Bows",
+    "level": 50,
+    "implicit": null,
+    "stats": {
+      "damageMin": 38,
+      "damageMax": 57,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "bows-greatbow",
+    "name": "Greatbow",
+    "class": "Bows",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "damageMin": 40,
+      "damageMax": 82,
+      "aps": 1.15
+    }
+  },
+  {
+    "id": "bows-double-limb-bow",
+    "name": "Double Limb Bow",
+    "class": "Bows",
+    "level": 56,
+    "implicit": null,
+    "stats": {
+      "damageMin": 42,
+      "damageMax": 63,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "bows-heavy-bow",
+    "name": "Heavy Bow",
+    "class": "Bows",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "damageMin": 45,
+      "damageMax": 75,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "bows-snakewood-shortbow",
+    "name": "Snakewood Shortbow",
+    "class": "Bows",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "damageMin": 29,
+      "damageMax": 54,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "bows-protector-bow",
+    "name": "Protector Bow",
+    "class": "Bows",
+    "level": 48,
+    "implicit": "(20—30)% chance to Chain an additional time",
+    "stats": {
+      "damageMin": 35,
+      "damageMax": 53,
+      "aps": 1.15
+    }
+  },
+  {
+    "id": "bows-rider-bow",
+    "name": "Rider Bow",
+    "class": "Bows",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "damageMin": 36,
+      "damageMax": 61,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "bows-twin-bow",
+    "name": "Twin Bow",
+    "class": "Bows",
+    "level": 54,
+    "implicit": "+50% Surpassing chance to fire an additional Arrow",
+    "stats": {
+      "damageMin": 32,
+      "damageMax": 60,
+      "aps": 1.15
+    }
+  },
+  {
+    "id": "bows-adherent-bow",
+    "name": "Adherent Bow",
+    "class": "Bows",
+    "level": 59,
+    "implicit": "local weapon implicit hidden added maximum chaos damage [32]local weapon implicit hidden added minimum chaos damage [14]",
+    "stats": {
+      "damageMin": 35,
+      "damageMax": 59,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "bows-militant-bow",
+    "name": "Militant Bow",
+    "class": "Bows",
+    "level": 62,
+    "implicit": null,
+    "stats": {
+      "damageMin": 46,
+      "damageMax": 69,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "bows-ironwood-shortbow",
+    "name": "Ironwood Shortbow",
+    "class": "Bows",
+    "level": 67,
+    "implicit": null,
+    "stats": {
+      "damageMin": 41,
+      "damageMax": 76,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "bows-cavalry-bow",
+    "name": "Cavalry Bow",
+    "class": "Bows",
+    "level": 72,
+    "implicit": null,
+    "stats": {
+      "damageMin": 49,
+      "damageMax": 82,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "bows-guardian-bow",
+    "name": "Guardian Bow",
+    "class": "Bows",
+    "level": 77,
+    "implicit": "(20—30)% chance to Chain an additional time",
+    "stats": {
+      "damageMin": 53,
+      "damageMax": 88,
+      "aps": 1.15
+    }
+  },
+  {
+    "id": "bows-gemini-bow",
+    "name": "Gemini Bow",
+    "class": "Bows",
+    "level": 78,
+    "implicit": "+50% Surpassing chance to fire an additional Arrow",
+    "stats": {
+      "damageMin": 39,
+      "damageMax": 72,
+      "aps": 1.15
+    }
+  },
+  {
+    "id": "bows-fanatic-bow",
+    "name": "Fanatic Bow",
+    "class": "Bows",
+    "level": 79,
+    "implicit": "local weapon implicit hidden added maximum chaos damage [64]local weapon implicit hidden added minimum chaos damage [28]",
+    "stats": {
+      "damageMin": 47,
+      "damageMax": 79,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "bows-warmonger-bow",
+    "name": "Warmonger Bow",
+    "class": "Bows",
+    "level": 77,
+    "implicit": null,
+    "stats": {
+      "damageMin": 56,
+      "damageMax": 84,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "bows-obliterator-bow",
+    "name": "Obliterator Bow",
+    "class": "Bows",
+    "level": 78,
+    "implicit": "50% reduced Projectile Range",
+    "stats": {
+      "damageMin": 62,
+      "damageMax": 115,
+      "aps": 1.15
+    }
+  },
+  {
+    "id": "staves-ashen-staff",
+    "name": "Ashen Staff",
+    "class": "Staves",
+    "level": 0,
+    "implicit": "Grants Skill: Firebolt"
+  },
+  {
+    "id": "staves-gelid-staff",
+    "name": "Gelid Staff",
+    "class": "Staves",
+    "level": 2,
+    "implicit": "Grants Skill: Level 1 Freezing Shards"
+  },
+  {
+    "id": "staves-voltaic-staff",
+    "name": "Voltaic Staff",
+    "class": "Staves",
+    "level": 2,
+    "implicit": "Grants Skill: Level 1 Lightning Bolt"
+  },
+  {
+    "id": "staves-spriggan-staff",
+    "name": "Spriggan Staff",
+    "class": "Staves",
+    "level": 11,
+    "implicit": "Grants Skill: Level 4 Firebolt"
+  },
+  {
+    "id": "staves-pyrophyte-staff",
+    "name": "Pyrophyte Staff",
+    "class": "Staves",
+    "level": 16,
+    "implicit": "Grants Skill: Level 5 Solar Orb"
+  },
+  {
+    "id": "staves-chiming-staff",
+    "name": "Chiming Staff",
+    "class": "Staves",
+    "level": 25,
+    "implicit": "Grants Skill: Level 7 Sigil of Power"
+  },
+  {
+    "id": "staves-rending-staff",
+    "name": "Rending Staff",
+    "class": "Staves",
+    "level": 33,
+    "implicit": "Grants Skill: Level 9 Soulrend"
+  },
+  {
+    "id": "staves-reaping-staff",
+    "name": "Reaping Staff",
+    "class": "Staves",
+    "level": 38,
+    "implicit": "Grants Skill: Level 10 Reap"
+  },
+  {
+    "id": "staves-icicle-staff",
+    "name": "Icicle Staff",
+    "class": "Staves",
+    "level": 45,
+    "implicit": "Grants Skill: Level 11 Firebolt"
+  },
+  {
+    "id": "staves-roaring-staff",
+    "name": "Roaring Staff",
+    "class": "Staves",
+    "level": 49,
+    "implicit": "Grants Skill: Level 12 Unleash"
+  },
+  {
+    "id": "staves-paralysing-staff",
+    "name": "Paralysing Staff",
+    "class": "Staves",
+    "level": 52,
+    "implicit": "Grants Skill: Level 13 Enervating Nova"
+  },
+  {
+    "id": "staves-sanctified-staff",
+    "name": "Sanctified Staff",
+    "class": "Staves",
+    "level": 56,
+    "implicit": "Grants Skill: Level 13 Consecrate"
+  },
+  {
+    "id": "staves-dark-staff",
+    "name": "Dark Staff",
+    "class": "Staves",
+    "level": 65,
+    "implicit": "Grants Skill: Level 15 Dark Pact"
+  },
+  {
+    "id": "staves-ravenous-staff",
+    "name": "Ravenous Staff",
+    "class": "Staves",
+    "level": 65,
+    "implicit": "Grants Skill: Level 15 Feast of Flesh"
+  },
+  {
+    "id": "staves-permafrost-staff",
+    "name": "Permafrost Staff",
+    "class": "Staves",
+    "level": 75,
+    "implicit": "Grants Skill: Level 17 Heart of Ice"
+  },
+  {
+    "id": "staves-reflecting-staff",
+    "name": "Reflecting Staff",
+    "class": "Staves",
+    "level": 70,
+    "implicit": "Grants Skill: Level 16 Mirror of Refraction"
+  },
+  {
+    "id": "two-hand-maces-felled-greatclub",
+    "name": "Felled Greatclub",
+    "class": "Two Hand Maces",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "damageMin": 13,
+      "damageMax": 18,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "two-hand-maces-oak-greathammer",
+    "name": "Oak Greathammer",
+    "class": "Two Hand Maces",
+    "level": 4,
+    "implicit": "Causes (20—40)% increased Stun Buildup",
+    "stats": {
+      "damageMin": 16,
+      "damageMax": 30,
+      "aps": 1
+    }
+  },
+  {
+    "id": "two-hand-maces-forge-maul",
+    "name": "Forge Maul",
+    "class": "Two Hand Maces",
+    "level": 11,
+    "implicit": "Crushes Enemies on Hit",
+    "stats": {
+      "damageMin": 26,
+      "damageMax": 35,
+      "aps": 1.05
+    }
+  },
+  {
+    "id": "two-hand-maces-studded-greatclub",
+    "name": "Studded Greatclub",
+    "class": "Two Hand Maces",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "damageMin": 32,
+      "damageMax": 48,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "two-hand-maces-cultist-greathammer",
+    "name": "Cultist Greathammer",
+    "class": "Two Hand Maces",
+    "level": 22,
+    "implicit": "Strikes deal Splash Damage",
+    "stats": {
+      "damageMin": 36,
+      "damageMax": 49,
+      "aps": 1.05
+    }
+  },
+  {
+    "id": "two-hand-maces-temple-maul",
+    "name": "Temple Maul",
+    "class": "Two Hand Maces",
+    "level": 28,
+    "implicit": null,
+    "stats": {
+      "damageMin": 35,
+      "damageMax": 72,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "two-hand-maces-leaden-greathammer",
+    "name": "Leaden Greathammer",
+    "class": "Two Hand Maces",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "damageMin": 58,
+      "damageMax": 78,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "two-hand-maces-crumbling-maul",
+    "name": "Crumbling Maul",
+    "class": "Two Hand Maces",
+    "level": 38,
+    "implicit": "Causes Enemies to Explode on Critical kill, for 10% of their Life as Physical Damage",
+    "stats": {
+      "damageMin": 62,
+      "damageMax": 75,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "two-hand-maces-pointed-maul",
+    "name": "Pointed Maul",
+    "class": "Two Hand Maces",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "damageMin": 68,
+      "damageMax": 102,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "two-hand-maces-totemic-greatclub",
+    "name": "Totemic Greatclub",
+    "class": "Two Hand Maces",
+    "level": 50,
+    "implicit": "Warcries Empower an additional Attack",
+    "stats": {
+      "damageMin": 77,
+      "damageMax": 105,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "two-hand-maces-greatmace",
+    "name": "Greatmace",
+    "class": "Two Hand Maces",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "damageMin": 74,
+      "damageMax": 124,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "two-hand-maces-precise-greathammer",
+    "name": "Precise Greathammer",
+    "class": "Two Hand Maces",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "damageMin": 87,
+      "damageMax": 118,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "two-hand-maces-giant-maul",
+    "name": "Giant Maul",
+    "class": "Two Hand Maces",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "damageMin": 96,
+      "damageMax": 144,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "two-hand-maces-snakewood-greathammer",
+    "name": "Snakewood Greathammer",
+    "class": "Two Hand Maces",
+    "level": 45,
+    "implicit": "Causes (20—40)% increased Stun Buildup",
+    "stats": {
+      "damageMin": 62,
+      "damageMax": 115,
+      "aps": 1.05
+    }
+  },
+  {
+    "id": "two-hand-maces-blacksmith-maul",
+    "name": "Blacksmith Maul",
+    "class": "Two Hand Maces",
+    "level": 48,
+    "implicit": "Crushes Enemies on Hit",
+    "stats": {
+      "damageMin": 75,
+      "damageMax": 102,
+      "aps": 1.05
+    }
+  },
+  {
+    "id": "two-hand-maces-zealot-greathammer",
+    "name": "Zealot Greathammer",
+    "class": "Two Hand Maces",
+    "level": 51,
+    "implicit": "Strikes deal Splash Damage",
+    "stats": {
+      "damageMin": 70,
+      "damageMax": 95,
+      "aps": 1.05
+    }
+  },
+  {
+    "id": "two-hand-maces-solemn-maul",
+    "name": "Solemn Maul",
+    "class": "Two Hand Maces",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "damageMin": 59,
+      "damageMax": 123,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "two-hand-maces-heavy-greathammer",
+    "name": "Heavy Greathammer",
+    "class": "Two Hand Maces",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "damageMin": 94,
+      "damageMax": 127,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "two-hand-maces-disintegrating-maul",
+    "name": "Disintegrating Maul",
+    "class": "Two Hand Maces",
+    "level": 62,
+    "implicit": "Causes Enemies to Explode on Critical kill, for 10% of their Life as Physical Damage",
+    "stats": {
+      "damageMin": 92,
+      "damageMax": 112,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "two-hand-maces-anvil-maul",
+    "name": "Anvil Maul",
+    "class": "Two Hand Maces",
+    "level": 67,
+    "implicit": "Crushes Enemies on Hit",
+    "stats": {
+      "damageMin": 101,
+      "damageMax": 136,
+      "aps": 1.05
+    }
+  },
+  {
+    "id": "two-hand-maces-sacred-maul",
+    "name": "Sacred Maul",
+    "class": "Two Hand Maces",
+    "level": 72,
+    "implicit": null,
+    "stats": {
+      "damageMin": 76,
+      "damageMax": 158,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "two-hand-maces-ironwood-greathammer",
+    "name": "Ironwood Greathammer",
+    "class": "Two Hand Maces",
+    "level": 77,
+    "implicit": "Causes (30—50)% increased Stun Buildup",
+    "stats": {
+      "damageMin": 105,
+      "damageMax": 196,
+      "aps": 1
+    }
+  },
+  {
+    "id": "two-hand-maces-fanatic-greathammer",
+    "name": "Fanatic Greathammer",
+    "class": "Two Hand Maces",
+    "level": 78,
+    "implicit": "Strikes deal Splash Damage",
+    "stats": {
+      "damageMin": 101,
+      "damageMax": 137,
+      "aps": 1.05
+    }
+  },
+  {
+    "id": "two-hand-maces-ruination-maul",
+    "name": "Ruination Maul",
+    "class": "Two Hand Maces",
+    "level": 79,
+    "implicit": "Causes Enemies to Explode on Critical kill, for 10% of their Life as Physical Damage",
+    "stats": {
+      "damageMin": 104,
+      "damageMax": 127,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "two-hand-maces-massive-greathammer",
+    "name": "Massive Greathammer",
+    "class": "Two Hand Maces",
+    "level": 77,
+    "implicit": null,
+    "stats": {
+      "damageMin": 119,
+      "damageMax": 161,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "two-hand-maces-tawhoan-greatclub",
+    "name": "Tawhoan Greatclub",
+    "class": "Two Hand Maces",
+    "level": 78,
+    "implicit": "Warcries Empower an additional Attack",
+    "stats": {
+      "damageMin": 113,
+      "damageMax": 153,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "quarterstaves-wrapped-quarterstaff",
+    "name": "Wrapped Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "damageMin": 7,
+      "damageMax": 12,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-long-quarterstaff",
+    "name": "Long Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 4,
+    "implicit": "16% increased Melee Strike Range with this weapon",
+    "stats": {
+      "damageMin": 9,
+      "damageMax": 18,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-gothic-quarterstaff",
+    "name": "Gothic Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 11,
+    "implicit": null,
+    "stats": {
+      "damageMin": 16,
+      "damageMax": 26,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-crackling-quarterstaff",
+    "name": "Crackling Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 16,
+    "implicit": "local weapon implicit hidden added maximum lightning damage [35]local weapon implicit hidden added minimum lightning damage [1]",
+    "stats": {
+      "damageMin": 5,
+      "damageMax": 22,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-crescent-quarterstaff",
+    "name": "Crescent Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 20,
+    "implicit": null,
+    "stats": {
+      "damageMin": 19,
+      "damageMax": 39,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "quarterstaves-steelpoint-quarterstaff",
+    "name": "Steelpoint Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 28,
+    "implicit": null,
+    "stats": {
+      "damageMin": 28,
+      "damageMax": 51,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-slicing-quarterstaff",
+    "name": "Slicing Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "damageMin": 29,
+      "damageMax": 60,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-barrier-quarterstaff",
+    "name": "Barrier Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 37,
+    "implicit": "+(12—18)% to Block chance",
+    "stats": {
+      "damageMin": 35,
+      "damageMax": 58,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-hefty-quarterstaff",
+    "name": "Hefty Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 45,
+    "implicit": "(20—50)% chance to Daze on Hit",
+    "stats": {
+      "damageMin": 39,
+      "damageMax": 81,
+      "aps": 1.3
+    }
+  },
+  {
+    "id": "quarterstaves-smooth-quarterstaff",
+    "name": "Smooth Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 49,
+    "implicit": null,
+    "stats": {
+      "damageMin": 59,
+      "damageMax": 79,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "quarterstaves-anima-quarterstaff",
+    "name": "Anima Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "damageMin": 47,
+      "damageMax": 79,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-graceful-quarterstaff",
+    "name": "Graceful Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 56,
+    "implicit": null,
+    "stats": {
+      "damageMin": 47,
+      "damageMax": 87,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-wyrm-quarterstaff",
+    "name": "Wyrm Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "damageMin": 57,
+      "damageMax": 94,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-reaching-quarterstaff",
+    "name": "Reaching Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 45,
+    "implicit": "16% increased Melee Strike Range with this weapon",
+    "stats": {
+      "damageMin": 35,
+      "damageMax": 72,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-barbarous-quarterstaff",
+    "name": "Barbarous Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 48,
+    "implicit": null,
+    "stats": {
+      "damageMin": 42,
+      "damageMax": 71,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-arcing-quarterstaff",
+    "name": "Arcing Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 51,
+    "implicit": "local weapon implicit hidden added maximum lightning damage [75]local weapon implicit hidden added minimum lightning damage [1]",
+    "stats": {
+      "damageMin": 14,
+      "damageMax": 55,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-waxing-quarterstaff",
+    "name": "Waxing Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "damageMin": 39,
+      "damageMax": 82,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "quarterstaves-bladed-quarterstaff",
+    "name": "Bladed Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "damageMin": 45,
+      "damageMax": 94,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-guardian-quarterstaff",
+    "name": "Guardian Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 62,
+    "implicit": "+(12—18)% to Block chance",
+    "stats": {
+      "damageMin": 52,
+      "damageMax": 86,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-sinister-quarterstaff",
+    "name": "Sinister Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 67,
+    "implicit": null,
+    "stats": {
+      "damageMin": 55,
+      "damageMax": 91,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-lunar-quarterstaff",
+    "name": "Lunar Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 72,
+    "implicit": null,
+    "stats": {
+      "damageMin": 50,
+      "damageMax": 103,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "quarterstaves-striking-quarterstaff",
+    "name": "Striking Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 77,
+    "implicit": "16% increased Melee Strike Range with this weapon",
+    "stats": {
+      "damageMin": 53,
+      "damageMax": 111,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-bolting-quarterstaff",
+    "name": "Bolting Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 78,
+    "implicit": "local weapon implicit hidden added maximum lightning damage [100]local weapon implicit hidden added minimum lightning damage [1]",
+    "stats": {
+      "damageMin": 24,
+      "damageMax": 97,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-aegis-quarterstaff",
+    "name": "Aegis Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 79,
+    "implicit": "+(12—18)% to Block chance",
+    "stats": {
+      "damageMin": 58,
+      "damageMax": 97,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-razor-quarterstaff",
+    "name": "Razor Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 77,
+    "implicit": null,
+    "stats": {
+      "damageMin": 65,
+      "damageMax": 108,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "quarterstaves-skullcrusher-quarterstaff",
+    "name": "Skullcrusher Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 75,
+    "implicit": "(20—50)% chance to Daze on Hit",
+    "stats": {
+      "damageMin": 59,
+      "damageMax": 122,
+      "aps": 1.3
+    }
+  },
+  {
+    "id": "quarterstaves-dreaming-quarterstaff",
+    "name": "Dreaming Quarterstaff",
+    "class": "Quarterstaves",
+    "level": 78,
+    "implicit": null,
+    "stats": {
+      "damageMin": 99,
+      "damageMax": 133,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "crossbows-makeshift-crossbow",
+    "name": "Makeshift Crossbow",
+    "class": "Crossbows",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "damageMin": 7,
+      "damageMax": 12,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "crossbows-tense-crossbow",
+    "name": "Tense Crossbow",
+    "class": "Crossbows",
+    "level": 4,
+    "implicit": "(20—30)% increased Bolt Speed",
+    "stats": {
+      "damageMin": 8,
+      "damageMax": 15,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "crossbows-sturdy-crossbow",
+    "name": "Sturdy Crossbow",
+    "class": "Crossbows",
+    "level": 10,
+    "implicit": null,
+    "stats": {
+      "damageMin": 11,
+      "damageMax": 26,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "crossbows-varnished-crossbow",
+    "name": "Varnished Crossbow",
+    "class": "Crossbows",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "damageMin": 12,
+      "damageMax": 36,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "crossbows-dyad-crossbow",
+    "name": "Dyad Crossbow",
+    "class": "Crossbows",
+    "level": 20,
+    "implicit": "Loads an additional bolt",
+    "stats": {
+      "damageMin": 9,
+      "damageMax": 37,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "crossbows-alloy-crossbow",
+    "name": "Alloy Crossbow",
+    "class": "Crossbows",
+    "level": 26,
+    "implicit": null,
+    "stats": {
+      "damageMin": 12,
+      "damageMax": 50,
+      "aps": 1.7
+    }
+  },
+  {
+    "id": "crossbows-bombard-crossbow",
+    "name": "Bombard Crossbow",
+    "class": "Crossbows",
+    "level": 33,
+    "implicit": "Grenade Skills Fire an additional Projectile",
+    "stats": {
+      "damageMin": 14,
+      "damageMax": 56,
+      "aps": 1.65
+    }
+  },
+  {
+    "id": "crossbows-construct-crossbow",
+    "name": "Construct Crossbow",
+    "class": "Crossbows",
+    "level": 38,
+    "implicit": null,
+    "stats": {
+      "damageMin": 18,
+      "damageMax": 72,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "crossbows-blackfire-crossbow",
+    "name": "Blackfire Crossbow",
+    "class": "Crossbows",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "damageMin": 20,
+      "damageMax": 80,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "crossbows-piercing-crossbow",
+    "name": "Piercing Crossbow",
+    "class": "Crossbows",
+    "level": 50,
+    "implicit": "(20—30)% chance to Pierce an Enemy",
+    "stats": {
+      "damageMin": 21,
+      "damageMax": 84,
+      "aps": 1.65
+    }
+  },
+  {
+    "id": "crossbows-cumbrous-crossbow",
+    "name": "Cumbrous Crossbow",
+    "class": "Crossbows",
+    "level": 52,
+    "implicit": "+1 to maximum number of Summoned Ballista Totems",
+    "stats": {
+      "damageMin": 19,
+      "damageMax": 76,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "crossbows-dedalian-crossbow",
+    "name": "Dedalian Crossbow",
+    "class": "Crossbows",
+    "level": 56,
+    "implicit": null,
+    "stats": {
+      "damageMin": 25,
+      "damageMax": 99,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "crossbows-esoteric-crossbow",
+    "name": "Esoteric Crossbow",
+    "class": "Crossbows",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "damageMin": 28,
+      "damageMax": 113,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "crossbows-taut-crossbow",
+    "name": "Taut Crossbow",
+    "class": "Crossbows",
+    "level": 45,
+    "implicit": "(20—30)% increased Bolt Speed",
+    "stats": {
+      "damageMin": 20,
+      "damageMax": 79,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "crossbows-robust-crossbow",
+    "name": "Robust Crossbow",
+    "class": "Crossbows",
+    "level": 48,
+    "implicit": null,
+    "stats": {
+      "damageMin": 22,
+      "damageMax": 89,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "crossbows-painted-crossbow",
+    "name": "Painted Crossbow",
+    "class": "Crossbows",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "damageMin": 23,
+      "damageMax": 92,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "crossbows-twin-crossbow",
+    "name": "Twin Crossbow",
+    "class": "Crossbows",
+    "level": 54,
+    "implicit": "Loads an additional bolt",
+    "stats": {
+      "damageMin": 20,
+      "damageMax": 82,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "crossbows-cannonade-crossbow",
+    "name": "Cannonade Crossbow",
+    "class": "Crossbows",
+    "level": 59,
+    "implicit": "Grenade Skills Fire an additional Projectile",
+    "stats": {
+      "damageMin": 23,
+      "damageMax": 90,
+      "aps": 1.65
+    }
+  },
+  {
+    "id": "crossbows-bleak-crossbow",
+    "name": "Bleak Crossbow",
+    "class": "Crossbows",
+    "level": 62,
+    "implicit": null,
+    "stats": {
+      "damageMin": 27,
+      "damageMax": 109,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "crossbows-stout-crossbow",
+    "name": "Stout Crossbow",
+    "class": "Crossbows",
+    "level": 67,
+    "implicit": null,
+    "stats": {
+      "damageMin": 30,
+      "damageMax": 119,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "crossbows-engraved-crossbow",
+    "name": "Engraved Crossbow",
+    "class": "Crossbows",
+    "level": 72,
+    "implicit": null,
+    "stats": {
+      "damageMin": 31,
+      "damageMax": 124,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "crossbows-flexed-crossbow",
+    "name": "Flexed Crossbow",
+    "class": "Crossbows",
+    "level": 77,
+    "implicit": "(20—30)% increased Bolt Speed",
+    "stats": {
+      "damageMin": 32,
+      "damageMax": 127,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "crossbows-gemini-crossbow",
+    "name": "Gemini Crossbow",
+    "class": "Crossbows",
+    "level": 78,
+    "implicit": "Loads an additional bolt",
+    "stats": {
+      "damageMin": 28,
+      "damageMax": 112,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "crossbows-siege-crossbow",
+    "name": "Siege Crossbow",
+    "class": "Crossbows",
+    "level": 79,
+    "implicit": "Grenade Skills Fire an additional Projectile",
+    "stats": {
+      "damageMin": 29,
+      "damageMax": 115,
+      "aps": 1.65
+    }
+  },
+  {
+    "id": "crossbows-desolate-crossbow",
+    "name": "Desolate Crossbow",
+    "class": "Crossbows",
+    "level": 77,
+    "implicit": null,
+    "stats": {
+      "damageMin": 33,
+      "damageMax": 132,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "crossbows-elegant-crossbow",
+    "name": "Elegant Crossbow",
+    "class": "Crossbows",
+    "level": 78,
+    "implicit": "(20—30)% chance to Pierce an Enemy",
+    "stats": {
+      "damageMin": 31,
+      "damageMax": 123,
+      "aps": 1.65
+    }
+  },
+  {
+    "id": "quivers-broadhead-quiver",
+    "name": "Broadhead Quiver",
+    "class": "Quivers",
+    "level": 0,
+    "implicit": "Adds 1 to 3 Physical Damage to Attacks"
+  },
+  {
+    "id": "quivers-fire-quiver",
+    "name": "Fire Quiver",
+    "class": "Quivers",
+    "level": 8,
+    "implicit": "Adds 3 to 5 Fire damage to Attacks"
+  },
+  {
+    "id": "quivers-sacral-quiver",
+    "name": "Sacral Quiver",
+    "class": "Quivers",
+    "level": 16,
+    "implicit": "Gain (2—3) Life per Enemy Hit with Attacks"
+  },
+  {
+    "id": "quivers-two-point-quiver",
+    "name": "Two-Point Quiver",
+    "class": "Quivers",
+    "level": 24,
+    "implicit": "(20—30)% increased Accuracy Rating"
+  },
+  {
+    "id": "quivers-blunt-quiver",
+    "name": "Blunt Quiver",
+    "class": "Quivers",
+    "level": 33,
+    "implicit": "(25—40)% increased Stun Buildup"
+  },
+  {
+    "id": "quivers-toxic-quiver",
+    "name": "Toxic Quiver",
+    "class": "Quivers",
+    "level": 39,
+    "implicit": "(20—30)% chance to Poison on Hit with Attacks"
+  },
+  {
+    "id": "quivers-serrated-quiver",
+    "name": "Serrated Quiver",
+    "class": "Quivers",
+    "level": 44,
+    "implicit": "Attacks have (20—30)% chance to cause Bleeding"
+  },
+  {
+    "id": "quivers-primed-quiver",
+    "name": "Primed Quiver",
+    "class": "Quivers",
+    "level": 51,
+    "implicit": "(7—10)% increased Attack Speed"
+  },
+  {
+    "id": "quivers-penetrating-quiver",
+    "name": "Penetrating Quiver",
+    "class": "Quivers",
+    "level": 55,
+    "implicit": "100% chance to Pierce an Enemy"
+  },
+  {
+    "id": "quivers-volant-quiver",
+    "name": "Volant Quiver",
+    "class": "Quivers",
+    "level": 61,
+    "implicit": "(20—30)% increased Arrow Speed"
+  },
+  {
+    "id": "quivers-visceral-quiver",
+    "name": "Visceral Quiver",
+    "class": "Quivers",
+    "level": 65,
+    "implicit": "(20—30)% increased Critical Hit Chance for Attacks"
+  },
+  {
+    "id": "shields-golden-flame",
+    "name": "Golden Flame",
+    "class": "Shields",
+    "level": 15,
+    "implicit": "+(11—19)% to Chaos Resistance"
+  },
+  {
+    "id": "shields-splintered-tower-shield",
+    "name": "Splintered Tower Shield",
+    "class": "Shields",
+    "level": 0,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 18
+    }
+  },
+  {
+    "id": "shields-painted-tower-shield",
+    "name": "Painted Tower Shield",
+    "class": "Shields",
+    "level": 6,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 29
+    }
+  },
+  {
+    "id": "shields-braced-tower-shield",
+    "name": "Braced Tower Shield",
+    "class": "Shields",
+    "level": 12,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 41
+    }
+  },
+  {
+    "id": "shields-barricade-tower-shield",
+    "name": "Barricade Tower Shield",
+    "class": "Shields",
+    "level": 16,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 50
+    }
+  },
+  {
+    "id": "shields-effigial-tower-shield",
+    "name": "Effigial Tower Shield",
+    "class": "Shields",
+    "level": 21,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 60
+    }
+  },
+  {
+    "id": "shields-rampart-tower-shield",
+    "name": "Rampart Tower Shield",
+    "class": "Shields",
+    "level": 28,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 75
+    }
+  },
+  {
+    "id": "shields-heraldric-tower-shield",
+    "name": "Heraldric Tower Shield",
+    "class": "Shields",
+    "level": 33,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 85
+    }
+  },
+  {
+    "id": "shields-stone-tower-shield",
+    "name": "Stone Tower Shield",
+    "class": "Shields",
+    "level": 36,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 91
+    }
+  },
+  {
+    "id": "shields-crucible-tower-shield",
+    "name": "Crucible Tower Shield",
+    "class": "Shields",
+    "level": 45,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 110
+    }
+  },
+  {
+    "id": "shields-ancestor-tower-shield",
+    "name": "Ancestor Tower Shield",
+    "class": "Shields",
+    "level": 50,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 121
+    }
+  },
+  {
+    "id": "shields-phalanx-tower-shield",
+    "name": "Phalanx Tower Shield",
+    "class": "Shields",
+    "level": 52,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 125
+    }
+  },
+  {
+    "id": "shields-defiant-tower-shield",
+    "name": "Defiant Tower Shield",
+    "class": "Shields",
+    "level": 58,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 137
+    }
+  },
+  {
+    "id": "shields-blacksteel-tower-shield",
+    "name": "Blacksteel Tower Shield",
+    "class": "Shields",
+    "level": 65,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 152
+    }
+  },
+  {
+    "id": "shields-hardwood-targe",
+    "name": "Hardwood Targe",
+    "class": "Shields",
+    "level": 0,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 10,
+      "evasion": 7
+    }
+  },
+  {
+    "id": "shields-pelage-targe",
+    "name": "Pelage Targe",
+    "class": "Shields",
+    "level": 8,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 18,
+      "evasion": 14
+    }
+  },
+  {
+    "id": "shields-studded-targe",
+    "name": "Studded Targe",
+    "class": "Shields",
+    "level": 16,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 27,
+      "evasion": 23
+    }
+  },
+  {
+    "id": "shields-crescent-targe",
+    "name": "Crescent Targe",
+    "class": "Shields",
+    "level": 26,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 39,
+      "evasion": 34
+    }
+  },
+  {
+    "id": "shields-chiseled-targe",
+    "name": "Chiseled Targe",
+    "class": "Shields",
+    "level": 33,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 47,
+      "evasion": 41
+    }
+  },
+  {
+    "id": "shields-feathered-targe",
+    "name": "Feathered Targe",
+    "class": "Shields",
+    "level": 37,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 51,
+      "evasion": 46
+    }
+  },
+  {
+    "id": "shields-stratified-targe",
+    "name": "Stratified Targe",
+    "class": "Shields",
+    "level": 46,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 62,
+      "evasion": 56
+    }
+  },
+  {
+    "id": "shields-carved-targe",
+    "name": "Carved Targe",
+    "class": "Shields",
+    "level": 51,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 67,
+      "evasion": 61
+    }
+  },
+  {
+    "id": "shields-mosaic-targe",
+    "name": "Mosaic Targe",
+    "class": "Shields",
+    "level": 52,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 69,
+      "evasion": 62
+    }
+  },
+  {
+    "id": "shields-aureate-targe",
+    "name": "Aureate Targe",
+    "class": "Shields",
+    "level": 57,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 74,
+      "evasion": 68
+    }
+  },
+  {
+    "id": "shields-grand-targe",
+    "name": "Grand Targe",
+    "class": "Shields",
+    "level": 65,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 84,
+      "evasion": 76
+    }
+  },
+  {
+    "id": "shields-blazon-crest-shield",
+    "name": "Blazon Crest Shield",
+    "class": "Shields",
+    "level": 0,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 10,
+      "energyShield": 6
+    }
+  },
+  {
+    "id": "shields-sigil-crest-shield",
+    "name": "Sigil Crest Shield",
+    "class": "Shields",
+    "level": 7,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 17,
+      "energyShield": 8
+    }
+  },
+  {
+    "id": "shields-emblem-crest-shield",
+    "name": "Emblem Crest Shield",
+    "class": "Shields",
+    "level": 16,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 27,
+      "energyShield": 12
+    }
+  },
+  {
+    "id": "shields-jingling-crest-shield",
+    "name": "Jingling Crest Shield",
+    "class": "Shields",
+    "level": 28,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 41,
+      "energyShield": 16
+    }
+  },
+  {
+    "id": "shields-sectarian-crest-shield",
+    "name": "Sectarian Crest Shield",
+    "class": "Shields",
+    "level": 33,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 47,
+      "energyShield": 18
+    }
+  },
+  {
+    "id": "shields-omen-crest-shield",
+    "name": "Omen Crest Shield",
+    "class": "Shields",
+    "level": 36,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 50,
+      "energyShield": 19
+    }
+  },
+  {
+    "id": "shields-wayward-crest-shield",
+    "name": "Wayward Crest Shield",
+    "class": "Shields",
+    "level": 45,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 61,
+      "energyShield": 22
+    }
+  },
+  {
+    "id": "shields-seer-crest-shield",
+    "name": "Seer Crest Shield",
+    "class": "Shields",
+    "level": 50,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 66,
+      "energyShield": 24
+    }
+  },
+  {
+    "id": "shields-stoic-crest-shield",
+    "name": "Stoic Crest Shield",
+    "class": "Shields",
+    "level": 52,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 69,
+      "energyShield": 24
+    }
+  },
+  {
+    "id": "shields-empyreal-crest-shield",
+    "name": "Empyreal Crest Shield",
+    "class": "Shields",
+    "level": 57,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 74,
+      "energyShield": 26
+    }
+  },
+  {
+    "id": "shields-deified-crest-shield",
+    "name": "Deified Crest Shield",
+    "class": "Shields",
+    "level": 65,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 84,
+      "energyShield": 29
+    }
+  },
+  {
+    "id": "shields-golden-shield",
+    "name": "Golden Shield",
+    "class": "Shields",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "shields-aged-tower-shield",
+    "name": "Aged Tower Shield",
+    "class": "Shields",
+    "level": 45,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 110
+    }
+  },
+  {
+    "id": "shields-metalworked-tower-shield",
+    "name": "Metalworked Tower Shield",
+    "class": "Shields",
+    "level": 48,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 116
+    }
+  },
+  {
+    "id": "shields-cultist-tower-shield",
+    "name": "Cultist Tower Shield",
+    "class": "Shields",
+    "level": 51,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 123
+    }
+  },
+  {
+    "id": "shields-bulwark-tower-shield",
+    "name": "Bulwark Tower Shield",
+    "class": "Shields",
+    "level": 54,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 129
+    }
+  },
+  {
+    "id": "shields-noble-tower-shield",
+    "name": "Noble Tower Shield",
+    "class": "Shields",
+    "level": 59,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 139
+    }
+  },
+  {
+    "id": "shields-goldworked-tower-shield",
+    "name": "Goldworked Tower Shield",
+    "class": "Shields",
+    "level": 61,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 144
+    }
+  },
+  {
+    "id": "shields-ironwood-targe",
+    "name": "Ironwood Targe",
+    "class": "Shields",
+    "level": 45,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 61,
+      "evasion": 54
+    }
+  },
+  {
+    "id": "shields-fur-lined-targe",
+    "name": "Fur-lined Targe",
+    "class": "Shields",
+    "level": 48,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 64,
+      "evasion": 58
+    }
+  },
+  {
+    "id": "shields-mercenary-targe",
+    "name": "Mercenary Targe",
+    "class": "Shields",
+    "level": 51,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 67,
+      "evasion": 61
+    }
+  },
+  {
+    "id": "shields-polished-targe",
+    "name": "Polished Targe",
+    "class": "Shields",
+    "level": 54,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 71,
+      "evasion": 64
+    }
+  },
+  {
+    "id": "shields-stone-targe",
+    "name": "Stone Targe",
+    "class": "Shields",
+    "level": 59,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 77,
+      "evasion": 70
+    }
+  },
+  {
+    "id": "shields-avian-targe",
+    "name": "Avian Targe",
+    "class": "Shields",
+    "level": 62,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 80,
+      "evasion": 73
+    }
+  },
+  {
+    "id": "shields-painted-crest-shield",
+    "name": "Painted Crest Shield",
+    "class": "Shields",
+    "level": 45,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 61,
+      "energyShield": 22
+    }
+  },
+  {
+    "id": "shields-engraved-crest-shield",
+    "name": "Engraved Crest Shield",
+    "class": "Shields",
+    "level": 48,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 64,
+      "energyShield": 23
+    }
+  },
+  {
+    "id": "shields-descry-crest-shield",
+    "name": "Descry Crest Shield",
+    "class": "Shields",
+    "level": 51,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 67,
+      "energyShield": 24
+    }
+  },
+  {
+    "id": "shields-dekharan-crest-shield",
+    "name": "Dekharan Crest Shield",
+    "class": "Shields",
+    "level": 54,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 71,
+      "energyShield": 25
+    }
+  },
+  {
+    "id": "shields-quartered-crest-shield",
+    "name": "Quartered Crest Shield",
+    "class": "Shields",
+    "level": 59,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 77,
+      "energyShield": 27
+    }
+  },
+  {
+    "id": "shields-glowering-crest-shield",
+    "name": "Glowering Crest Shield",
+    "class": "Shields",
+    "level": 62,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 80,
+      "energyShield": 28
+    }
+  },
+  {
+    "id": "shields-royal-tower-shield",
+    "name": "Royal Tower Shield",
+    "class": "Shields",
+    "level": 65,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 152
+    }
+  },
+  {
+    "id": "shields-fortress-tower-shield",
+    "name": "Fortress Tower Shield",
+    "class": "Shields",
+    "level": 70,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 167
+    }
+  },
+  {
+    "id": "shields-vaal-tower-shield",
+    "name": "Vaal Tower Shield",
+    "class": "Shields",
+    "level": 75,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 182
+    }
+  },
+  {
+    "id": "shields-tawhoan-tower-shield",
+    "name": "Tawhoan Tower Shield",
+    "class": "Shields",
+    "level": 80,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 197
+    }
+  },
+  {
+    "id": "shields-mammoth-targe",
+    "name": "Mammoth Targe",
+    "class": "Shields",
+    "level": 65,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 84,
+      "evasion": 76
+    }
+  },
+  {
+    "id": "shields-baroque-targe",
+    "name": "Baroque Targe",
+    "class": "Shields",
+    "level": 70,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 92,
+      "evasion": 84
+    }
+  },
+  {
+    "id": "shields-soaring-targe",
+    "name": "Soaring Targe",
+    "class": "Shields",
+    "level": 75,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 100,
+      "evasion": 91
+    }
+  },
+  {
+    "id": "shields-golden-targe",
+    "name": "Golden Targe",
+    "class": "Shields",
+    "level": 80,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 109,
+      "evasion": 99
+    }
+  },
+  {
+    "id": "shields-intricate-crest-shield",
+    "name": "Intricate Crest Shield",
+    "class": "Shields",
+    "level": 65,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 84,
+      "energyShield": 29
+    }
+  },
+  {
+    "id": "shields-sekheman-crest-shield",
+    "name": "Sekheman Crest Shield",
+    "class": "Shields",
+    "level": 70,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 92,
+      "energyShield": 32
+    }
+  },
+  {
+    "id": "shields-vaal-crest-shield",
+    "name": "Vaal Crest Shield",
+    "class": "Shields",
+    "level": 75,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 100,
+      "energyShield": 35
+    }
+  },
+  {
+    "id": "shields-blacksteel-crest-shield",
+    "name": "Blacksteel Crest Shield",
+    "class": "Shields",
+    "level": 80,
+    "implicit": "Grants Skill: Raise Shield",
+    "stats": {
+      "armour": 109,
+      "energyShield": 37
+    }
+  },
+  {
+    "id": "bucklers-leather-buckler",
+    "name": "Leather Buckler",
+    "class": "Bucklers",
+    "level": 0,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 10
+    }
+  },
+  {
+    "id": "bucklers-wooden-buckler",
+    "name": "Wooden Buckler",
+    "class": "Bucklers",
+    "level": 5,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 16
+    }
+  },
+  {
+    "id": "bucklers-plated-buckler",
+    "name": "Plated Buckler",
+    "class": "Bucklers",
+    "level": 11,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 26
+    }
+  },
+  {
+    "id": "bucklers-iron-buckler",
+    "name": "Iron Buckler",
+    "class": "Bucklers",
+    "level": 16,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 33
+    }
+  },
+  {
+    "id": "bucklers-ridged-buckler",
+    "name": "Ridged Buckler",
+    "class": "Bucklers",
+    "level": 22,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 43
+    }
+  },
+  {
+    "id": "bucklers-spiked-buckler",
+    "name": "Spiked Buckler",
+    "class": "Bucklers",
+    "level": 26,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 49
+    }
+  },
+  {
+    "id": "bucklers-ringed-buckler",
+    "name": "Ringed Buckler",
+    "class": "Bucklers",
+    "level": 33,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 60
+    }
+  },
+  {
+    "id": "bucklers-edged-buckler",
+    "name": "Edged Buckler",
+    "class": "Bucklers",
+    "level": 39,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 70
+    }
+  },
+  {
+    "id": "bucklers-laminate-buckler",
+    "name": "Laminate Buckler",
+    "class": "Bucklers",
+    "level": 45,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 79
+    }
+  },
+  {
+    "id": "bucklers-pearl-buckler",
+    "name": "Pearl Buckler",
+    "class": "Bucklers",
+    "level": 50,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 87
+    }
+  },
+  {
+    "id": "bucklers-ornate-buckler",
+    "name": "Ornate Buckler",
+    "class": "Bucklers",
+    "level": 52,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 90
+    }
+  },
+  {
+    "id": "bucklers-array-buckler",
+    "name": "Array Buckler",
+    "class": "Bucklers",
+    "level": 55,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 95
+    }
+  },
+  {
+    "id": "bucklers-aegis-buckler",
+    "name": "Aegis Buckler",
+    "class": "Bucklers",
+    "level": 65,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 111
+    }
+  },
+  {
+    "id": "bucklers-oak-buckler",
+    "name": "Oak Buckler",
+    "class": "Bucklers",
+    "level": 45,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 79
+    }
+  },
+  {
+    "id": "bucklers-painted-buckler",
+    "name": "Painted Buckler",
+    "class": "Bucklers",
+    "level": 48,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 84
+    }
+  },
+  {
+    "id": "bucklers-coiled-buckler",
+    "name": "Coiled Buckler",
+    "class": "Bucklers",
+    "level": 51,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 89
+    }
+  },
+  {
+    "id": "bucklers-spikeward-buckler",
+    "name": "Spikeward Buckler",
+    "class": "Bucklers",
+    "level": 54,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 93
+    }
+  },
+  {
+    "id": "bucklers-jingling-buckler",
+    "name": "Jingling Buckler",
+    "class": "Bucklers",
+    "level": 59,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 101
+    }
+  },
+  {
+    "id": "bucklers-bladeguard-buckler",
+    "name": "Bladeguard Buckler",
+    "class": "Bucklers",
+    "level": 61,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 105
+    }
+  },
+  {
+    "id": "bucklers-ornate-buckler",
+    "name": "Ornate Buckler",
+    "class": "Bucklers",
+    "level": 65,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 111
+    }
+  },
+  {
+    "id": "bucklers-gutspike-buckler",
+    "name": "Gutspike Buckler",
+    "class": "Bucklers",
+    "level": 70,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 122
+    }
+  },
+  {
+    "id": "bucklers-ancient-buckler",
+    "name": "Ancient Buckler",
+    "class": "Bucklers",
+    "level": 75,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 133
+    }
+  },
+  {
+    "id": "bucklers-desert-buckler",
+    "name": "Desert Buckler",
+    "class": "Bucklers",
+    "level": 80,
+    "implicit": "Grants Skill: Parry",
+    "stats": {
+      "evasion": 144
+    }
+  },
+  {
+    "id": "foci-twig-focus",
+    "name": "Twig Focus",
+    "class": "Foci",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "energyShield": 12
+    }
+  },
+  {
+    "id": "foci-woven-focus",
+    "name": "Woven Focus",
+    "class": "Foci",
+    "level": 6,
+    "implicit": null,
+    "stats": {
+      "energyShield": 15
+    }
+  },
+  {
+    "id": "foci-antler-focus",
+    "name": "Antler Focus",
+    "class": "Foci",
+    "level": 10,
+    "implicit": null,
+    "stats": {
+      "energyShield": 17
+    }
+  },
+  {
+    "id": "foci-engraved-focus",
+    "name": "Engraved Focus",
+    "class": "Foci",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "energyShield": 21
+    }
+  },
+  {
+    "id": "foci-tonal-focus",
+    "name": "Tonal Focus",
+    "class": "Foci",
+    "level": 22,
+    "implicit": null,
+    "stats": {
+      "energyShield": 25
+    }
+  },
+  {
+    "id": "foci-crystal-focus",
+    "name": "Crystal Focus",
+    "class": "Foci",
+    "level": 26,
+    "implicit": null,
+    "stats": {
+      "energyShield": 28
+    }
+  },
+  {
+    "id": "foci-voodoo-focus",
+    "name": "Voodoo Focus",
+    "class": "Foci",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "energyShield": 32
+    }
+  },
+  {
+    "id": "foci-plumed-focus",
+    "name": "Plumed Focus",
+    "class": "Foci",
+    "level": 36,
+    "implicit": null,
+    "stats": {
+      "energyShield": 34
+    }
+  },
+  {
+    "id": "foci-runed-focus",
+    "name": "Runed Focus",
+    "class": "Foci",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "energyShield": 40
+    }
+  },
+  {
+    "id": "foci-whorl-focus",
+    "name": "Whorl Focus",
+    "class": "Foci",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "energyShield": 43
+    }
+  },
+  {
+    "id": "foci-elegant-focus",
+    "name": "Elegant Focus",
+    "class": "Foci",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "energyShield": 44
+    }
+  },
+  {
+    "id": "foci-attuned-focus",
+    "name": "Attuned Focus",
+    "class": "Foci",
+    "level": 57,
+    "implicit": null,
+    "stats": {
+      "energyShield": 47
+    }
+  },
+  {
+    "id": "foci-magus-focus",
+    "name": "Magus Focus",
+    "class": "Foci",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "energyShield": 52
+    }
+  },
+  {
+    "id": "foci-wreath-focus",
+    "name": "Wreath Focus",
+    "class": "Foci",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "energyShield": 40
+    }
+  },
+  {
+    "id": "foci-staghorn-focus",
+    "name": "Staghorn Focus",
+    "class": "Foci",
+    "level": 48,
+    "implicit": null,
+    "stats": {
+      "energyShield": 42
+    }
+  },
+  {
+    "id": "foci-jingling-focus",
+    "name": "Jingling Focus",
+    "class": "Foci",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "energyShield": 43
+    }
+  },
+  {
+    "id": "foci-arrayed-focus",
+    "name": "Arrayed Focus",
+    "class": "Foci",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "energyShield": 45
+    }
+  },
+  {
+    "id": "foci-cultist-focus",
+    "name": "Cultist Focus",
+    "class": "Foci",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "energyShield": 49
+    }
+  },
+  {
+    "id": "foci-hallowed-focus",
+    "name": "Hallowed Focus",
+    "class": "Foci",
+    "level": 61,
+    "implicit": null,
+    "stats": {
+      "energyShield": 53
+    }
+  },
+  {
+    "id": "foci-druidic-focus",
+    "name": "Druidic Focus",
+    "class": "Foci",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "energyShield": 58
+    }
+  },
+  {
+    "id": "foci-leyline-focus",
+    "name": "Leyline Focus",
+    "class": "Foci",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "energyShield": 66
+    }
+  },
+  {
+    "id": "foci-sacred-focus",
+    "name": "Sacred Focus",
+    "class": "Foci",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "energyShield": 75
+    }
+  },
+  {
+    "id": "foci-tasalian-focus",
+    "name": "Tasalian Focus",
+    "class": "Foci",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "energyShield": 85
+    }
+  },
+  {
+    "id": "gloves-golden-bracers",
+    "name": "Golden Bracers",
+    "class": "Gloves",
+    "level": 12,
+    "implicit": "+(20—30) to maximum Life"
+  },
+  {
+    "id": "gloves-stocky-mitts",
+    "name": "Stocky Mitts",
+    "class": "Gloves",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "armour": 15
+    }
+  },
+  {
+    "id": "gloves-riveted-mitts",
+    "name": "Riveted Mitts",
+    "class": "Gloves",
+    "level": 11,
+    "implicit": null,
+    "stats": {
+      "armour": 31
+    }
+  },
+  {
+    "id": "gloves-tempered-mitts",
+    "name": "Tempered Mitts",
+    "class": "Gloves",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "armour": 40
+    }
+  },
+  {
+    "id": "gloves-bolstered-mitts",
+    "name": "Bolstered Mitts",
+    "class": "Gloves",
+    "level": 27,
+    "implicit": null,
+    "stats": {
+      "armour": 58
+    }
+  },
+  {
+    "id": "gloves-moulded-mitts",
+    "name": "Moulded Mitts",
+    "class": "Gloves",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "armour": 68
+    }
+  },
+  {
+    "id": "gloves-detailed-mitts",
+    "name": "Detailed Mitts",
+    "class": "Gloves",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 88
+    }
+  },
+  {
+    "id": "gloves-titan-mitts",
+    "name": "Titan Mitts",
+    "class": "Gloves",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "armour": 100
+    }
+  },
+  {
+    "id": "gloves-grand-mitts",
+    "name": "Grand Mitts",
+    "class": "Gloves",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 122
+    }
+  },
+  {
+    "id": "gloves-suede-bracers",
+    "name": "Suede Bracers",
+    "class": "Gloves",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "evasion": 10
+    }
+  },
+  {
+    "id": "gloves-firm-bracers",
+    "name": "Firm Bracers",
+    "class": "Gloves",
+    "level": 11,
+    "implicit": null,
+    "stats": {
+      "evasion": 26
+    }
+  },
+  {
+    "id": "gloves-bound-bracers",
+    "name": "Bound Bracers",
+    "class": "Gloves",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "evasion": 33
+    }
+  },
+  {
+    "id": "gloves-sectioned-bracers",
+    "name": "Sectioned Bracers",
+    "class": "Gloves",
+    "level": 28,
+    "implicit": null,
+    "stats": {
+      "evasion": 52
+    }
+  },
+  {
+    "id": "gloves-spined-bracers",
+    "name": "Spined Bracers",
+    "class": "Gloves",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "evasion": 60
+    }
+  },
+  {
+    "id": "gloves-fine-bracers",
+    "name": "Fine Bracers",
+    "class": "Gloves",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "evasion": 79
+    }
+  },
+  {
+    "id": "gloves-hardened-bracers",
+    "name": "Hardened Bracers",
+    "class": "Gloves",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "evasion": 90
+    }
+  },
+  {
+    "id": "gloves-engraved-bracers",
+    "name": "Engraved Bracers",
+    "class": "Gloves",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "evasion": 111
+    }
+  },
+  {
+    "id": "gloves-torn-gloves",
+    "name": "Torn Gloves",
+    "class": "Gloves",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "energyShield": 9
+    }
+  },
+  {
+    "id": "gloves-sombre-gloves",
+    "name": "Sombre Gloves",
+    "class": "Gloves",
+    "level": 12,
+    "implicit": null,
+    "stats": {
+      "energyShield": 15
+    }
+  },
+  {
+    "id": "gloves-stitched-gloves",
+    "name": "Stitched Gloves",
+    "class": "Gloves",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "energyShield": 17
+    }
+  },
+  {
+    "id": "gloves-jewelled-gloves",
+    "name": "Jewelled Gloves",
+    "class": "Gloves",
+    "level": 26,
+    "implicit": null,
+    "stats": {
+      "energyShield": 22
+    }
+  },
+  {
+    "id": "gloves-intricate-gloves",
+    "name": "Intricate Gloves",
+    "class": "Gloves",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "energyShield": 26
+    }
+  },
+  {
+    "id": "gloves-pauascale-gloves",
+    "name": "Pauascale Gloves",
+    "class": "Gloves",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "energyShield": 32
+    }
+  },
+  {
+    "id": "gloves-embroidered-gloves",
+    "name": "Embroidered Gloves",
+    "class": "Gloves",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "energyShield": 35
+    }
+  },
+  {
+    "id": "gloves-adorned-gloves",
+    "name": "Adorned Gloves",
+    "class": "Gloves",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "energyShield": 42
+    }
+  },
+  {
+    "id": "gloves-ringmail-gauntlets",
+    "name": "Ringmail Gauntlets",
+    "class": "Gloves",
+    "level": 6,
+    "implicit": null,
+    "stats": {
+      "armour": 13,
+      "evasion": 10
+    }
+  },
+  {
+    "id": "gloves-layered-gauntlets",
+    "name": "Layered Gauntlets",
+    "class": "Gloves",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "armour": 22,
+      "evasion": 18
+    }
+  },
+  {
+    "id": "gloves-doubled-gauntlets",
+    "name": "Doubled Gauntlets",
+    "class": "Gloves",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "armour": 37,
+      "evasion": 33
+    }
+  },
+  {
+    "id": "gloves-plate-gauntlets",
+    "name": "Plate Gauntlets",
+    "class": "Gloves",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 48,
+      "evasion": 44
+    }
+  },
+  {
+    "id": "gloves-burnished-gauntlets",
+    "name": "Burnished Gauntlets",
+    "class": "Gloves",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "armour": 55,
+      "evasion": 50
+    }
+  },
+  {
+    "id": "gloves-ornate-gauntlets",
+    "name": "Ornate Gauntlets",
+    "class": "Gloves",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 67,
+      "evasion": 61
+    }
+  },
+  {
+    "id": "gloves-rope-cuffs",
+    "name": "Rope Cuffs",
+    "class": "Gloves",
+    "level": 5,
+    "implicit": null,
+    "stats": {
+      "armour": 12,
+      "energyShield": 6
+    }
+  },
+  {
+    "id": "gloves-aged-cuffs",
+    "name": "Aged Cuffs",
+    "class": "Gloves",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "armour": 22,
+      "energyShield": 9
+    }
+  },
+  {
+    "id": "gloves-goldcast-cuffs",
+    "name": "Goldcast Cuffs",
+    "class": "Gloves",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "armour": 37,
+      "energyShield": 14
+    }
+  },
+  {
+    "id": "gloves-verisium-cuffs",
+    "name": "Verisium Cuffs",
+    "class": "Gloves",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 48,
+      "energyShield": 17
+    }
+  },
+  {
+    "id": "gloves-righteous-cuffs",
+    "name": "Righteous Cuffs",
+    "class": "Gloves",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "armour": 55,
+      "energyShield": 19
+    }
+  },
+  {
+    "id": "gloves-signet-cuffs",
+    "name": "Signet Cuffs",
+    "class": "Gloves",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 67,
+      "energyShield": 23
+    }
+  },
+  {
+    "id": "gloves-gauze-wraps",
+    "name": "Gauze Wraps",
+    "class": "Gloves",
+    "level": 4,
+    "implicit": null,
+    "stats": {
+      "evasion": 8,
+      "energyShield": 6
+    }
+  },
+  {
+    "id": "gloves-linen-wraps",
+    "name": "Linen Wraps",
+    "class": "Gloves",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "evasion": 18,
+      "energyShield": 9
+    }
+  },
+  {
+    "id": "gloves-spiral-wraps",
+    "name": "Spiral Wraps",
+    "class": "Gloves",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "evasion": 33,
+      "energyShield": 14
+    }
+  },
+  {
+    "id": "gloves-buckled-wraps",
+    "name": "Buckled Wraps",
+    "class": "Gloves",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "evasion": 44,
+      "energyShield": 17
+    }
+  },
+  {
+    "id": "gloves-furtive-wraps",
+    "name": "Furtive Wraps",
+    "class": "Gloves",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "evasion": 50,
+      "energyShield": 19
+    }
+  },
+  {
+    "id": "gloves-utility-wraps",
+    "name": "Utility Wraps",
+    "class": "Gloves",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "evasion": 61,
+      "energyShield": 23
+    }
+  },
+  {
+    "id": "gloves-grand-manchettes",
+    "name": "Grand Manchettes",
+    "class": "Gloves",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 44,
+      "evasion": 40,
+      "energyShield": 15
+    }
+  },
+  {
+    "id": "gloves-golden-bracers",
+    "name": "Golden Bracers",
+    "class": "Gloves",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "gloves-plated-mitts",
+    "name": "Plated Mitts",
+    "class": "Gloves",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 88
+    }
+  },
+  {
+    "id": "gloves-elegant-mitts",
+    "name": "Elegant Mitts",
+    "class": "Gloves",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "armour": 98
+    }
+  },
+  {
+    "id": "gloves-ancient-mitts",
+    "name": "Ancient Mitts",
+    "class": "Gloves",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "armour": 103
+    }
+  },
+  {
+    "id": "gloves-feathered-mitts",
+    "name": "Feathered Mitts",
+    "class": "Gloves",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "armour": 111
+    }
+  },
+  {
+    "id": "gloves-hunting-bracers",
+    "name": "Hunting Bracers",
+    "class": "Gloves",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "evasion": 79
+    }
+  },
+  {
+    "id": "gloves-swift-bracers",
+    "name": "Swift Bracers",
+    "class": "Gloves",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "evasion": 89
+    }
+  },
+  {
+    "id": "gloves-refined-bracers",
+    "name": "Refined Bracers",
+    "class": "Gloves",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "evasion": 93
+    }
+  },
+  {
+    "id": "gloves-spiked-bracers",
+    "name": "Spiked Bracers",
+    "class": "Gloves",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "evasion": 101
+    }
+  },
+  {
+    "id": "gloves-ominous-gloves",
+    "name": "Ominous Gloves",
+    "class": "Gloves",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "energyShield": 32
+    }
+  },
+  {
+    "id": "gloves-embellished-gloves",
+    "name": "Embellished Gloves",
+    "class": "Gloves",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "energyShield": 35
+    }
+  },
+  {
+    "id": "gloves-baroque-gloves",
+    "name": "Baroque Gloves",
+    "class": "Gloves",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "energyShield": 36
+    }
+  },
+  {
+    "id": "gloves-gold-gloves",
+    "name": "Gold Gloves",
+    "class": "Gloves",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "energyShield": 39
+    }
+  },
+  {
+    "id": "gloves-ironmail-gauntlets",
+    "name": "Ironmail Gauntlets",
+    "class": "Gloves",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 48,
+      "evasion": 44
+    }
+  },
+  {
+    "id": "gloves-captain-gauntlets",
+    "name": "Captain Gauntlets",
+    "class": "Gloves",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "armour": 54,
+      "evasion": 49
+    }
+  },
+  {
+    "id": "gloves-zealot-gauntlets",
+    "name": "Zealot Gauntlets",
+    "class": "Gloves",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "armour": 61,
+      "evasion": 56
+    }
+  },
+  {
+    "id": "gloves-braided-cuffs",
+    "name": "Braided Cuffs",
+    "class": "Gloves",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 48,
+      "energyShield": 17
+    }
+  },
+  {
+    "id": "gloves-heirloom-cuffs",
+    "name": "Heirloom Cuffs",
+    "class": "Gloves",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "armour": 54,
+      "energyShield": 19
+    }
+  },
+  {
+    "id": "gloves-ornate-cuffs",
+    "name": "Ornate Cuffs",
+    "class": "Gloves",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "armour": 61,
+      "energyShield": 21
+    }
+  },
+  {
+    "id": "gloves-bandage-wraps",
+    "name": "Bandage Wraps",
+    "class": "Gloves",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "evasion": 44,
+      "energyShield": 17
+    }
+  },
+  {
+    "id": "gloves-cambric-wraps",
+    "name": "Cambric Wraps",
+    "class": "Gloves",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "evasion": 49,
+      "energyShield": 19
+    }
+  },
+  {
+    "id": "gloves-adorned-wraps",
+    "name": "Adorned Wraps",
+    "class": "Gloves",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "evasion": 56,
+      "energyShield": 21
+    }
+  },
+  {
+    "id": "gloves-knightly-mitts",
+    "name": "Knightly Mitts",
+    "class": "Gloves",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 122
+    }
+  },
+  {
+    "id": "gloves-ornate-mitts",
+    "name": "Ornate Mitts",
+    "class": "Gloves",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "armour": 134
+    }
+  },
+  {
+    "id": "gloves-vaal-mitts",
+    "name": "Vaal Mitts",
+    "class": "Gloves",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "armour": 146
+    }
+  },
+  {
+    "id": "gloves-massive-mitts",
+    "name": "Massive Mitts",
+    "class": "Gloves",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "armour": 158
+    }
+  },
+  {
+    "id": "gloves-stalking-bracers",
+    "name": "Stalking Bracers",
+    "class": "Gloves",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "evasion": 111
+    }
+  },
+  {
+    "id": "gloves-grand-bracers",
+    "name": "Grand Bracers",
+    "class": "Gloves",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "evasion": 122
+    }
+  },
+  {
+    "id": "gloves-barbed-bracers",
+    "name": "Barbed Bracers",
+    "class": "Gloves",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "evasion": 133
+    }
+  },
+  {
+    "id": "gloves-polished-bracers",
+    "name": "Polished Bracers",
+    "class": "Gloves",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "evasion": 144
+    }
+  },
+  {
+    "id": "gloves-grim-gloves",
+    "name": "Grim Gloves",
+    "class": "Gloves",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "energyShield": 42
+    }
+  },
+  {
+    "id": "gloves-opulent-gloves",
+    "name": "Opulent Gloves",
+    "class": "Gloves",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "energyShield": 46
+    }
+  },
+  {
+    "id": "gloves-vaal-gloves",
+    "name": "Vaal Gloves",
+    "class": "Gloves",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "energyShield": 50
+    }
+  },
+  {
+    "id": "gloves-sirenscale-gloves",
+    "name": "Sirenscale Gloves",
+    "class": "Gloves",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "energyShield": 54
+    }
+  },
+  {
+    "id": "gloves-steelmail-gauntlets",
+    "name": "Steelmail Gauntlets",
+    "class": "Gloves",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 67,
+      "evasion": 61
+    }
+  },
+  {
+    "id": "gloves-commander-gauntlets",
+    "name": "Commander Gauntlets",
+    "class": "Gloves",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "armour": 74,
+      "evasion": 67
+    }
+  },
+  {
+    "id": "gloves-cultist-gauntlets",
+    "name": "Cultist Gauntlets",
+    "class": "Gloves",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "armour": 80,
+      "evasion": 73
+    }
+  },
+  {
+    "id": "gloves-blacksteel-gauntlets",
+    "name": "Blacksteel Gauntlets",
+    "class": "Gloves",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "armour": 87,
+      "evasion": 79
+    }
+  },
+  {
+    "id": "gloves-bound-cuffs",
+    "name": "Bound Cuffs",
+    "class": "Gloves",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 67,
+      "energyShield": 23
+    }
+  },
+  {
+    "id": "gloves-ancient-cuffs",
+    "name": "Ancient Cuffs",
+    "class": "Gloves",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "armour": 74,
+      "energyShield": 25
+    }
+  },
+  {
+    "id": "gloves-gleaming-cuffs",
+    "name": "Gleaming Cuffs",
+    "class": "Gloves",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "armour": 80,
+      "energyShield": 28
+    }
+  },
+  {
+    "id": "gloves-adherent-cuffs",
+    "name": "Adherent Cuffs",
+    "class": "Gloves",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "armour": 87,
+      "energyShield": 30
+    }
+  },
+  {
+    "id": "gloves-war-wraps",
+    "name": "War Wraps",
+    "class": "Gloves",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "evasion": 61,
+      "energyShield": 23
+    }
+  },
+  {
+    "id": "gloves-elegant-wraps",
+    "name": "Elegant Wraps",
+    "class": "Gloves",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "evasion": 67,
+      "energyShield": 25
+    }
+  },
+  {
+    "id": "gloves-vaal-wraps",
+    "name": "Vaal Wraps",
+    "class": "Gloves",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "evasion": 73,
+      "energyShield": 28
+    }
+  },
+  {
+    "id": "gloves-secured-wraps",
+    "name": "Secured Wraps",
+    "class": "Gloves",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "evasion": 79,
+      "energyShield": 30
+    }
+  },
+  {
+    "id": "gloves-dnt-unused-hand-wraps",
+    "name": "[DNT-UNUSED] Hand Wraps",
+    "class": "Gloves",
+    "level": 0,
+    "implicit": "[DNT-UNUSED] +5 to Evasion Rating per levellocal energy shield per level [5]",
+    "stats": {
+      "evasion": 7,
+      "energyShield": 7
+    }
+  },
+  {
+    "id": "boots-golden-caligae",
+    "name": "Golden Caligae",
+    "class": "Boots",
+    "level": 12,
+    "implicit": "+(8—16)% to all Elemental Resistances"
+  },
+  {
+    "id": "boots-rough-greaves",
+    "name": "Rough Greaves",
+    "class": "Boots",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "armour": 22
+    }
+  },
+  {
+    "id": "boots-iron-greaves",
+    "name": "Iron Greaves",
+    "class": "Boots",
+    "level": 11,
+    "implicit": null,
+    "stats": {
+      "armour": 47
+    }
+  },
+  {
+    "id": "boots-bronze-greaves",
+    "name": "Bronze Greaves",
+    "class": "Boots",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "armour": 60
+    }
+  },
+  {
+    "id": "boots-trimmed-greaves",
+    "name": "Trimmed Greaves",
+    "class": "Boots",
+    "level": 27,
+    "implicit": null,
+    "stats": {
+      "armour": 87
+    }
+  },
+  {
+    "id": "boots-stone-greaves",
+    "name": "Stone Greaves",
+    "class": "Boots",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "armour": 102
+    }
+  },
+  {
+    "id": "boots-reefsteel-greaves",
+    "name": "Reefsteel Greaves",
+    "class": "Boots",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 132
+    }
+  },
+  {
+    "id": "boots-monument-greaves",
+    "name": "Monument Greaves",
+    "class": "Boots",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "armour": 150
+    }
+  },
+  {
+    "id": "boots-totemic-greaves",
+    "name": "Totemic Greaves",
+    "class": "Boots",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 182
+    }
+  },
+  {
+    "id": "boots-rawhide-boots",
+    "name": "Rawhide Boots",
+    "class": "Boots",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "evasion": 15
+    }
+  },
+  {
+    "id": "boots-laced-boots",
+    "name": "Laced Boots",
+    "class": "Boots",
+    "level": 11,
+    "implicit": null,
+    "stats": {
+      "evasion": 38
+    }
+  },
+  {
+    "id": "boots-embossed-boots",
+    "name": "Embossed Boots",
+    "class": "Boots",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "evasion": 50
+    }
+  },
+  {
+    "id": "boots-steeltoe-boots",
+    "name": "Steeltoe Boots",
+    "class": "Boots",
+    "level": 28,
+    "implicit": null,
+    "stats": {
+      "evasion": 79
+    }
+  },
+  {
+    "id": "boots-lizardscale-boots",
+    "name": "Lizardscale Boots",
+    "class": "Boots",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "evasion": 90
+    }
+  },
+  {
+    "id": "boots-flared-boots",
+    "name": "Flared Boots",
+    "class": "Boots",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "evasion": 119
+    }
+  },
+  {
+    "id": "boots-leatherplate-boots",
+    "name": "Leatherplate Boots",
+    "class": "Boots",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "evasion": 135
+    }
+  },
+  {
+    "id": "boots-embroidered-boots",
+    "name": "Embroidered Boots",
+    "class": "Boots",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "evasion": 166
+    }
+  },
+  {
+    "id": "boots-straw-sandals",
+    "name": "Straw Sandals",
+    "class": "Boots",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "energyShield": 14
+    }
+  },
+  {
+    "id": "boots-wrapped-sandals",
+    "name": "Wrapped Sandals",
+    "class": "Boots",
+    "level": 11,
+    "implicit": null,
+    "stats": {
+      "energyShield": 22
+    }
+  },
+  {
+    "id": "boots-lattice-sandals",
+    "name": "Lattice Sandals",
+    "class": "Boots",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "energyShield": 25
+    }
+  },
+  {
+    "id": "boots-silk-slippers",
+    "name": "Silk Slippers",
+    "class": "Boots",
+    "level": 27,
+    "implicit": null,
+    "stats": {
+      "energyShield": 34
+    }
+  },
+  {
+    "id": "boots-feathered-sandals",
+    "name": "Feathered Sandals",
+    "class": "Boots",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "energyShield": 38
+    }
+  },
+  {
+    "id": "boots-flax-sandals",
+    "name": "Flax Sandals",
+    "class": "Boots",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "energyShield": 48
+    }
+  },
+  {
+    "id": "boots-studded-sandals",
+    "name": "Studded Sandals",
+    "class": "Boots",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "energyShield": 53
+    }
+  },
+  {
+    "id": "boots-elaborate-sandals",
+    "name": "Elaborate Sandals",
+    "class": "Boots",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "energyShield": 63
+    }
+  },
+  {
+    "id": "boots-mail-sabatons",
+    "name": "Mail Sabatons",
+    "class": "Boots",
+    "level": 6,
+    "implicit": null,
+    "stats": {
+      "armour": 19,
+      "evasion": 15
+    }
+  },
+  {
+    "id": "boots-braced-sabatons",
+    "name": "Braced Sabatons",
+    "class": "Boots",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "armour": 33,
+      "evasion": 28
+    }
+  },
+  {
+    "id": "boots-stacked-sabatons",
+    "name": "Stacked Sabatons",
+    "class": "Boots",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "armour": 56,
+      "evasion": 50
+    }
+  },
+  {
+    "id": "boots-covered-sabatons",
+    "name": "Covered Sabatons",
+    "class": "Boots",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 73,
+      "evasion": 65
+    }
+  },
+  {
+    "id": "boots-flexile-sabatons",
+    "name": "Flexile Sabatons",
+    "class": "Boots",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "armour": 82,
+      "evasion": 74
+    }
+  },
+  {
+    "id": "boots-bold-sabatons",
+    "name": "Bold Sabatons",
+    "class": "Boots",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 100,
+      "evasion": 91
+    }
+  },
+  {
+    "id": "boots-padded-leggings",
+    "name": "Padded Leggings",
+    "class": "Boots",
+    "level": 5,
+    "implicit": null,
+    "stats": {
+      "armour": 18,
+      "energyShield": 9
+    }
+  },
+  {
+    "id": "boots-secured-leggings",
+    "name": "Secured Leggings",
+    "class": "Boots",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "armour": 33,
+      "energyShield": 14
+    }
+  },
+  {
+    "id": "boots-pelt-leggings",
+    "name": "Pelt Leggings",
+    "class": "Boots",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "armour": 56,
+      "energyShield": 21
+    }
+  },
+  {
+    "id": "boots-weaver-leggings",
+    "name": "Weaver Leggings",
+    "class": "Boots",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 73,
+      "energyShield": 26
+    }
+  },
+  {
+    "id": "boots-gilt-leggings",
+    "name": "Gilt Leggings",
+    "class": "Boots",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "armour": 82,
+      "energyShield": 29
+    }
+  },
+  {
+    "id": "boots-pious-leggings",
+    "name": "Pious Leggings",
+    "class": "Boots",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 100,
+      "energyShield": 35
+    }
+  },
+  {
+    "id": "boots-frayed-shoes",
+    "name": "Frayed Shoes",
+    "class": "Boots",
+    "level": 5,
+    "implicit": null,
+    "stats": {
+      "evasion": 13,
+      "energyShield": 9
+    }
+  },
+  {
+    "id": "boots-threaded-shoes",
+    "name": "Threaded Shoes",
+    "class": "Boots",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "evasion": 28,
+      "energyShield": 14
+    }
+  },
+  {
+    "id": "boots-hunting-shoes",
+    "name": "Hunting Shoes",
+    "class": "Boots",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "evasion": 50,
+      "energyShield": 21
+    }
+  },
+  {
+    "id": "boots-steelpoint-shoes",
+    "name": "Steelpoint Shoes",
+    "class": "Boots",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "evasion": 65,
+      "energyShield": 26
+    }
+  },
+  {
+    "id": "boots-velour-shoes",
+    "name": "Velour Shoes",
+    "class": "Boots",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "evasion": 74,
+      "energyShield": 29
+    }
+  },
+  {
+    "id": "boots-bladed-shoes",
+    "name": "Bladed Shoes",
+    "class": "Boots",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "evasion": 91,
+      "energyShield": 35
+    }
+  },
+  {
+    "id": "boots-grand-cuisses",
+    "name": "Grand Cuisses",
+    "class": "Boots",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 66,
+      "evasion": 60,
+      "energyShield": 23
+    }
+  },
+  {
+    "id": "boots-golden-greaves",
+    "name": "Golden Greaves",
+    "class": "Boots",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "boots-plated-greaves",
+    "name": "Plated Greaves",
+    "class": "Boots",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 132
+    }
+  },
+  {
+    "id": "boots-lionheart-greaves",
+    "name": "Lionheart Greaves",
+    "class": "Boots",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "armour": 147
+    }
+  },
+  {
+    "id": "boots-elegant-greaves",
+    "name": "Elegant Greaves",
+    "class": "Boots",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "armour": 155
+    }
+  },
+  {
+    "id": "boots-carved-greaves",
+    "name": "Carved Greaves",
+    "class": "Boots",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "armour": 167
+    }
+  },
+  {
+    "id": "boots-bound-boots",
+    "name": "Bound Boots",
+    "class": "Boots",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "evasion": 119
+    }
+  },
+  {
+    "id": "boots-sleek-boots",
+    "name": "Sleek Boots",
+    "class": "Boots",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "evasion": 133
+    }
+  },
+  {
+    "id": "boots-studded-boots",
+    "name": "Studded Boots",
+    "class": "Boots",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "evasion": 140
+    }
+  },
+  {
+    "id": "boots-serpentscale-boots",
+    "name": "Serpentscale Boots",
+    "class": "Boots",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "evasion": 152
+    }
+  },
+  {
+    "id": "boots-laced-sandals",
+    "name": "Laced Sandals",
+    "class": "Boots",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "energyShield": 48
+    }
+  },
+  {
+    "id": "boots-bangled-sandals",
+    "name": "Bangled Sandals",
+    "class": "Boots",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "energyShield": 52
+    }
+  },
+  {
+    "id": "boots-elegant-slippers",
+    "name": "Elegant Slippers",
+    "class": "Boots",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "energyShield": 54
+    }
+  },
+  {
+    "id": "boots-dunerunner-sandals",
+    "name": "Dunerunner Sandals",
+    "class": "Boots",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "energyShield": 58
+    }
+  },
+  {
+    "id": "boots-soldiering-sabatons",
+    "name": "Soldiering Sabatons",
+    "class": "Boots",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 73,
+      "evasion": 65
+    }
+  },
+  {
+    "id": "boots-goldwork-sabatons",
+    "name": "Goldwork Sabatons",
+    "class": "Boots",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "armour": 81,
+      "evasion": 73
+    }
+  },
+  {
+    "id": "boots-bastion-sabatons",
+    "name": "Bastion Sabatons",
+    "class": "Boots",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "armour": 92,
+      "evasion": 84
+    }
+  },
+  {
+    "id": "boots-adherent-leggings",
+    "name": "Adherent Leggings",
+    "class": "Boots",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 73,
+      "energyShield": 26
+    }
+  },
+  {
+    "id": "boots-bound-leggings",
+    "name": "Bound Leggings",
+    "class": "Boots",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "armour": 81,
+      "energyShield": 29
+    }
+  },
+  {
+    "id": "boots-shamanistic-leggings",
+    "name": "Shamanistic Leggings",
+    "class": "Boots",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "armour": 92,
+      "energyShield": 32
+    }
+  },
+  {
+    "id": "boots-wayfarer-shoes",
+    "name": "Wayfarer Shoes",
+    "class": "Boots",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "evasion": 65,
+      "energyShield": 26
+    }
+  },
+  {
+    "id": "boots-silverbuckled-shoes",
+    "name": "Silverbuckled Shoes",
+    "class": "Boots",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "evasion": 73,
+      "energyShield": 29
+    }
+  },
+  {
+    "id": "boots-treerunner-shoes",
+    "name": "Treerunner Shoes",
+    "class": "Boots",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "evasion": 84,
+      "energyShield": 32
+    }
+  },
+  {
+    "id": "boots-bulwark-greaves",
+    "name": "Bulwark Greaves",
+    "class": "Boots",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 182
+    }
+  },
+  {
+    "id": "boots-ornate-greaves",
+    "name": "Ornate Greaves",
+    "class": "Boots",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "armour": 200
+    }
+  },
+  {
+    "id": "boots-vaal-greaves",
+    "name": "Vaal Greaves",
+    "class": "Boots",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "armour": 219
+    }
+  },
+  {
+    "id": "boots-tasalian-greaves",
+    "name": "Tasalian Greaves",
+    "class": "Boots",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "armour": 237
+    }
+  },
+  {
+    "id": "boots-cinched-boots",
+    "name": "Cinched Boots",
+    "class": "Boots",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "evasion": 166
+    }
+  },
+  {
+    "id": "boots-cavalry-boots",
+    "name": "Cavalry Boots",
+    "class": "Boots",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "evasion": 183
+    }
+  },
+  {
+    "id": "boots-dragonscale-boots",
+    "name": "Dragonscale Boots",
+    "class": "Boots",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "evasion": 200
+    }
+  },
+  {
+    "id": "boots-drakeskin-boots",
+    "name": "Drakeskin Boots",
+    "class": "Boots",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "evasion": 216
+    }
+  },
+  {
+    "id": "boots-bound-sandals",
+    "name": "Bound Sandals",
+    "class": "Boots",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "energyShield": 63
+    }
+  },
+  {
+    "id": "boots-luxurious-slippers",
+    "name": "Luxurious Slippers",
+    "class": "Boots",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "energyShield": 69
+    }
+  },
+  {
+    "id": "boots-sandsworn-sandals",
+    "name": "Sandsworn Sandals",
+    "class": "Boots",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "energyShield": 75
+    }
+  },
+  {
+    "id": "boots-sekhema-sandals",
+    "name": "Sekhema Sandals",
+    "class": "Boots",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "energyShield": 82
+    }
+  },
+  {
+    "id": "boots-veteran-sabatons",
+    "name": "Veteran Sabatons",
+    "class": "Boots",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 100,
+      "evasion": 91
+    }
+  },
+  {
+    "id": "boots-noble-sabatons",
+    "name": "Noble Sabatons",
+    "class": "Boots",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "armour": 110,
+      "evasion": 101
+    }
+  },
+  {
+    "id": "boots-fortress-sabatons",
+    "name": "Fortress Sabatons",
+    "class": "Boots",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "armour": 120,
+      "evasion": 110
+    }
+  },
+  {
+    "id": "boots-blacksteel-sabatons",
+    "name": "Blacksteel Sabatons",
+    "class": "Boots",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "armour": 130,
+      "evasion": 119
+    }
+  },
+  {
+    "id": "boots-faithful-leggings",
+    "name": "Faithful Leggings",
+    "class": "Boots",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 100,
+      "energyShield": 35
+    }
+  },
+  {
+    "id": "boots-apostle-leggings",
+    "name": "Apostle Leggings",
+    "class": "Boots",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "armour": 110,
+      "energyShield": 38
+    }
+  },
+  {
+    "id": "boots-warlock-leggings",
+    "name": "Warlock Leggings",
+    "class": "Boots",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "armour": 120,
+      "energyShield": 42
+    }
+  },
+  {
+    "id": "boots-cryptic-leggings",
+    "name": "Cryptic Leggings",
+    "class": "Boots",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "armour": 130,
+      "energyShield": 45
+    }
+  },
+  {
+    "id": "boots-wanderer-shoes",
+    "name": "Wanderer Shoes",
+    "class": "Boots",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "evasion": 91,
+      "energyShield": 35
+    }
+  },
+  {
+    "id": "boots-charmed-shoes",
+    "name": "Charmed Shoes",
+    "class": "Boots",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "evasion": 101,
+      "energyShield": 38
+    }
+  },
+  {
+    "id": "boots-quickslip-shoes",
+    "name": "Quickslip Shoes",
+    "class": "Boots",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "evasion": 110,
+      "energyShield": 42
+    }
+  },
+  {
+    "id": "boots-daggerfoot-shoes",
+    "name": "Daggerfoot Shoes",
+    "class": "Boots",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "evasion": 119,
+      "energyShield": 45
+    }
+  },
+  {
+    "id": "body-armours-golden-mantle",
+    "name": "Golden Mantle",
+    "class": "Body Armours",
+    "level": 20,
+    "implicit": "+(15—25)% to all Elemental Resistances",
+    "stats": {
+      "armour": 51,
+      "evasion": 44,
+      "energyShield": 21
+    }
+  },
+  {
+    "id": "body-armours-rusted-cuirass",
+    "name": "Rusted Cuirass",
+    "class": "Body Armours",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "armour": 45
+    }
+  },
+  {
+    "id": "body-armours-fur-plate",
+    "name": "Fur Plate",
+    "class": "Body Armours",
+    "level": 4,
+    "implicit": null,
+    "stats": {
+      "armour": 60
+    }
+  },
+  {
+    "id": "body-armours-iron-cuirass",
+    "name": "Iron Cuirass",
+    "class": "Body Armours",
+    "level": 11,
+    "implicit": null,
+    "stats": {
+      "armour": 96
+    }
+  },
+  {
+    "id": "body-armours-raider-plate",
+    "name": "Raider Plate",
+    "class": "Body Armours",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "armour": 121
+    }
+  },
+  {
+    "id": "body-armours-maraketh-cuirass",
+    "name": "Maraketh Cuirass",
+    "class": "Body Armours",
+    "level": 20,
+    "implicit": null,
+    "stats": {
+      "armour": 141
+    }
+  },
+  {
+    "id": "body-armours-steel-plate",
+    "name": "Steel Plate",
+    "class": "Body Armours",
+    "level": 27,
+    "implicit": null,
+    "stats": {
+      "armour": 177
+    }
+  },
+  {
+    "id": "body-armours-full-plate",
+    "name": "Full Plate",
+    "class": "Body Armours",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "armour": 208
+    }
+  },
+  {
+    "id": "body-armours-vaal-cuirass",
+    "name": "Vaal Cuirass",
+    "class": "Body Armours",
+    "level": 37,
+    "implicit": null,
+    "stats": {
+      "armour": 228
+    }
+  },
+  {
+    "id": "body-armours-juggernaut-plate",
+    "name": "Juggernaut Plate",
+    "class": "Body Armours",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 269
+    }
+  },
+  {
+    "id": "body-armours-chieftain-cuirass",
+    "name": "Chieftain Cuirass",
+    "class": "Body Armours",
+    "level": 50,
+    "implicit": null,
+    "stats": {
+      "armour": 294
+    }
+  },
+  {
+    "id": "body-armours-colosseum-plate",
+    "name": "Colosseum Plate",
+    "class": "Body Armours",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "armour": 304
+    }
+  },
+  {
+    "id": "body-armours-champion-cuirass",
+    "name": "Champion Cuirass",
+    "class": "Body Armours",
+    "level": 58,
+    "implicit": null,
+    "stats": {
+      "armour": 335
+    }
+  },
+  {
+    "id": "body-armours-glorious-plate",
+    "name": "Glorious Plate",
+    "class": "Body Armours",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 534
+    }
+  },
+  {
+    "id": "body-armours-conqueror-plate",
+    "name": "Conqueror Plate",
+    "class": "Body Armours",
+    "level": 68,
+    "implicit": "(30—40)% increased Stun Threshold",
+    "stats": {
+      "armour": 445
+    }
+  },
+  {
+    "id": "body-armours-abyssal-cuirass",
+    "name": "Abyssal Cuirass",
+    "class": "Body Armours",
+    "level": 73,
+    "implicit": "Regenerate (1.5—2.5)% of maximum Life per second",
+    "stats": {
+      "armour": 445
+    }
+  },
+  {
+    "id": "body-armours-leather-vest",
+    "name": "Leather Vest",
+    "class": "Body Armours",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "evasion": 30
+    }
+  },
+  {
+    "id": "body-armours-quilted-vest",
+    "name": "Quilted Vest",
+    "class": "Body Armours",
+    "level": 4,
+    "implicit": null,
+    "stats": {
+      "evasion": 44
+    }
+  },
+  {
+    "id": "body-armours-pathfinder-coat",
+    "name": "Pathfinder Coat",
+    "class": "Body Armours",
+    "level": 11,
+    "implicit": null,
+    "stats": {
+      "evasion": 78
+    }
+  },
+  {
+    "id": "body-armours-shrouded-vest",
+    "name": "Shrouded Vest",
+    "class": "Body Armours",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "evasion": 102
+    }
+  },
+  {
+    "id": "body-armours-rhoahide-coat",
+    "name": "Rhoahide Coat",
+    "class": "Body Armours",
+    "level": 22,
+    "implicit": null,
+    "stats": {
+      "evasion": 131
+    }
+  },
+  {
+    "id": "body-armours-studded-vest",
+    "name": "Studded Vest",
+    "class": "Body Armours",
+    "level": 26,
+    "implicit": null,
+    "stats": {
+      "evasion": 150
+    }
+  },
+  {
+    "id": "body-armours-scout-s-vest",
+    "name": "Scout's Vest",
+    "class": "Body Armours",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "evasion": 184
+    }
+  },
+  {
+    "id": "body-armours-serpentscale-coat",
+    "name": "Serpentscale Coat",
+    "class": "Body Armours",
+    "level": 36,
+    "implicit": null,
+    "stats": {
+      "evasion": 198
+    }
+  },
+  {
+    "id": "body-armours-corsair-vest",
+    "name": "Corsair Vest",
+    "class": "Body Armours",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "evasion": 242
+    }
+  },
+  {
+    "id": "body-armours-smuggler-coat",
+    "name": "Smuggler Coat",
+    "class": "Body Armours",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "evasion": 271
+    }
+  },
+  {
+    "id": "body-armours-strider-vest",
+    "name": "Strider Vest",
+    "class": "Body Armours",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "evasion": 275
+    }
+  },
+  {
+    "id": "body-armours-hardleather-coat",
+    "name": "Hardleather Coat",
+    "class": "Body Armours",
+    "level": 56,
+    "implicit": null,
+    "stats": {
+      "evasion": 295
+    }
+  },
+  {
+    "id": "body-armours-exquisite-vest",
+    "name": "Exquisite Vest",
+    "class": "Body Armours",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "evasion": 487
+    }
+  },
+  {
+    "id": "body-armours-mail-coat",
+    "name": "Mail Coat",
+    "class": "Body Armours",
+    "level": 68,
+    "implicit": "(20—30)% reduced Slowing Potency of Debuffs on You",
+    "stats": {
+      "evasion": 406
+    }
+  },
+  {
+    "id": "body-armours-armoured-vest",
+    "name": "Armoured Vest",
+    "class": "Body Armours",
+    "level": 73,
+    "implicit": "(30—40)% increased Elemental Ailment Threshold",
+    "stats": {
+      "evasion": 406
+    }
+  },
+  {
+    "id": "body-armours-tattered-robe",
+    "name": "Tattered Robe",
+    "class": "Body Armours",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "energyShield": 28
+    }
+  },
+  {
+    "id": "body-armours-feathered-robe",
+    "name": "Feathered Robe",
+    "class": "Body Armours",
+    "level": 5,
+    "implicit": null,
+    "stats": {
+      "energyShield": 35
+    }
+  },
+  {
+    "id": "body-armours-hexer-s-robe",
+    "name": "Hexer's Robe",
+    "class": "Body Armours",
+    "level": 11,
+    "implicit": null,
+    "stats": {
+      "energyShield": 44
+    }
+  },
+  {
+    "id": "body-armours-bone-raiment",
+    "name": "Bone Raiment",
+    "class": "Body Armours",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "energyShield": 52
+    }
+  },
+  {
+    "id": "body-armours-silk-robe",
+    "name": "Silk Robe",
+    "class": "Body Armours",
+    "level": 22,
+    "implicit": null,
+    "stats": {
+      "energyShield": 61
+    }
+  },
+  {
+    "id": "body-armours-keth-raiment",
+    "name": "Keth Raiment",
+    "class": "Body Armours",
+    "level": 28,
+    "implicit": null,
+    "stats": {
+      "energyShield": 70
+    }
+  },
+  {
+    "id": "body-armours-votive-raiment",
+    "name": "Votive Raiment",
+    "class": "Body Armours",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "energyShield": 78
+    }
+  },
+  {
+    "id": "body-armours-altar-robe",
+    "name": "Altar Robe",
+    "class": "Body Armours",
+    "level": 40,
+    "implicit": null,
+    "stats": {
+      "energyShield": 89
+    }
+  },
+  {
+    "id": "body-armours-elementalist-robe",
+    "name": "Elementalist Robe",
+    "class": "Body Armours",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "energyShield": 97
+    }
+  },
+  {
+    "id": "body-armours-mystic-raiment",
+    "name": "Mystic Raiment",
+    "class": "Body Armours",
+    "level": 49,
+    "implicit": null,
+    "stats": {
+      "energyShield": 103
+    }
+  },
+  {
+    "id": "body-armours-imperial-robe",
+    "name": "Imperial Robe",
+    "class": "Body Armours",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "energyShield": 108
+    }
+  },
+  {
+    "id": "body-armours-plated-raiment",
+    "name": "Plated Raiment",
+    "class": "Body Armours",
+    "level": 58,
+    "implicit": null,
+    "stats": {
+      "energyShield": 117
+    }
+  },
+  {
+    "id": "body-armours-havoc-raiment",
+    "name": "Havoc Raiment",
+    "class": "Body Armours",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "energyShield": 184
+    }
+  },
+  {
+    "id": "body-armours-enlightened-robe",
+    "name": "Enlightened Robe",
+    "class": "Body Armours",
+    "level": 68,
+    "implicit": "(40—50)% increased Mana Regeneration Rate",
+    "stats": {
+      "energyShield": 153
+    }
+  },
+  {
+    "id": "body-armours-arcane-raiment",
+    "name": "Arcane Raiment",
+    "class": "Body Armours",
+    "level": 73,
+    "implicit": "(40—50)% faster start of Energy Shield Recharge",
+    "stats": {
+      "energyShield": 153
+    }
+  },
+  {
+    "id": "body-armours-chain-mail",
+    "name": "Chain Mail",
+    "class": "Body Armours",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "armour": 25,
+      "evasion": 16
+    }
+  },
+  {
+    "id": "body-armours-rogue-armour",
+    "name": "Rogue Armour",
+    "class": "Body Armours",
+    "level": 11,
+    "implicit": null,
+    "stats": {
+      "armour": 53,
+      "evasion": 43
+    }
+  },
+  {
+    "id": "body-armours-vagabond-armour",
+    "name": "Vagabond Armour",
+    "class": "Body Armours",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "armour": 67,
+      "evasion": 56
+    }
+  },
+  {
+    "id": "body-armours-cloaked-mail",
+    "name": "Cloaked Mail",
+    "class": "Body Armours",
+    "level": 26,
+    "implicit": null,
+    "stats": {
+      "armour": 95,
+      "evasion": 83
+    }
+  },
+  {
+    "id": "body-armours-explorer-armour",
+    "name": "Explorer Armour",
+    "class": "Body Armours",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "armour": 114,
+      "evasion": 101
+    }
+  },
+  {
+    "id": "body-armours-scale-mail",
+    "name": "Scale Mail",
+    "class": "Body Armours",
+    "level": 37,
+    "implicit": null,
+    "stats": {
+      "armour": 125,
+      "evasion": 112
+    }
+  },
+  {
+    "id": "body-armours-knight-armour",
+    "name": "Knight Armour",
+    "class": "Body Armours",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 148,
+      "evasion": 133
+    }
+  },
+  {
+    "id": "body-armours-ancestral-mail",
+    "name": "Ancestral Mail",
+    "class": "Body Armours",
+    "level": 50,
+    "implicit": null,
+    "stats": {
+      "armour": 162,
+      "evasion": 146
+    }
+  },
+  {
+    "id": "body-armours-lamellar-mail",
+    "name": "Lamellar Mail",
+    "class": "Body Armours",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "armour": 167,
+      "evasion": 151
+    }
+  },
+  {
+    "id": "body-armours-gladiator-armour",
+    "name": "Gladiator Armour",
+    "class": "Body Armours",
+    "level": 58,
+    "implicit": null,
+    "stats": {
+      "armour": 184,
+      "evasion": 167
+    }
+  },
+  {
+    "id": "body-armours-heroic-armour",
+    "name": "Heroic Armour",
+    "class": "Body Armours",
+    "level": 65,
+    "implicit": "+(60—80) to maximum Life",
+    "stats": {
+      "armour": 245,
+      "evasion": 223
+    }
+  },
+  {
+    "id": "body-armours-tournament-mail",
+    "name": "Tournament Mail",
+    "class": "Body Armours",
+    "level": 68,
+    "implicit": "+(20—25)% to Fire Resistance",
+    "stats": {
+      "armour": 245,
+      "evasion": 223
+    }
+  },
+  {
+    "id": "body-armours-tournament-mail",
+    "name": "Tournament Mail",
+    "class": "Body Armours",
+    "level": 68,
+    "implicit": "+(20—25)% to Cold Resistance",
+    "stats": {
+      "armour": 245,
+      "evasion": 223
+    }
+  },
+  {
+    "id": "body-armours-tournament-mail",
+    "name": "Tournament Mail",
+    "class": "Body Armours",
+    "level": 68,
+    "implicit": "+(20—25)% to Lightning Resistance",
+    "stats": {
+      "armour": 245,
+      "evasion": 223
+    }
+  },
+  {
+    "id": "body-armours-slayer-armour",
+    "name": "Slayer Armour",
+    "class": "Body Armours",
+    "level": 73,
+    "implicit": null,
+    "stats": {
+      "armour": 294,
+      "evasion": 268
+    }
+  },
+  {
+    "id": "body-armours-pilgrim-vestments",
+    "name": "Pilgrim Vestments",
+    "class": "Body Armours",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "armour": 25,
+      "energyShield": 16
+    }
+  },
+  {
+    "id": "body-armours-pelt-mantle",
+    "name": "Pelt Mantle",
+    "class": "Body Armours",
+    "level": 10,
+    "implicit": null,
+    "stats": {
+      "armour": 50,
+      "energyShield": 23
+    }
+  },
+  {
+    "id": "body-armours-mail-vestments",
+    "name": "Mail Vestments",
+    "class": "Body Armours",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "armour": 67,
+      "energyShield": 28
+    }
+  },
+  {
+    "id": "body-armours-shaman-mantle",
+    "name": "Shaman Mantle",
+    "class": "Body Armours",
+    "level": 28,
+    "implicit": null,
+    "stats": {
+      "armour": 100,
+      "energyShield": 39
+    }
+  },
+  {
+    "id": "body-armours-ironclad-vestments",
+    "name": "Ironclad Vestments",
+    "class": "Body Armours",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "armour": 114,
+      "energyShield": 43
+    }
+  },
+  {
+    "id": "body-armours-sacrificial-mantle",
+    "name": "Sacrificial Mantle",
+    "class": "Body Armours",
+    "level": 36,
+    "implicit": null,
+    "stats": {
+      "armour": 123,
+      "energyShield": 46
+    }
+  },
+  {
+    "id": "body-armours-cleric-vestments",
+    "name": "Cleric Vestments",
+    "class": "Body Armours",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 148,
+      "energyShield": 53
+    }
+  },
+  {
+    "id": "body-armours-tideseer-mantle",
+    "name": "Tideseer Mantle",
+    "class": "Body Armours",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "armour": 165,
+      "energyShield": 58
+    }
+  },
+  {
+    "id": "body-armours-gilded-vestments",
+    "name": "Gilded Vestments",
+    "class": "Body Armours",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "armour": 167,
+      "energyShield": 59
+    }
+  },
+  {
+    "id": "body-armours-venerated-mantle",
+    "name": "Venerated Mantle",
+    "class": "Body Armours",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "armour": 173,
+      "energyShield": 61
+    }
+  },
+  {
+    "id": "body-armours-revered-vestments",
+    "name": "Revered Vestments",
+    "class": "Body Armours",
+    "level": 65,
+    "implicit": "+1% to all Maximum Elemental Resistances",
+    "stats": {
+      "armour": 245,
+      "energyShield": 84
+    }
+  },
+  {
+    "id": "body-armours-corvus-mantle",
+    "name": "Corvus Mantle",
+    "class": "Body Armours",
+    "level": 68,
+    "implicit": "+(20—30) to Spirit",
+    "stats": {
+      "armour": 245,
+      "energyShield": 84
+    }
+  },
+  {
+    "id": "body-armours-zenith-vestments",
+    "name": "Zenith Vestments",
+    "class": "Body Armours",
+    "level": 73,
+    "implicit": null,
+    "stats": {
+      "armour": 294,
+      "energyShield": 101
+    }
+  },
+  {
+    "id": "body-armours-hermit-garb",
+    "name": "Hermit Garb",
+    "class": "Body Armours",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "evasion": 16,
+      "energyShield": 16
+    }
+  },
+  {
+    "id": "body-armours-waxed-jacket",
+    "name": "Waxed Jacket",
+    "class": "Body Armours",
+    "level": 11,
+    "implicit": null,
+    "stats": {
+      "evasion": 43,
+      "energyShield": 24
+    }
+  },
+  {
+    "id": "body-armours-marabout-garb",
+    "name": "Marabout Garb",
+    "class": "Body Armours",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "evasion": 56,
+      "energyShield": 28
+    }
+  },
+  {
+    "id": "body-armours-wayfarer-jacket",
+    "name": "Wayfarer Jacket",
+    "class": "Body Armours",
+    "level": 28,
+    "implicit": null,
+    "stats": {
+      "evasion": 88,
+      "energyShield": 39
+    }
+  },
+  {
+    "id": "body-armours-anchorite-garb",
+    "name": "Anchorite Garb",
+    "class": "Body Armours",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "evasion": 101,
+      "energyShield": 43
+    }
+  },
+  {
+    "id": "body-armours-scalper-s-jacket",
+    "name": "Scalper's Jacket",
+    "class": "Body Armours",
+    "level": 39,
+    "implicit": null,
+    "stats": {
+      "evasion": 117,
+      "energyShield": 48
+    }
+  },
+  {
+    "id": "body-armours-scoundrel-jacket",
+    "name": "Scoundrel Jacket",
+    "class": "Body Armours",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "evasion": 133,
+      "energyShield": 53
+    }
+  },
+  {
+    "id": "body-armours-ascetic-garb",
+    "name": "Ascetic Garb",
+    "class": "Body Armours",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "evasion": 149,
+      "energyShield": 58
+    }
+  },
+  {
+    "id": "body-armours-clandestine-jacket",
+    "name": "Clandestine Jacket",
+    "class": "Body Armours",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "evasion": 151,
+      "energyShield": 59
+    }
+  },
+  {
+    "id": "body-armours-monastic-garb",
+    "name": "Monastic Garb",
+    "class": "Body Armours",
+    "level": 56,
+    "implicit": null,
+    "stats": {
+      "evasion": 162,
+      "energyShield": 63
+    }
+  },
+  {
+    "id": "body-armours-torment-jacket",
+    "name": "Torment Jacket",
+    "class": "Body Armours",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "evasion": 268,
+      "energyShield": 101
+    }
+  },
+  {
+    "id": "body-armours-devout-garb",
+    "name": "Devout Garb",
+    "class": "Body Armours",
+    "level": 68,
+    "implicit": "+(7—13)% to Chaos Resistance",
+    "stats": {
+      "evasion": 223,
+      "energyShield": 84
+    }
+  },
+  {
+    "id": "body-armours-assassin-garb",
+    "name": "Assassin Garb",
+    "class": "Body Armours",
+    "level": 73,
+    "implicit": "5% increased Movement Speed",
+    "stats": {
+      "evasion": 223,
+      "energyShield": 84
+    }
+  },
+  {
+    "id": "body-armours-garment",
+    "name": "Garment",
+    "class": "Body Armours",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "body-armours-grand-regalia",
+    "name": "Grand Regalia",
+    "class": "Body Armours",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 135,
+      "evasion": 123,
+      "energyShield": 46
+    }
+  },
+  {
+    "id": "body-armours-sacrificial-regalia",
+    "name": "Sacrificial Regalia",
+    "class": "Body Armours",
+    "level": 65,
+    "implicit": "+1 to Level of all Corrupted Skill Gems",
+    "stats": {
+      "armour": 269,
+      "evasion": 245,
+      "energyShield": 93
+    }
+  },
+  {
+    "id": "body-armours-golden-plate",
+    "name": "Golden Plate",
+    "class": "Body Armours",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "body-armours-barbarian-plate",
+    "name": "Barbarian Plate",
+    "class": "Body Armours",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 269
+    }
+  },
+  {
+    "id": "body-armours-rugged-cuirass",
+    "name": "Rugged Cuirass",
+    "class": "Body Armours",
+    "level": 48,
+    "implicit": null,
+    "stats": {
+      "armour": 284
+    }
+  },
+  {
+    "id": "body-armours-sandsworn-cuirass",
+    "name": "Sandsworn Cuirass",
+    "class": "Body Armours",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "armour": 299
+    }
+  },
+  {
+    "id": "body-armours-elegant-plate",
+    "name": "Elegant Plate",
+    "class": "Body Armours",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "armour": 315
+    }
+  },
+  {
+    "id": "body-armours-heavy-plate",
+    "name": "Heavy Plate",
+    "class": "Body Armours",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "armour": 340
+    }
+  },
+  {
+    "id": "body-armours-stone-cuirass",
+    "name": "Stone Cuirass",
+    "class": "Body Armours",
+    "level": 62,
+    "implicit": null,
+    "stats": {
+      "armour": 355
+    }
+  },
+  {
+    "id": "body-armours-patchwork-vest",
+    "name": "Patchwork Vest",
+    "class": "Body Armours",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "evasion": 242
+    }
+  },
+  {
+    "id": "body-armours-hunting-coat",
+    "name": "Hunting Coat",
+    "class": "Body Armours",
+    "level": 48,
+    "implicit": null,
+    "stats": {
+      "evasion": 256
+    }
+  },
+  {
+    "id": "body-armours-riding-coat",
+    "name": "Riding Coat",
+    "class": "Body Armours",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "evasion": 271
+    }
+  },
+  {
+    "id": "body-armours-layered-vest",
+    "name": "Layered Vest",
+    "class": "Body Armours",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "evasion": 285
+    }
+  },
+  {
+    "id": "body-armours-runner-vest",
+    "name": "Runner Vest",
+    "class": "Body Armours",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "evasion": 309
+    }
+  },
+  {
+    "id": "body-armours-lizardscale-coat",
+    "name": "Lizardscale Coat",
+    "class": "Body Armours",
+    "level": 62,
+    "implicit": null,
+    "stats": {
+      "evasion": 324
+    }
+  },
+  {
+    "id": "body-armours-avian-robe",
+    "name": "Avian Robe",
+    "class": "Body Armours",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "energyShield": 97
+    }
+  },
+  {
+    "id": "body-armours-cursespeaker-s-robe",
+    "name": "Cursespeaker's Robe",
+    "class": "Body Armours",
+    "level": 48,
+    "implicit": null,
+    "stats": {
+      "energyShield": 101
+    }
+  },
+  {
+    "id": "body-armours-luxurious-robe",
+    "name": "Luxurious Robe",
+    "class": "Body Armours",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "energyShield": 106
+    }
+  },
+  {
+    "id": "body-armours-river-raiment",
+    "name": "River Raiment",
+    "class": "Body Armours",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "energyShield": 111
+    }
+  },
+  {
+    "id": "body-armours-adherent-s-raiment",
+    "name": "Adherent's Raiment",
+    "class": "Body Armours",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "energyShield": 119
+    }
+  },
+  {
+    "id": "body-armours-ceremonial-robe",
+    "name": "Ceremonial Robe",
+    "class": "Body Armours",
+    "level": 62,
+    "implicit": null,
+    "stats": {
+      "energyShield": 123
+    }
+  },
+  {
+    "id": "body-armours-ring-mail",
+    "name": "Ring Mail",
+    "class": "Body Armours",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 148,
+      "evasion": 133
+    }
+  },
+  {
+    "id": "body-armours-scoundrel-armour",
+    "name": "Scoundrel Armour",
+    "class": "Body Armours",
+    "level": 48,
+    "implicit": null,
+    "stats": {
+      "armour": 156,
+      "evasion": 141
+    }
+  },
+  {
+    "id": "body-armours-wanderer-armour",
+    "name": "Wanderer Armour",
+    "class": "Body Armours",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "armour": 165,
+      "evasion": 149
+    }
+  },
+  {
+    "id": "body-armours-mantled-mail",
+    "name": "Mantled Mail",
+    "class": "Body Armours",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "armour": 173,
+      "evasion": 157
+    }
+  },
+  {
+    "id": "body-armours-trailblazer-armour",
+    "name": "Trailblazer Armour",
+    "class": "Body Armours",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "armour": 187,
+      "evasion": 170
+    }
+  },
+  {
+    "id": "body-armours-golden-mail",
+    "name": "Golden Mail",
+    "class": "Body Armours",
+    "level": 62,
+    "implicit": null,
+    "stats": {
+      "armour": 195,
+      "evasion": 178
+    }
+  },
+  {
+    "id": "body-armours-templar-vestments",
+    "name": "Templar Vestments",
+    "class": "Body Armours",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 148,
+      "energyShield": 53
+    }
+  },
+  {
+    "id": "body-armours-bearskin-mantle",
+    "name": "Bearskin Mantle",
+    "class": "Body Armours",
+    "level": 48,
+    "implicit": null,
+    "stats": {
+      "armour": 156,
+      "energyShield": 56
+    }
+  },
+  {
+    "id": "body-armours-chain-vestments",
+    "name": "Chain Vestments",
+    "class": "Body Armours",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "armour": 165,
+      "energyShield": 58
+    }
+  },
+  {
+    "id": "body-armours-occultist-mantle",
+    "name": "Occultist Mantle",
+    "class": "Body Armours",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "armour": 173,
+      "energyShield": 61
+    }
+  },
+  {
+    "id": "body-armours-plated-vestments",
+    "name": "Plated Vestments",
+    "class": "Body Armours",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "armour": 187,
+      "energyShield": 65
+    }
+  },
+  {
+    "id": "body-armours-heartcarver-mantle",
+    "name": "Heartcarver Mantle",
+    "class": "Body Armours",
+    "level": 62,
+    "implicit": null,
+    "stats": {
+      "armour": 195,
+      "energyShield": 68
+    }
+  },
+  {
+    "id": "body-armours-ascetic-garb",
+    "name": "Ascetic Garb",
+    "class": "Body Armours",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "evasion": 133,
+      "energyShield": 53
+    }
+  },
+  {
+    "id": "body-armours-oiled-jacket",
+    "name": "Oiled Jacket",
+    "class": "Body Armours",
+    "level": 48,
+    "implicit": null,
+    "stats": {
+      "evasion": 141,
+      "energyShield": 56
+    }
+  },
+  {
+    "id": "body-armours-evangelist-garb",
+    "name": "Evangelist Garb",
+    "class": "Body Armours",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "evasion": 149,
+      "energyShield": 58
+    }
+  },
+  {
+    "id": "body-armours-itinerant-jacket",
+    "name": "Itinerant Jacket",
+    "class": "Body Armours",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "evasion": 157,
+      "energyShield": 61
+    }
+  },
+  {
+    "id": "body-armours-hatungo-garb",
+    "name": "Hatungo Garb",
+    "class": "Body Armours",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "evasion": 170,
+      "energyShield": 65
+    }
+  },
+  {
+    "id": "body-armours-hawker-s-jacket",
+    "name": "Hawker's Jacket",
+    "class": "Body Armours",
+    "level": 62,
+    "implicit": null,
+    "stats": {
+      "evasion": 178,
+      "energyShield": 68
+    }
+  },
+  {
+    "id": "body-armours-soldier-cuirass",
+    "name": "Soldier Cuirass",
+    "class": "Body Armours",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 534
+    }
+  },
+  {
+    "id": "body-armours-ornate-plate",
+    "name": "Ornate Plate",
+    "class": "Body Armours",
+    "level": 70,
+    "implicit": "Regenerate (1.5—2.5)% of maximum Life per second",
+    "stats": {
+      "armour": 445
+    }
+  },
+  {
+    "id": "body-armours-utzaal-cuirass",
+    "name": "Utzaal Cuirass",
+    "class": "Body Armours",
+    "level": 75,
+    "implicit": "(30—40)% increased Stun Threshold",
+    "stats": {
+      "armour": 445
+    }
+  },
+  {
+    "id": "body-armours-warlord-cuirass",
+    "name": "Warlord Cuirass",
+    "class": "Body Armours",
+    "level": 80,
+    "implicit": "+(15—25)% of Armour also applies to Elemental Damage",
+    "stats": {
+      "armour": 445
+    }
+  },
+  {
+    "id": "body-armours-swiftstalker-coat",
+    "name": "Swiftstalker Coat",
+    "class": "Body Armours",
+    "level": 65,
+    "implicit": "(20—30)% reduced Slowing Potency of Debuffs on You",
+    "stats": {
+      "evasion": 406
+    }
+  },
+  {
+    "id": "body-armours-slipstrike-vest",
+    "name": "Slipstrike Vest",
+    "class": "Body Armours",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "evasion": 487
+    }
+  },
+  {
+    "id": "body-armours-wyrmscale-coat",
+    "name": "Wyrmscale Coat",
+    "class": "Body Armours",
+    "level": 75,
+    "implicit": "(30—40)% increased Elemental Ailment Threshold",
+    "stats": {
+      "evasion": 406
+    }
+  },
+  {
+    "id": "body-armours-corsair-coat",
+    "name": "Corsair Coat",
+    "class": "Body Armours",
+    "level": 80,
+    "implicit": "5% increased Movement Speed",
+    "stats": {
+      "evasion": 406
+    }
+  },
+  {
+    "id": "body-armours-vile-robe",
+    "name": "Vile Robe",
+    "class": "Body Armours",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "energyShield": 184
+    }
+  },
+  {
+    "id": "body-armours-flowing-raiment",
+    "name": "Flowing Raiment",
+    "class": "Body Armours",
+    "level": 70,
+    "implicit": "(40—50)% increased Mana Regeneration Rate",
+    "stats": {
+      "energyShield": 153
+    }
+  },
+  {
+    "id": "body-armours-sacramental-robe",
+    "name": "Sacramental Robe",
+    "class": "Body Armours",
+    "level": 75,
+    "implicit": "(40—50)% faster start of Energy Shield Recharge",
+    "stats": {
+      "energyShield": 153
+    }
+  },
+  {
+    "id": "body-armours-feathered-raiment",
+    "name": "Feathered Raiment",
+    "class": "Body Armours",
+    "level": 80,
+    "implicit": "(5—10)% of Damage is taken from Mana before Life",
+    "stats": {
+      "energyShield": 153
+    }
+  },
+  {
+    "id": "body-armours-dastard-armour",
+    "name": "Dastard Armour",
+    "class": "Body Armours",
+    "level": 65,
+    "implicit": "+(60—80) to maximum Life",
+    "stats": {
+      "armour": 245,
+      "evasion": 223
+    }
+  },
+  {
+    "id": "body-armours-shrouded-mail",
+    "name": "Shrouded Mail",
+    "class": "Body Armours",
+    "level": 70,
+    "implicit": "+(20—25)% to Fire Resistance",
+    "stats": {
+      "armour": 245,
+      "evasion": 223
+    }
+  },
+  {
+    "id": "body-armours-shrouded-mail",
+    "name": "Shrouded Mail",
+    "class": "Body Armours",
+    "level": 70,
+    "implicit": "+(20—25)% to Cold Resistance",
+    "stats": {
+      "armour": 245,
+      "evasion": 223
+    }
+  },
+  {
+    "id": "body-armours-shrouded-mail",
+    "name": "Shrouded Mail",
+    "class": "Body Armours",
+    "level": 70,
+    "implicit": "+(20—25)% to Lightning Resistance",
+    "stats": {
+      "armour": 245,
+      "evasion": 223
+    }
+  },
+  {
+    "id": "body-armours-death-mail",
+    "name": "Death Mail",
+    "class": "Body Armours",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "armour": 294,
+      "evasion": 268
+    }
+  },
+  {
+    "id": "body-armours-thane-mail",
+    "name": "Thane Mail",
+    "class": "Body Armours",
+    "level": 80,
+    "implicit": "Hits against you have (15—25)% reduced Critical Damage Bonus",
+    "stats": {
+      "armour": 245,
+      "evasion": 223
+    }
+  },
+  {
+    "id": "body-armours-wolfskin-mantle",
+    "name": "Wolfskin Mantle",
+    "class": "Body Armours",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 294,
+      "energyShield": 101
+    }
+  },
+  {
+    "id": "body-armours-conjurer-mantle",
+    "name": "Conjurer Mantle",
+    "class": "Body Armours",
+    "level": 70,
+    "implicit": "+(20—30) to Spirit",
+    "stats": {
+      "armour": 245,
+      "energyShield": 84
+    }
+  },
+  {
+    "id": "body-armours-death-mantle",
+    "name": "Death Mantle",
+    "class": "Body Armours",
+    "level": 75,
+    "implicit": "+1% to all Maximum Elemental Resistances",
+    "stats": {
+      "armour": 245,
+      "energyShield": 84
+    }
+  },
+  {
+    "id": "body-armours-seastorm-mantle",
+    "name": "Seastorm Mantle",
+    "class": "Body Armours",
+    "level": 80,
+    "implicit": "(8—14)% of Damage taken Recouped as Life",
+    "stats": {
+      "armour": 245,
+      "energyShield": 84
+    }
+  },
+  {
+    "id": "body-armours-sleek-jacket",
+    "name": "Sleek Jacket",
+    "class": "Body Armours",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "evasion": 268,
+      "energyShield": 101
+    }
+  },
+  {
+    "id": "body-armours-rambler-jacket",
+    "name": "Rambler Jacket",
+    "class": "Body Armours",
+    "level": 70,
+    "implicit": "+(7—13)% to Chaos Resistance",
+    "stats": {
+      "evasion": 223,
+      "energyShield": 84
+    }
+  },
+  {
+    "id": "body-armours-falconer-s-jacket",
+    "name": "Falconer's Jacket",
+    "class": "Body Armours",
+    "level": 75,
+    "implicit": "5% increased Movement Speed",
+    "stats": {
+      "evasion": 223,
+      "energyShield": 84
+    }
+  },
+  {
+    "id": "body-armours-austere-garb",
+    "name": "Austere Garb",
+    "class": "Body Armours",
+    "level": 80,
+    "implicit": "(10—15)% reduced Elemental Ailment Duration on you",
+    "stats": {
+      "evasion": 223,
+      "energyShield": 84
+    }
+  },
+  {
+    "id": "helmets-golden-wreath",
+    "name": "Golden Wreath",
+    "class": "Helmets",
+    "level": 12,
+    "implicit": "+(16—24) to all Attributes"
+  },
+  {
+    "id": "helmets-golden-visage",
+    "name": "Golden Visage",
+    "class": "Helmets",
+    "level": 12,
+    "implicit": "+(8—16)% to all Elemental Resistances"
+  },
+  {
+    "id": "helmets-rusted-greathelm",
+    "name": "Rusted Greathelm",
+    "class": "Helmets",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "armour": 29
+    }
+  },
+  {
+    "id": "helmets-soldier-greathelm",
+    "name": "Soldier Greathelm",
+    "class": "Helmets",
+    "level": 12,
+    "implicit": null,
+    "stats": {
+      "armour": 66
+    }
+  },
+  {
+    "id": "helmets-wrapped-greathelm",
+    "name": "Wrapped Greathelm",
+    "class": "Helmets",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "armour": 79
+    }
+  },
+  {
+    "id": "helmets-spired-greathelm",
+    "name": "Spired Greathelm",
+    "class": "Helmets",
+    "level": 27,
+    "implicit": null,
+    "stats": {
+      "armour": 116
+    }
+  },
+  {
+    "id": "helmets-elite-greathelm",
+    "name": "Elite Greathelm",
+    "class": "Helmets",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "armour": 136
+    }
+  },
+  {
+    "id": "helmets-warrior-greathelm",
+    "name": "Warrior Greathelm",
+    "class": "Helmets",
+    "level": 36,
+    "implicit": null,
+    "stats": {
+      "armour": 146
+    }
+  },
+  {
+    "id": "helmets-commander-greathelm",
+    "name": "Commander Greathelm",
+    "class": "Helmets",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 176
+    }
+  },
+  {
+    "id": "helmets-fierce-greathelm",
+    "name": "Fierce Greathelm",
+    "class": "Helmets",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "armour": 196
+    }
+  },
+  {
+    "id": "helmets-sentinel-greathelm",
+    "name": "Sentinel Greathelm",
+    "class": "Helmets",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "armour": 200
+    }
+  },
+  {
+    "id": "helmets-goliath-greathelm",
+    "name": "Goliath Greathelm",
+    "class": "Helmets",
+    "level": 57,
+    "implicit": null,
+    "stats": {
+      "armour": 216
+    }
+  },
+  {
+    "id": "helmets-guardian-greathelm",
+    "name": "Guardian Greathelm",
+    "class": "Helmets",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 243
+    }
+  },
+  {
+    "id": "helmets-shabby-hood",
+    "name": "Shabby Hood",
+    "class": "Helmets",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "evasion": 19
+    }
+  },
+  {
+    "id": "helmets-felt-cap",
+    "name": "Felt Cap",
+    "class": "Helmets",
+    "level": 10,
+    "implicit": null,
+    "stats": {
+      "evasion": 48
+    }
+  },
+  {
+    "id": "helmets-lace-hood",
+    "name": "Lace Hood",
+    "class": "Helmets",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "evasion": 67
+    }
+  },
+  {
+    "id": "helmets-swathed-cap",
+    "name": "Swathed Cap",
+    "class": "Helmets",
+    "level": 26,
+    "implicit": null,
+    "stats": {
+      "evasion": 98
+    }
+  },
+  {
+    "id": "helmets-hunter-hood",
+    "name": "Hunter Hood",
+    "class": "Helmets",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "evasion": 121
+    }
+  },
+  {
+    "id": "helmets-viper-cap",
+    "name": "Viper Cap",
+    "class": "Helmets",
+    "level": 38,
+    "implicit": null,
+    "stats": {
+      "evasion": 136
+    }
+  },
+  {
+    "id": "helmets-corsair-cap",
+    "name": "Corsair Cap",
+    "class": "Helmets",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "evasion": 158
+    }
+  },
+  {
+    "id": "helmets-leatherbound-hood",
+    "name": "Leatherbound Hood",
+    "class": "Helmets",
+    "level": 50,
+    "implicit": null,
+    "stats": {
+      "evasion": 174
+    }
+  },
+  {
+    "id": "helmets-velvet-cap",
+    "name": "Velvet Cap",
+    "class": "Helmets",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "evasion": 181
+    }
+  },
+  {
+    "id": "helmets-covert-hood",
+    "name": "Covert Hood",
+    "class": "Helmets",
+    "level": 56,
+    "implicit": null,
+    "stats": {
+      "evasion": 193
+    }
+  },
+  {
+    "id": "helmets-armoured-cap",
+    "name": "Armoured Cap",
+    "class": "Helmets",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "evasion": 222
+    }
+  },
+  {
+    "id": "helmets-twig-circlet",
+    "name": "Twig Circlet",
+    "class": "Helmets",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "energyShield": 19
+    }
+  },
+  {
+    "id": "helmets-wicker-tiara",
+    "name": "Wicker Tiara",
+    "class": "Helmets",
+    "level": 10,
+    "implicit": null,
+    "stats": {
+      "energyShield": 28
+    }
+  },
+  {
+    "id": "helmets-beaded-circlet",
+    "name": "Beaded Circlet",
+    "class": "Helmets",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "energyShield": 34
+    }
+  },
+  {
+    "id": "helmets-chain-tiara",
+    "name": "Chain Tiara",
+    "class": "Helmets",
+    "level": 26,
+    "implicit": null,
+    "stats": {
+      "energyShield": 44
+    }
+  },
+  {
+    "id": "helmets-feathered-tiara",
+    "name": "Feathered Tiara",
+    "class": "Helmets",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "energyShield": 51
+    }
+  },
+  {
+    "id": "helmets-gold-circlet",
+    "name": "Gold Circlet",
+    "class": "Helmets",
+    "level": 40,
+    "implicit": null,
+    "stats": {
+      "energyShield": 58
+    }
+  },
+  {
+    "id": "helmets-vermeil-circlet",
+    "name": "Vermeil Circlet",
+    "class": "Helmets",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "energyShield": 63
+    }
+  },
+  {
+    "id": "helmets-jade-tiara",
+    "name": "Jade Tiara",
+    "class": "Helmets",
+    "level": 50,
+    "implicit": null,
+    "stats": {
+      "energyShield": 69
+    }
+  },
+  {
+    "id": "helmets-noble-circlet",
+    "name": "Noble Circlet",
+    "class": "Helmets",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "energyShield": 71
+    }
+  },
+  {
+    "id": "helmets-twilight-tiara",
+    "name": "Twilight Tiara",
+    "class": "Helmets",
+    "level": 58,
+    "implicit": null,
+    "stats": {
+      "energyShield": 77
+    }
+  },
+  {
+    "id": "helmets-magus-tiara",
+    "name": "Magus Tiara",
+    "class": "Helmets",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "energyShield": 84
+    }
+  },
+  {
+    "id": "helmets-brimmed-helm",
+    "name": "Brimmed Helm",
+    "class": "Helmets",
+    "level": 5,
+    "implicit": null,
+    "stats": {
+      "armour": 23,
+      "evasion": 18
+    }
+  },
+  {
+    "id": "helmets-guarded-helm",
+    "name": "Guarded Helm",
+    "class": "Helmets",
+    "level": 11,
+    "implicit": null,
+    "stats": {
+      "armour": 34,
+      "evasion": 28
+    }
+  },
+  {
+    "id": "helmets-visored-helm",
+    "name": "Visored Helm",
+    "class": "Helmets",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "armour": 44,
+      "evasion": 37
+    }
+  },
+  {
+    "id": "helmets-cowled-helm",
+    "name": "Cowled Helm",
+    "class": "Helmets",
+    "level": 26,
+    "implicit": null,
+    "stats": {
+      "armour": 62,
+      "evasion": 54
+    }
+  },
+  {
+    "id": "helmets-shielded-helm",
+    "name": "Shielded Helm",
+    "class": "Helmets",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "armour": 75,
+      "evasion": 66
+    }
+  },
+  {
+    "id": "helmets-closed-helm",
+    "name": "Closed Helm",
+    "class": "Helmets",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 97,
+      "evasion": 87
+    }
+  },
+  {
+    "id": "helmets-decorated-helm",
+    "name": "Decorated Helm",
+    "class": "Helmets",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "armour": 110,
+      "evasion": 99
+    }
+  },
+  {
+    "id": "helmets-gallant-helm",
+    "name": "Gallant Helm",
+    "class": "Helmets",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 134,
+      "evasion": 122
+    }
+  },
+  {
+    "id": "helmets-iron-crown",
+    "name": "Iron Crown",
+    "class": "Helmets",
+    "level": 5,
+    "implicit": null,
+    "stats": {
+      "armour": 23,
+      "energyShield": 12
+    }
+  },
+  {
+    "id": "helmets-horned-crown",
+    "name": "Horned Crown",
+    "class": "Helmets",
+    "level": 10,
+    "implicit": null,
+    "stats": {
+      "armour": 33,
+      "energyShield": 15
+    }
+  },
+  {
+    "id": "helmets-cultist-crown",
+    "name": "Cultist Crown",
+    "class": "Helmets",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "armour": 44,
+      "energyShield": 19
+    }
+  },
+  {
+    "id": "helmets-martyr-crown",
+    "name": "Martyr Crown",
+    "class": "Helmets",
+    "level": 28,
+    "implicit": null,
+    "stats": {
+      "armour": 66,
+      "energyShield": 25
+    }
+  },
+  {
+    "id": "helmets-heavy-crown",
+    "name": "Heavy Crown",
+    "class": "Helmets",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "armour": 75,
+      "energyShield": 28
+    }
+  },
+  {
+    "id": "helmets-spiritbone-crown",
+    "name": "Spiritbone Crown",
+    "class": "Helmets",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 97,
+      "energyShield": 35
+    }
+  },
+  {
+    "id": "helmets-lavish-crown",
+    "name": "Lavish Crown",
+    "class": "Helmets",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "armour": 110,
+      "energyShield": 39
+    }
+  },
+  {
+    "id": "helmets-archon-crown",
+    "name": "Archon Crown",
+    "class": "Helmets",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 134,
+      "energyShield": 46
+    }
+  },
+  {
+    "id": "helmets-hewn-mask",
+    "name": "Hewn Mask",
+    "class": "Helmets",
+    "level": 5,
+    "implicit": null,
+    "stats": {
+      "evasion": 18,
+      "energyShield": 12
+    }
+  },
+  {
+    "id": "helmets-face-mask",
+    "name": "Face Mask",
+    "class": "Helmets",
+    "level": 10,
+    "implicit": null,
+    "stats": {
+      "evasion": 26,
+      "energyShield": 15
+    }
+  },
+  {
+    "id": "helmets-hooded-mask",
+    "name": "Hooded Mask",
+    "class": "Helmets",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "evasion": 37,
+      "energyShield": 19
+    }
+  },
+  {
+    "id": "helmets-veiled-mask",
+    "name": "Veiled Mask",
+    "class": "Helmets",
+    "level": 28,
+    "implicit": null,
+    "stats": {
+      "evasion": 58,
+      "energyShield": 25
+    }
+  },
+  {
+    "id": "helmets-tribal-mask",
+    "name": "Tribal Mask",
+    "class": "Helmets",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "evasion": 66,
+      "energyShield": 28
+    }
+  },
+  {
+    "id": "helmets-solid-mask",
+    "name": "Solid Mask",
+    "class": "Helmets",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "evasion": 87,
+      "energyShield": 35
+    }
+  },
+  {
+    "id": "helmets-shaded-mask",
+    "name": "Shaded Mask",
+    "class": "Helmets",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "evasion": 99,
+      "energyShield": 39
+    }
+  },
+  {
+    "id": "helmets-death-mask",
+    "name": "Death Mask",
+    "class": "Helmets",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "evasion": 122,
+      "energyShield": 46
+    }
+  },
+  {
+    "id": "helmets-grand-visage",
+    "name": "Grand Visage",
+    "class": "Helmets",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 88,
+      "evasion": 80,
+      "energyShield": 30
+    }
+  },
+  {
+    "id": "helmets-golden-visage",
+    "name": "Golden Visage",
+    "class": "Helmets",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "helmets-corroded-greathelm",
+    "name": "Corroded Greathelm",
+    "class": "Helmets",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 176
+    }
+  },
+  {
+    "id": "helmets-mercenary-greathelm",
+    "name": "Mercenary Greathelm",
+    "class": "Helmets",
+    "level": 48,
+    "implicit": null,
+    "stats": {
+      "armour": 186
+    }
+  },
+  {
+    "id": "helmets-homeguard-greathelm",
+    "name": "Homeguard Greathelm",
+    "class": "Helmets",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "armour": 196
+    }
+  },
+  {
+    "id": "helmets-elegant-greathelm",
+    "name": "Elegant Greathelm",
+    "class": "Helmets",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "armour": 206
+    }
+  },
+  {
+    "id": "helmets-noble-greathelm",
+    "name": "Noble Greathelm",
+    "class": "Helmets",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "armour": 223
+    }
+  },
+  {
+    "id": "helmets-rotted-hood",
+    "name": "Rotted Hood",
+    "class": "Helmets",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "evasion": 158
+    }
+  },
+  {
+    "id": "helmets-wool-cap",
+    "name": "Wool Cap",
+    "class": "Helmets",
+    "level": 48,
+    "implicit": null,
+    "stats": {
+      "evasion": 168
+    }
+  },
+  {
+    "id": "helmets-narrow-hood",
+    "name": "Narrow Hood",
+    "class": "Helmets",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "evasion": 177
+    }
+  },
+  {
+    "id": "helmets-wrapped-cap",
+    "name": "Wrapped Cap",
+    "class": "Helmets",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "evasion": 187
+    }
+  },
+  {
+    "id": "helmets-deerstalker-hood",
+    "name": "Deerstalker Hood",
+    "class": "Helmets",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "evasion": 203
+    }
+  },
+  {
+    "id": "helmets-druidic-circlet",
+    "name": "Druidic Circlet",
+    "class": "Helmets",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "energyShield": 63
+    }
+  },
+  {
+    "id": "helmets-avian-tiara",
+    "name": "Avian Tiara",
+    "class": "Helmets",
+    "level": 48,
+    "implicit": null,
+    "stats": {
+      "energyShield": 67
+    }
+  },
+  {
+    "id": "helmets-desert-circlet",
+    "name": "Desert Circlet",
+    "class": "Helmets",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "energyShield": 70
+    }
+  },
+  {
+    "id": "helmets-sandsworn-tiara",
+    "name": "Sandsworn Tiara",
+    "class": "Helmets",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "energyShield": 73
+    }
+  },
+  {
+    "id": "helmets-jungle-tiara",
+    "name": "Jungle Tiara",
+    "class": "Helmets",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "energyShield": 78
+    }
+  },
+  {
+    "id": "helmets-domed-helm",
+    "name": "Domed Helm",
+    "class": "Helmets",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 97,
+      "evasion": 87
+    }
+  },
+  {
+    "id": "helmets-engraved-helm",
+    "name": "Engraved Helm",
+    "class": "Helmets",
+    "level": 48,
+    "implicit": null,
+    "stats": {
+      "armour": 102,
+      "evasion": 92
+    }
+  },
+  {
+    "id": "helmets-soldier-helm",
+    "name": "Soldier Helm",
+    "class": "Helmets",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "armour": 108,
+      "evasion": 98
+    }
+  },
+  {
+    "id": "helmets-cabalist-helm",
+    "name": "Cabalist Helm",
+    "class": "Helmets",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "armour": 113,
+      "evasion": 103
+    }
+  },
+  {
+    "id": "helmets-gladiatoral-helm",
+    "name": "Gladiatoral Helm",
+    "class": "Helmets",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "armour": 123,
+      "evasion": 111
+    }
+  },
+  {
+    "id": "helmets-mailed-crown",
+    "name": "Mailed Crown",
+    "class": "Helmets",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "armour": 97,
+      "energyShield": 35
+    }
+  },
+  {
+    "id": "helmets-forest-crown",
+    "name": "Forest Crown",
+    "class": "Helmets",
+    "level": 48,
+    "implicit": null,
+    "stats": {
+      "armour": 102,
+      "energyShield": 37
+    }
+  },
+  {
+    "id": "helmets-zealot-crown",
+    "name": "Zealot Crown",
+    "class": "Helmets",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "armour": 108,
+      "energyShield": 38
+    }
+  },
+  {
+    "id": "helmets-hallowed-crown",
+    "name": "Hallowed Crown",
+    "class": "Helmets",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "armour": 113,
+      "energyShield": 40
+    }
+  },
+  {
+    "id": "helmets-inquisitor-crown",
+    "name": "Inquisitor Crown",
+    "class": "Helmets",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "armour": 123,
+      "energyShield": 43
+    }
+  },
+  {
+    "id": "helmets-oak-mask",
+    "name": "Oak Mask",
+    "class": "Helmets",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "evasion": 87,
+      "energyShield": 35
+    }
+  },
+  {
+    "id": "helmets-bandit-mask",
+    "name": "Bandit Mask",
+    "class": "Helmets",
+    "level": 48,
+    "implicit": null,
+    "stats": {
+      "evasion": 92,
+      "energyShield": 37
+    }
+  },
+  {
+    "id": "helmets-skulking-mask",
+    "name": "Skulking Mask",
+    "class": "Helmets",
+    "level": 51,
+    "implicit": null,
+    "stats": {
+      "evasion": 98,
+      "energyShield": 38
+    }
+  },
+  {
+    "id": "helmets-pariah-mask",
+    "name": "Pariah Mask",
+    "class": "Helmets",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "evasion": 103,
+      "energyShield": 40
+    }
+  },
+  {
+    "id": "helmets-avian-mask",
+    "name": "Avian Mask",
+    "class": "Helmets",
+    "level": 59,
+    "implicit": null,
+    "stats": {
+      "evasion": 111,
+      "energyShield": 43
+    }
+  },
+  {
+    "id": "helmets-warmonger-greathelm",
+    "name": "Warmonger Greathelm",
+    "class": "Helmets",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 243
+    }
+  },
+  {
+    "id": "helmets-masked-greathelm",
+    "name": "Masked Greathelm",
+    "class": "Helmets",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "armour": 267
+    }
+  },
+  {
+    "id": "helmets-paragon-greathelm",
+    "name": "Paragon Greathelm",
+    "class": "Helmets",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "armour": 292
+    }
+  },
+  {
+    "id": "helmets-imperial-greathelm",
+    "name": "Imperial Greathelm",
+    "class": "Helmets",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "armour": 316
+    }
+  },
+  {
+    "id": "helmets-woven-cap",
+    "name": "Woven Cap",
+    "class": "Helmets",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "evasion": 222
+    }
+  },
+  {
+    "id": "helmets-desert-cap",
+    "name": "Desert Cap",
+    "class": "Helmets",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "evasion": 244
+    }
+  },
+  {
+    "id": "helmets-trapper-hood",
+    "name": "Trapper Hood",
+    "class": "Helmets",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "evasion": 266
+    }
+  },
+  {
+    "id": "helmets-freebooter-cap",
+    "name": "Freebooter Cap",
+    "class": "Helmets",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "evasion": 288
+    }
+  },
+  {
+    "id": "helmets-skycrown-tiara",
+    "name": "Skycrown Tiara",
+    "class": "Helmets",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "energyShield": 84
+    }
+  },
+  {
+    "id": "helmets-sorcerous-tiara",
+    "name": "Sorcerous Tiara",
+    "class": "Helmets",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "energyShield": 92
+    }
+  },
+  {
+    "id": "helmets-kamasan-tiara",
+    "name": "Kamasan Tiara",
+    "class": "Helmets",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "energyShield": 101
+    }
+  },
+  {
+    "id": "helmets-ancestral-tiara",
+    "name": "Ancestral Tiara",
+    "class": "Helmets",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "energyShield": 109
+    }
+  },
+  {
+    "id": "helmets-warded-helm",
+    "name": "Warded Helm",
+    "class": "Helmets",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 134,
+      "evasion": 122
+    }
+  },
+  {
+    "id": "helmets-cryptic-helm",
+    "name": "Cryptic Helm",
+    "class": "Helmets",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "armour": 147,
+      "evasion": 134
+    }
+  },
+  {
+    "id": "helmets-champion-helm",
+    "name": "Champion Helm",
+    "class": "Helmets",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "armour": 160,
+      "evasion": 146
+    }
+  },
+  {
+    "id": "helmets-gladiatorial-helm",
+    "name": "Gladiatorial Helm",
+    "class": "Helmets",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "armour": 174,
+      "evasion": 159
+    }
+  },
+  {
+    "id": "helmets-druidic-crown",
+    "name": "Druidic Crown",
+    "class": "Helmets",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "armour": 134,
+      "energyShield": 46
+    }
+  },
+  {
+    "id": "helmets-saintly-crown",
+    "name": "Saintly Crown",
+    "class": "Helmets",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "armour": 147,
+      "energyShield": 51
+    }
+  },
+  {
+    "id": "helmets-divine-crown",
+    "name": "Divine Crown",
+    "class": "Helmets",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "armour": 160,
+      "energyShield": 55
+    }
+  },
+  {
+    "id": "helmets-cryptic-crown",
+    "name": "Cryptic Crown",
+    "class": "Helmets",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "armour": 174,
+      "energyShield": 60
+    }
+  },
+  {
+    "id": "helmets-brigand-mask",
+    "name": "Brigand Mask",
+    "class": "Helmets",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "evasion": 122,
+      "energyShield": 46
+    }
+  },
+  {
+    "id": "helmets-faridun-mask",
+    "name": "Faridun Mask",
+    "class": "Helmets",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "evasion": 134,
+      "energyShield": 51
+    }
+  },
+  {
+    "id": "helmets-soaring-mask",
+    "name": "Soaring Mask",
+    "class": "Helmets",
+    "level": 75,
+    "implicit": null,
+    "stats": {
+      "evasion": 146,
+      "energyShield": 55
+    }
+  },
+  {
+    "id": "helmets-grinning-mask",
+    "name": "Grinning Mask",
+    "class": "Helmets",
+    "level": 80,
+    "implicit": null,
+    "stats": {
+      "evasion": 159,
+      "energyShield": 60
+    }
+  },
+  {
+    "id": "amulets-crimson-amulet",
+    "name": "Crimson Amulet",
+    "class": "Amulets",
+    "level": 0,
+    "implicit": "(2—4) Life Regeneration per second"
+  },
+  {
+    "id": "amulets-azure-amulet",
+    "name": "Azure Amulet",
+    "class": "Amulets",
+    "level": 0,
+    "implicit": "(20—30)% increased Mana Regeneration Rate"
+  },
+  {
+    "id": "amulets-amber-amulet",
+    "name": "Amber Amulet",
+    "class": "Amulets",
+    "level": 8,
+    "implicit": "+(10—15) to Strength"
+  },
+  {
+    "id": "amulets-jade-amulet",
+    "name": "Jade Amulet",
+    "class": "Amulets",
+    "level": 8,
+    "implicit": "+(10—15) to Dexterity"
+  },
+  {
+    "id": "amulets-lapis-amulet",
+    "name": "Lapis Amulet",
+    "class": "Amulets",
+    "level": 8,
+    "implicit": "+(10—15) to Intelligence"
+  },
+  {
+    "id": "amulets-lunar-amulet",
+    "name": "Lunar Amulet",
+    "class": "Amulets",
+    "level": 14,
+    "implicit": "+(20—30) to maximum Energy Shield"
+  },
+  {
+    "id": "amulets-bloodstone-amulet",
+    "name": "Bloodstone Amulet",
+    "class": "Amulets",
+    "level": 18,
+    "implicit": "+(30—40) to maximum Life"
+  },
+  {
+    "id": "amulets-stellar-amulet",
+    "name": "Stellar Amulet",
+    "class": "Amulets",
+    "level": 25,
+    "implicit": "+(5—7) to all Attributes"
+  },
+  {
+    "id": "amulets-solar-amulet",
+    "name": "Solar Amulet",
+    "class": "Amulets",
+    "level": 30,
+    "implicit": "+(10—15) to Spirit"
+  },
+  {
+    "id": "amulets-gold-amulet",
+    "name": "Gold Amulet",
+    "class": "Amulets",
+    "level": 35,
+    "implicit": "(12—20)% increased Rarity of Items found"
+  },
+  {
+    "id": "amulets-pearlescent-amulet",
+    "name": "Pearlescent Amulet",
+    "class": "Amulets",
+    "level": 8,
+    "implicit": "+(7—10)% to all Elemental Resistances"
+  },
+  {
+    "id": "amulets-dusk-amulet",
+    "name": "Dusk Amulet",
+    "class": "Amulets",
+    "level": 0,
+    "implicit": "+1 Prefix Modifier allowed-1 Suffix Modifier allowed"
+  },
+  {
+    "id": "amulets-gloam-amulet",
+    "name": "Gloam Amulet",
+    "class": "Amulets",
+    "level": 0,
+    "implicit": "-1 Prefix Modifier allowed+1 Suffix Modifier allowed"
+  },
+  {
+    "id": "amulets-penumbra-amulet",
+    "name": "Penumbra Amulet",
+    "class": "Amulets",
+    "level": 0,
+    "implicit": "+2 Prefix Modifiers allowed-2 Suffix Modifiers allowed"
+  },
+  {
+    "id": "amulets-tenebrous-amulet",
+    "name": "Tenebrous Amulet",
+    "class": "Amulets",
+    "level": 0,
+    "implicit": "-2 Prefix Modifiers allowed+2 Suffix Modifiers allowed"
+  },
+  {
+    "id": "amulets-distorted-amulet",
+    "name": "Distorted Amulet",
+    "class": "Amulets",
+    "level": 0,
+    "implicit": "-1 Prefix Modifier allowed-1 Suffix Modifier allowed"
+  },
+  {
+    "id": "rings-golden-hoop",
+    "name": "Golden Hoop",
+    "class": "Rings",
+    "level": 12,
+    "implicit": "+(8—12) to all Attributes"
+  },
+  {
+    "id": "rings-iron-ring",
+    "name": "Iron Ring",
+    "class": "Rings",
+    "level": 0,
+    "implicit": "Adds 1 to 4 Physical Damage to Attacks"
+  },
+  {
+    "id": "rings-lazuli-ring",
+    "name": "Lazuli Ring",
+    "class": "Rings",
+    "level": 0,
+    "implicit": "+(20—30) to maximum Mana"
+  },
+  {
+    "id": "rings-ruby-ring",
+    "name": "Ruby Ring",
+    "class": "Rings",
+    "level": 8,
+    "implicit": "+(20—30)% to Fire Resistance"
+  },
+  {
+    "id": "rings-sapphire-ring",
+    "name": "Sapphire Ring",
+    "class": "Rings",
+    "level": 12,
+    "implicit": "+(20—30)% to Cold Resistance"
+  },
+  {
+    "id": "rings-topaz-ring",
+    "name": "Topaz Ring",
+    "class": "Rings",
+    "level": 16,
+    "implicit": "+(20—30)% to Lightning Resistance"
+  },
+  {
+    "id": "rings-amethyst-ring",
+    "name": "Amethyst Ring",
+    "class": "Rings",
+    "level": 20,
+    "implicit": "+(7—13)% to Chaos Resistance"
+  },
+  {
+    "id": "rings-emerald-ring",
+    "name": "Emerald Ring",
+    "class": "Rings",
+    "level": 26,
+    "implicit": "+(120—160) to Accuracy Rating"
+  },
+  {
+    "id": "rings-pearl-ring",
+    "name": "Pearl Ring",
+    "class": "Rings",
+    "level": 32,
+    "implicit": "(7—10)% increased Cast Speed"
+  },
+  {
+    "id": "rings-prismatic-ring",
+    "name": "Prismatic Ring",
+    "class": "Rings",
+    "level": 35,
+    "implicit": "+(7—10)% to all Elemental Resistances"
+  },
+  {
+    "id": "rings-gold-ring",
+    "name": "Gold Ring",
+    "class": "Rings",
+    "level": 40,
+    "implicit": "(6—15)% increased Rarity of Items found"
+  },
+  {
+    "id": "rings-unset-ring",
+    "name": "Unset Ring",
+    "class": "Rings",
+    "level": 44,
+    "implicit": "Grants 1 additional Skill Slot"
+  },
+  {
+    "id": "rings-abyssal-signet",
+    "name": "Abyssal Signet",
+    "class": "Rings",
+    "level": 0,
+    "implicit": "Inflict Abyssal Wasting on Hit"
+  },
+  {
+    "id": "rings-ring",
+    "name": "Ring",
+    "class": "Rings",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "rings-dusk-ring",
+    "name": "Dusk Ring",
+    "class": "Rings",
+    "level": 0,
+    "implicit": "+1 Prefix Modifier allowed-1 Suffix Modifier allowed"
+  },
+  {
+    "id": "rings-gloam-ring",
+    "name": "Gloam Ring",
+    "class": "Rings",
+    "level": 0,
+    "implicit": "-1 Prefix Modifier allowed+1 Suffix Modifier allowed"
+  },
+  {
+    "id": "rings-penumbra-ring",
+    "name": "Penumbra Ring",
+    "class": "Rings",
+    "level": 0,
+    "implicit": "+2 Prefix Modifiers allowed-2 Suffix Modifiers allowed"
+  },
+  {
+    "id": "rings-tenebrous-ring",
+    "name": "Tenebrous Ring",
+    "class": "Rings",
+    "level": 0,
+    "implicit": "-2 Prefix Modifiers allowed+2 Suffix Modifiers allowed"
+  },
+  {
+    "id": "rings-breach-ring",
+    "name": "Breach Ring",
+    "class": "Rings",
+    "level": 40,
+    "implicit": "Maximum Quality is 40%"
+  },
+  {
+    "id": "belts-golden-obi",
+    "name": "Golden Obi",
+    "class": "Belts",
+    "level": 12,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "belts-rawhide-belt",
+    "name": "Rawhide Belt",
+    "class": "Belts",
+    "level": 0,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "belts-linen-belt",
+    "name": "Linen Belt",
+    "class": "Belts",
+    "level": 0,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "belts-wide-belt",
+    "name": "Wide Belt",
+    "class": "Belts",
+    "level": 14,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "belts-long-belt",
+    "name": "Long Belt",
+    "class": "Belts",
+    "level": 20,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "belts-plate-belt",
+    "name": "Plate Belt",
+    "class": "Belts",
+    "level": 25,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "belts-ornate-belt",
+    "name": "Ornate Belt",
+    "class": "Belts",
+    "level": 31,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "belts-mail-belt",
+    "name": "Mail Belt",
+    "class": "Belts",
+    "level": 40,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "belts-double-belt",
+    "name": "Double Belt",
+    "class": "Belts",
+    "level": 44,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "belts-heavy-belt",
+    "name": "Heavy Belt",
+    "class": "Belts",
+    "level": 50,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "belts-utility-belt",
+    "name": "Utility Belt",
+    "class": "Belts",
+    "level": 55,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "belts-fine-belt",
+    "name": "Fine Belt",
+    "class": "Belts",
+    "level": 62,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "life-flasks-lesser-life-flask",
+    "name": "Lesser Life Flask",
+    "class": "Life Flasks",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "life-flasks-medium-life-flask",
+    "name": "Medium Life Flask",
+    "class": "Life Flasks",
+    "level": 4,
+    "implicit": null
+  },
+  {
+    "id": "life-flasks-greater-life-flask",
+    "name": "Greater Life Flask",
+    "class": "Life Flasks",
+    "level": 10,
+    "implicit": null
+  },
+  {
+    "id": "life-flasks-grand-life-flask",
+    "name": "Grand Life Flask",
+    "class": "Life Flasks",
+    "level": 16,
+    "implicit": null
+  },
+  {
+    "id": "life-flasks-giant-life-flask",
+    "name": "Giant Life Flask",
+    "class": "Life Flasks",
+    "level": 23,
+    "implicit": null
+  },
+  {
+    "id": "life-flasks-colossal-life-flask",
+    "name": "Colossal Life Flask",
+    "class": "Life Flasks",
+    "level": 30,
+    "implicit": null
+  },
+  {
+    "id": "life-flasks-gargantuan-life-flask",
+    "name": "Gargantuan Life Flask",
+    "class": "Life Flasks",
+    "level": 40,
+    "implicit": null
+  },
+  {
+    "id": "life-flasks-transcendent-life-flask",
+    "name": "Transcendent Life Flask",
+    "class": "Life Flasks",
+    "level": 50,
+    "implicit": null
+  },
+  {
+    "id": "life-flasks-ultimate-life-flask",
+    "name": "Ultimate Life Flask",
+    "class": "Life Flasks",
+    "level": 60,
+    "implicit": null
+  },
+  {
+    "id": "mana-flasks-lesser-mana-flask",
+    "name": "Lesser Mana Flask",
+    "class": "Mana Flasks",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "mana-flasks-medium-mana-flask",
+    "name": "Medium Mana Flask",
+    "class": "Mana Flasks",
+    "level": 4,
+    "implicit": null
+  },
+  {
+    "id": "mana-flasks-greater-mana-flask",
+    "name": "Greater Mana Flask",
+    "class": "Mana Flasks",
+    "level": 10,
+    "implicit": null
+  },
+  {
+    "id": "mana-flasks-grand-mana-flask",
+    "name": "Grand Mana Flask",
+    "class": "Mana Flasks",
+    "level": 16,
+    "implicit": null
+  },
+  {
+    "id": "mana-flasks-giant-mana-flask",
+    "name": "Giant Mana Flask",
+    "class": "Mana Flasks",
+    "level": 23,
+    "implicit": null
+  },
+  {
+    "id": "mana-flasks-colossal-mana-flask",
+    "name": "Colossal Mana Flask",
+    "class": "Mana Flasks",
+    "level": 30,
+    "implicit": null
+  },
+  {
+    "id": "mana-flasks-gargantuan-mana-flask",
+    "name": "Gargantuan Mana Flask",
+    "class": "Mana Flasks",
+    "level": 40,
+    "implicit": null
+  },
+  {
+    "id": "mana-flasks-transcendent-mana-flask",
+    "name": "Transcendent Mana Flask",
+    "class": "Mana Flasks",
+    "level": 50,
+    "implicit": null
+  },
+  {
+    "id": "mana-flasks-ultimate-mana-flask",
+    "name": "Ultimate Mana Flask",
+    "class": "Mana Flasks",
+    "level": 60,
+    "implicit": null
+  },
+  {
+    "id": "charms-thawing-charm",
+    "name": "Thawing Charm",
+    "class": "Charms",
+    "level": 12,
+    "implicit": "Used when you become Frozen"
+  },
+  {
+    "id": "charms-staunching-charm",
+    "name": "Staunching Charm",
+    "class": "Charms",
+    "level": 18,
+    "implicit": "Used when you start Bleeding"
+  },
+  {
+    "id": "charms-antidote-charm",
+    "name": "Antidote Charm",
+    "class": "Charms",
+    "level": 24,
+    "implicit": "Used when you become Poisoned"
+  },
+  {
+    "id": "charms-dousing-charm",
+    "name": "Dousing Charm",
+    "class": "Charms",
+    "level": 32,
+    "implicit": "Used when you become Ignited"
+  },
+  {
+    "id": "charms-grounding-charm",
+    "name": "Grounding Charm",
+    "class": "Charms",
+    "level": 32,
+    "implicit": "Used when you become Shocked"
+  },
+  {
+    "id": "charms-stone-charm",
+    "name": "Stone Charm",
+    "class": "Charms",
+    "level": 8,
+    "implicit": "Used when you become Stunned"
+  },
+  {
+    "id": "charms-silver-charm",
+    "name": "Silver Charm",
+    "class": "Charms",
+    "level": 10,
+    "implicit": "Used when you are affected by a Slow"
+  },
+  {
+    "id": "charms-ruby-charm",
+    "name": "Ruby Charm",
+    "class": "Charms",
+    "level": 5,
+    "implicit": "Used when you take Fire damage from a Hit"
+  },
+  {
+    "id": "charms-sapphire-charm",
+    "name": "Sapphire Charm",
+    "class": "Charms",
+    "level": 5,
+    "implicit": "Used when you take Cold damage from a Hit"
+  },
+  {
+    "id": "charms-topaz-charm",
+    "name": "Topaz Charm",
+    "class": "Charms",
+    "level": 5,
+    "implicit": "Used when you take Lightning damage from a Hit"
+  },
+  {
+    "id": "charms-amethyst-charm",
+    "name": "Amethyst Charm",
+    "class": "Charms",
+    "level": 40,
+    "implicit": "Used when you take Chaos damage from a Hit"
+  },
+  {
+    "id": "charms-golden-charm",
+    "name": "Golden Charm",
+    "class": "Charms",
+    "level": 50,
+    "implicit": "Used when you kill a Rare or Unique enemy"
+  },
+  {
+    "id": "charms-cleansing-charm",
+    "name": "Cleansing Charm",
+    "class": "Charms",
+    "level": 40,
+    "implicit": "Used when you become Cursed"
+  },
+  {
+    "id": "charms-golden-obi",
+    "name": "Golden Obi",
+    "class": "Charms",
+    "level": 12,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "charms-idol-of-maxarius",
+    "name": "Idol of Maxarius",
+    "class": "Charms",
+    "level": 50,
+    "implicit": "Body Armours: +1 Charm Slot"
+  },
+  {
+    "id": "charms-soul-core-of-opiloti",
+    "name": "Soul Core of Opiloti",
+    "class": "Charms",
+    "level": 0,
+    "implicit": "Martial Weapon: 15% chance to cause Bleeding on Hit"
+  },
+  {
+    "id": "charms-rawhide-belt",
+    "name": "Rawhide Belt",
+    "class": "Charms",
+    "level": 0,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "charms-linen-belt",
+    "name": "Linen Belt",
+    "class": "Charms",
+    "level": 0,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "charms-wide-belt",
+    "name": "Wide Belt",
+    "class": "Charms",
+    "level": 14,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "charms-long-belt",
+    "name": "Long Belt",
+    "class": "Charms",
+    "level": 20,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "charms-plate-belt",
+    "name": "Plate Belt",
+    "class": "Charms",
+    "level": 25,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "charms-ornate-belt",
+    "name": "Ornate Belt",
+    "class": "Charms",
+    "level": 31,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "charms-mail-belt",
+    "name": "Mail Belt",
+    "class": "Charms",
+    "level": 40,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "charms-double-belt",
+    "name": "Double Belt",
+    "class": "Charms",
+    "level": 44,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "charms-heavy-belt",
+    "name": "Heavy Belt",
+    "class": "Charms",
+    "level": 50,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "charms-utility-belt",
+    "name": "Utility Belt",
+    "class": "Charms",
+    "level": 55,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "charms-fine-belt",
+    "name": "Fine Belt",
+    "class": "Charms",
+    "level": 62,
+    "implicit": "Has (1—3) Charm Slot"
+  },
+  {
+    "id": "jewels-timeless-jewel",
+    "name": "Timeless Jewel",
+    "class": "Jewels",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "jewels-ruby",
+    "name": "Ruby",
+    "class": "Jewels",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "jewels-emerald",
+    "name": "Emerald",
+    "class": "Jewels",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "jewels-sapphire",
+    "name": "Sapphire",
+    "class": "Jewels",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "jewels-diamond",
+    "name": "Diamond",
+    "class": "Jewels",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "jewels-time-lost-ruby",
+    "name": "Time-Lost Ruby",
+    "class": "Jewels",
+    "level": 0,
+    "implicit": "local jewel effect base radius [1000]"
+  },
+  {
+    "id": "jewels-time-lost-emerald",
+    "name": "Time-Lost Emerald",
+    "class": "Jewels",
+    "level": 0,
+    "implicit": "local jewel effect base radius [1000]"
+  },
+  {
+    "id": "jewels-time-lost-sapphire",
+    "name": "Time-Lost Sapphire",
+    "class": "Jewels",
+    "level": 0,
+    "implicit": "local jewel effect base radius [1000]"
+  },
+  {
+    "id": "jewels-time-lost-diamond",
+    "name": "Time-Lost Diamond",
+    "class": "Jewels",
+    "level": 0,
+    "implicit": "local jewel effect base radius [1000]"
+  }
+]

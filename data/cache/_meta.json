@@ -1,0 +1,37 @@
+{
+  "sources": {
+    "__test_source__": {
+      "count": 5,
+      "sourceUrl": "http://example.com",
+      "lastUpdated": "2026-05-25T20:06:23.160Z"
+    },
+    "gems": {
+      "count": 860,
+      "sourceUrl": "https://poe2db.tw/us/Skill_Gems, https://poe2db.tw/us/Support_Gems",
+      "lastError": null,
+      "note": "Imported live Skill Gems and Support Gems from PoE2DB.",
+      "lastUpdated": "2026-05-25T20:06:27.785Z"
+    },
+    "patches": {
+      "lastError": null,
+      "lastUpdated": "2026-05-25T11:53:27.195Z",
+      "count": 10,
+      "sourceUrl": "https://www.pathofexile.com/forum/view-forum/2212",
+      "note": "10 threads checked, 10 matched PoE2 filter"
+    },
+    "uniques": {
+      "count": 401,
+      "sourceUrl": "https://poe2db.tw/us/Unique_item",
+      "lastError": null,
+      "lastUpdated": "2026-05-25T11:53:29.543Z"
+    },
+    "items": {
+      "count": 879,
+      "sourceUrl": "https://poe2db.tw/us/Items",
+      "lastError": null,
+      "note": "24 classes, 879 base items",
+      "lastUpdated": "2026-05-25T18:37:14.418Z"
+    }
+  },
+  "lastGlobalUpdate": "2026-05-25T20:06:27.785Z"
+}
