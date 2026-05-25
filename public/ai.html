@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Build Architect — PoE2 Build Converter</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+        </section>
+
+        <!-- ── Results ─────────────────────────────────────────── -->
+        <section class="panel hidden" id="ai-results">
+          <div class="results-head">
+            <h2 style="margin:0;font-size:15px;font-weight:600;" id="ai-result-title">AI Result</h2>
+             <div class="tab-actions">
+              <button id="copy-result-btn" type="button" class="ghost sm">Copy</button>
+              <button id="copy-json-btn" type="button" class="ghost sm hidden">Copy JSON</button>
+              <button id="pob-btn" type="button" class="ghost sm hidden">Generate PoB Code</button>
+              <button id="tree-btn" type="button" class="ghost sm hidden">Skill Tree</button>
+              <button id="open-planner-btn" type="button" class="ghost sm hidden">Open in Planner</button>
+            </div>
+          </div>
+          <div id="ai-result-content"></div>
+        </section>
+
+        <!-- ── Passive Tree Panel ─────────────────────────────── -->
+        <section class="panel hidden" id="tree-panel">
+          <div class="results-head" style="margin-bottom:10px;">
+            <div>
+              <h2 style="margin:0;font-size:15px;font-weight:600;">Passive Skill Tree</h2>
+              <p class="panel-sub" style="margin:2px 0 0;">Scroll to zoom · drag to pan · double-click to reset</p>
+            </div>
+            <div class="tab-actions">
+              <span id="tree-alloc-count" class="muted-label" style="font-size:12px;align-self:center;"></span>
+              <button id="tree-asc-btn" type="button" class="ghost sm">Show Ascendancy</button>
+              <button id="tree-reset-btn" type="button" class="ghost sm">Reset View</button>
+            </div>
+          </div>
+          <div class="tree-canvas-wrap">
+            <canvas id="tree-canvas"></canvas>
+            <div id="tree-loading" class="tree-loading">Loading tree data…</div>
+          </div>
+        </section>
+
+      </main>
+    <!-- PoB Export Modal -->
+    <div id="pob-modal" class="modal-overlay hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Path of Building Export</h3>
+          <button id="close-pob-modal" type="button" class="ghost" style="border:none;background:none;font-size:22px;padding:0;">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="ai-notice info" id="pob-modal-warning" style="margin-bottom:12px;">
+            ℹ️ Partial PoB export — passive tree, exact item stats, and config are not fully available yet.
+          </div>
+          <div class="field">
+            <label for="pob-export-preview">PoB Code Preview</label>
+            <textarea id="pob-export-preview" readonly rows="8" spellcheck="false" style="width:100%; font-family: monospace;"></textarea>
+          </div>
+          <div class="ai-notice warn hidden" id="pob-validation-warning" style="margin-top:8px;"></div>
+        </div>
+        <div class="modal-footer">
+          <button id="copy-pob-code" type="button" class="primary">Copy PoB Code</button>
+          <button id="download-pob-txt" type="button" class="ghost">Download .txt</button>
+          <button id="download-pob-xml" type="button" class="ghost">Download .xml</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="ai.js"></script>
+  </body>
+</html>

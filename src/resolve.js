@@ -4,6 +4,7 @@ import { isMobalyticsUrl, fetchMobalyticsData, inspectMobalyticsUrl } from './mo
 import { isMaxrollUrl, fetchMaxrollData, inspectMaxrollUrl } from './maxroll.js';
 import { isPoeNinjaUrl, fetchPoeNinjaData, inspectPoeNinjaUrl } from './poeninja.js';
 import { convertToBuild } from './converter.js';
+import { parseItem } from './lib/poe2/itemTextParser.ts';
 
 /**
  * Resolve any supported input into a normalized PoB build object.
@@ -24,6 +25,34 @@ export async function resolveInput(rawInput, { kind = 'auto', skillSetId, itemSe
   const detected = kind === 'auto' ? detectKind(input) : kind;
   const source = { kind: detected };
   const setOpts = { skillSetId, itemSetId, specIndex };
+
+  if (detected === 'poe2item') {
+    const parsed = parseItem(input);
+    const list = [{
+      id: 'pasted_item',
+      name: parsed.name || parsed.baseType || 'Pasted Item',
+      typeLine: parsed.baseType || '',
+      rarity: parsed.rarity || 'Normal',
+      implicits: parsed.implicits.map(m => m.raw),
+      explicits: parsed.explicits.map(m => m.raw),
+      runes: parsed.runes,
+      soulCores: parsed.soulCores,
+      parserProblems: parsed.unknownLines,
+    }];
+    const slotName = getSlotNameFromItemClass(parsed.itemClass);
+    const slots = [{ name: slotName, itemId: 'pasted_item' }];
+
+    const build = {
+      name: parsed.name || parsed.baseType || 'Pasted Item',
+      items: { list, slots },
+      meta: {
+        className: 'Witch',
+        level: parsed.requirements.level || 1,
+        parserProblems: parsed.unknownLines,
+      }
+    };
+    return { build, source: { kind: 'poe2item', name: parsed.name || parsed.baseType || 'Pasted Item' } };
+  }
 
   if (detected === 'mobalytics') {
     const { build, sourceName } = await fetchMobalyticsData(input, setOpts);
@@ -103,6 +132,9 @@ export async function inspectInput(rawInput, { kind = 'auto' } = {}) {
 }
 
 function detectKind(input) {
+  if (input.startsWith('Item Class:') || input.startsWith('Rarity:') || /^Rarity:\s*(Normal|Magic|Rare|Unique)/mi.test(input)) {
+    return 'poe2item';
+  }
   if (isMobalyticsUrl(input)) return 'mobalytics';
   if (isMaxrollUrl(input)) return 'maxroll';
   if (isPoeNinjaUrl(input)) return 'poeninja';
@@ -115,6 +147,33 @@ function detectKind(input) {
   if (input.startsWith('<') && input.includes('PathOfBuilding')) return 'xml';
   if (input.startsWith('{') || input.startsWith('[')) return 'json';
   return 'pobcode';
+}
+
+function getSlotNameFromItemClass(itemClass) {
+  if (!itemClass) return 'BodyArmour';
+  const cls = itemClass.toLowerCase();
+  if (cls.includes('body armour') || cls.includes('body armours')) return 'BodyArmour';
+  if (cls.includes('helmet') || cls.includes('helmets')) return 'Helmet';
+  if (cls.includes('glove') || cls.includes('gloves')) return 'Gloves';
+  if (cls.includes('boot') || cls.includes('boots')) return 'Boots';
+  if (cls.includes('shield') || cls.includes('focus') || cls.includes('buckler') || cls.includes('shields') || cls.includes('foci') || cls.includes('bucklers')) return 'Offhand';
+  if (cls.includes('quiver') || cls.includes('quivers')) return 'Offhand';
+  if (cls.includes('ring') || cls.includes('rings')) return 'Ring 1';
+  if (cls.includes('amulet') || cls.includes('amulets')) return 'Amulet';
+  if (cls.includes('belt') || cls.includes('belts')) return 'Belt';
+  if (
+    cls.includes('wand') || cls.includes('wands') ||
+    cls.includes('bow') || cls.includes('bows') ||
+    cls.includes('staff') || cls.includes('staves') ||
+    cls.includes('quarterstaff') || cls.includes('quarterstaves') ||
+    cls.includes('crossbow') || cls.includes('crossbows') ||
+    cls.includes('spear') || cls.includes('spears') ||
+    cls.includes('mace') || cls.includes('maces') ||
+    cls.includes('sceptre') || cls.includes('sceptres')
+  ) {
+    return 'Weapon 1';
+  }
+  return 'BodyArmour';
 }
 
 /**

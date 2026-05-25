@@ -14,6 +14,19 @@
           <span class="brand-mark">⌂</span>
           <span class="brand-name">Build Converter for Path of Exile 2</span>
         </div>
+        <nav class="sidebar-nav">
+          <a href="/" class="nav-link active">Converter</a>
+          <a href="/crafting.html" class="nav-link">⚒ Crafting Simulator</a>
+          <div class="nav-group">
+            <span class="nav-group-title">🔍 Regex Builders</span>
+            <div class="nav-group-items">
+              <a href="/regex.html" class="nav-link sub">Vendor</a>
+              <a href="/waystone.html" class="nav-link sub">Waystone</a>
+              <a href="/tablet.html" class="nav-link sub">Precursor Tablet</a>
+              <a href="/relic.html" class="nav-link sub">Relic</a>
+            </div>
+          </div>
+        </nav>
         <div class="sidebar-footer">
           <a href="https://github.com/febsho/poe2-build-converter" target="_blank" rel="noreferrer">GitHub ↗</a>
           <div class="version">version 1.0.0</div>
@@ -121,6 +134,7 @@
               <button class="tab" data-tab="skills">Skills</button>
               <button class="tab" data-tab="passives">Passives</button>
               <button class="tab" data-tab="ascendancy">Ascendancy</button>
+              <button class="tab" data-tab="tree">Tree</button>
               <button class="tab" data-tab="items">Items</button>
               <button class="tab" data-tab="json">JSON</button>
               <button class="tab" data-tab="problems">Problems <span class="badge hidden" id="problems-badge"></span></button>
@@ -136,6 +150,22 @@
           <div class="tab-panel" id="tab-skills"></div>
           <div class="tab-panel" id="tab-passives"></div>
           <div class="tab-panel" id="tab-ascendancy"></div>
+          <div class="tab-panel" id="tab-tree">
+            <div class="tree-viewer-container" style="position:relative; width:100%; height:520px; background:#020202; border-radius:6px; overflow:hidden;">
+              <canvas id="tree-canvas" style="display:block; width:100%; height:100%; cursor:grab;"></canvas>
+              <div id="tree-loading" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.85); color:var(--muted-2); font-size:14px; gap:8px;">
+                <span>Loading Skill Tree...</span>
+              </div>
+              <div id="tree-controls-overlay" style="position:absolute; top:12px; left:12px; display:flex; gap:8px; z-index:10;">
+                <button id="tree-asc-btn" class="ghost sm" type="button">Show Ascendancy</button>
+                <button id="tree-reset-btn" class="ghost sm" type="button">Reset View</button>
+              </div>
+              <div id="tree-debug-panel" style="position:absolute; top:54px; left:12px; display:none; min-width:220px; max-width:360px; background:rgba(6,6,7,0.92); border:1px solid var(--border-2); border-radius:4px; padding:8px 10px; font-size:11px; line-height:1.55; color:var(--muted-2); z-index:10;"></div>
+              <div style="position:absolute; bottom:12px; right:12px; background:rgba(6,6,7,0.85); border:1px solid var(--border-2); border-radius:4px; padding:4px 8px; font-size:11px; color:var(--muted-2); z-index:10; pointer-events:none;">
+                Scroll to Zoom • Drag to Pan • Double Click to Reset
+              </div>
+            </div>
+          </div>
           <div class="tab-panel" id="tab-items"></div>
           <div class="tab-panel" id="tab-json">
             <div class="json-editor-wrap">

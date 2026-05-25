@@ -111,9 +111,9 @@ test('convertToBuild prefers selected ascendancy passives when source class meta
 test('parsePobXml includes PoB ascendancyNodes in converted passives', () => {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <PathOfBuilding2>
-  <Build level="90" className="Witch" ascendClassName="Lich" />
+  <Build level="90" className="Witch" ascendClassName="Blood Mage" />
   <Tree activeSpec="1">
-    <Spec treeVersion="0_3" classId="3" ascendClassId="3" nodes="" ascendancyNodes="3165"/>
+    <Spec treeVersion="0_3" classId="3" ascendClassId="2" nodes="" ascendancyNodes="3165"/>
   </Tree>
 </PathOfBuilding2>`;
 
@@ -123,6 +123,7 @@ test('parsePobXml includes PoB ascendancyNodes in converted passives', () => {
 
   const { build: out } = convertToBuild(build);
   assert.equal(out.passives.some((p) => p.id === 'AscendancyWitch2Small7'), true);
+  assert.equal(out.passives.some((p) => p.id === 'AscendancyWitch2Notable3'), false);
 });
 
 test('convertToBuild caps PoB ascendancy passives at eight nodes', () => {
@@ -132,7 +133,7 @@ test('convertToBuild caps PoB ascendancy passives at eight nodes', () => {
   ].join(',');
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <PathOfBuilding2>
-  <Build level="90" className="Witch" ascendClassName="Lich" />
+  <Build level="90" className="Witch" ascendClassName="Blood Mage" />
   <Tree activeSpec="1">
     <Spec treeVersion="0_3" classId="3" ascendClassId="2" nodes="" ascendancyNodes="${ascendancyNodes}"/>
   </Tree>
@@ -150,9 +151,9 @@ test('convertToBuild caps PoB ascendancy passives at eight nodes', () => {
 test('parsePobXml includes nested PoB node entries in converted passives', () => {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <PathOfBuilding2>
-  <Build level="90" className="Witch" ascendClassName="Lich" />
+  <Build level="90" className="Witch" ascendClassName="Blood Mage" />
   <Tree activeSpec="1">
-    <Spec treeVersion="0_3" classId="3" ascendClassId="3" nodes="">
+    <Spec treeVersion="0_3" classId="3" ascendClassId="2" nodes="">
       <AscendancyNodes>
         <Node id="3165"/>
       </AscendancyNodes>
@@ -165,6 +166,7 @@ test('parsePobXml includes nested PoB node entries in converted passives', () =>
 
   const { build: out } = convertToBuild(build);
   assert.equal(out.passives.some((p) => p.id === 'AscendancyWitch2Small7'), true);
+  assert.equal(out.passives.some((p) => p.id === 'AscendancyWitch2Notable3'), false);
 });
 
 test('parsePobXml infers support gem level from rank suffix when PoB level is missing', () => {

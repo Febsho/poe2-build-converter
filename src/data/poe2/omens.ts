@@ -1,0 +1,126 @@
+import type { Omen } from './types.ts';
+
+// PoE2 crafting omens and their effects on currency actions.
+// Source: poe2db.tw
+
+export const POE2_OMENS: Omen[] = [
+  {
+    id: 'omen-whittling',
+    name: 'Omen of Whittling',
+    description: 'The next Chaos Orb used will remove the modifier with the lowest level requirement.',
+    modifiesAction: ['chaos'],
+    effect: 'Chaos Orb removes the lowest-level modifier instead of rerolling.',
+  },
+  {
+    id: 'omen-sinistral-erasure',
+    name: 'Omen of Sinistral Erasure',
+    description: 'The next Chaos Orb used will only remove prefix modifiers.',
+    modifiesAction: ['chaos'],
+    effect: 'Chaos Orb removes only prefixes.',
+  },
+  {
+    id: 'omen-dextral-erasure',
+    name: 'Omen of Dextral Erasure',
+    description: 'The next Chaos Orb used will only remove suffix modifiers.',
+    modifiesAction: ['chaos'],
+    effect: 'Chaos Orb removes only suffixes.',
+  },
+  {
+    id: 'omen-sinistral-alchemy',
+    name: 'Omen of Sinistral Alchemy',
+    description: 'The next Orb of Alchemy used will result in the maximum number of prefix modifiers.',
+    modifiesAction: ['alchemy'],
+    effect: 'Orb of Alchemy guarantees maximum (3) prefixes.',
+  },
+  {
+    id: 'omen-dextral-alchemy',
+    name: 'Omen of Dextral Alchemy',
+    description: 'The next Orb of Alchemy used will result in the maximum number of suffix modifiers.',
+    modifiesAction: ['alchemy'],
+    effect: 'Orb of Alchemy guarantees maximum (3) suffixes.',
+  },
+  {
+    id: 'omen-sinistral-coronation',
+    name: 'Omen of Sinistral Coronation',
+    description: 'The next Regal Orb used will add only a prefix modifier.',
+    modifiesAction: ['regal'],
+    effect: 'Regal Orb adds only a prefix.',
+  },
+  {
+    id: 'omen-dextral-coronation',
+    name: 'Omen of Dextral Coronation',
+    description: 'The next Regal Orb used will add only a suffix modifier.',
+    modifiesAction: ['regal'],
+    effect: 'Regal Orb adds only a suffix.',
+  },
+  {
+    id: 'omen-greater-exaltation',
+    name: 'Omen of Greater Exaltation',
+    description: 'The next Exalted Orb used will add two modifiers instead of one.',
+    modifiesAction: ['exalt'],
+    effect: 'Exalted Orb adds two modifiers.',
+  },
+  {
+    id: 'omen-sinistral-exaltation',
+    name: 'Omen of Sinistral Exaltation',
+    description: 'The next Exalted Orb used will add only a prefix modifier.',
+    modifiesAction: ['exalt'],
+    effect: 'Exalted Orb adds only a prefix.',
+  },
+  {
+    id: 'omen-dextral-exaltation',
+    name: 'Omen of Dextral Exaltation',
+    description: 'The next Exalted Orb used will add only a suffix modifier.',
+    modifiesAction: ['exalt'],
+    effect: 'Exalted Orb adds only a suffix.',
+  },
+  {
+    id: 'omen-greater-annulment',
+    name: 'Omen of Greater Annulment',
+    description: 'The next Orb of Annulment used will remove two modifiers instead of one.',
+    modifiesAction: ['annul'],
+    effect: 'Orb of Annulment removes two modifiers.',
+  },
+  {
+    id: 'omen-sinistral-annulment',
+    name: 'Omen of Sinistral Annulment',
+    description: 'The next Orb of Annulment used will only remove prefix modifiers.',
+    modifiesAction: ['annul'],
+    effect: 'Orb of Annulment removes only prefixes.',
+  },
+  {
+    id: 'omen-dextral-annulment',
+    name: 'Omen of Dextral Annulment',
+    description: 'The next Orb of Annulment used will only remove suffix modifiers.',
+    modifiesAction: ['annul'],
+    effect: 'Orb of Annulment removes only suffixes.',
+  },
+  {
+    id: 'omen-corruption',
+    name: 'Omen of Corruption',
+    description: 'The next Vaal Orb used will always result in a modification to the item.',
+    modifiesAction: ['vaal'],
+    effect: 'Vaal Orb always changes the item.',
+  },
+  {
+    id: 'omen-blessed',
+    name: 'Omen of the Blessed',
+    description: 'The next Divine Orb used will only reroll implicit modifiers.',
+    modifiesAction: ['divine'],
+    effect: 'Divine Orb only rerolls implicits.',
+  },
+  {
+    id: 'omen-chance',
+    name: 'Omen of Chance',
+    description: 'The next Orb of Chance used will not destroy the item if it fails to create a unique.',
+    modifiesAction: ['chance'],
+    effect: 'Orb of Chance will not destroy the item on failure.',
+  },
+  {
+    id: 'omen-ancients',
+    name: 'Omen of the Ancients',
+    description: 'The next Orb of Chance used will upgrade the item to a random unique of the same class.',
+    modifiesAction: ['chance'],
+    effect: 'Orb of Chance guarantees upgrade to random unique of the same class.',
+  },
+];

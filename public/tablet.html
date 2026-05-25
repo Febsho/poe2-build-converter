@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Precursor Tablet Regex - PoE2 Build Converter</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="page-regex">
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-mark">&#8962;</span>
+          <span class="brand-name">Build Converter for Path of Exile 2</span>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="/" class="nav-link">Converter</a>
+          <a href="/crafting.html" class="nav-link">⚒ Crafting Simulator</a>
+          <div class="nav-group">
+            <span class="nav-group-title">🔍 Regex Builders</span>
+            <div class="nav-group-items">
+              <a href="/regex.html" class="nav-link sub">Vendor</a>
+              <a href="/waystone.html" class="nav-link sub">Waystone</a>
+              <a href="/tablet.html" class="nav-link sub active">Precursor Tablet</a>
+              <a href="/relic.html" class="nav-link sub">Relic</a>
+            </div>
+          </div>
+        </nav>
+        <div class="sidebar-footer">
+          <a href="https://github.com/febsho/poe2-build-converter" target="_blank" rel="noreferrer">GitHub &#8599;</a>
+          <div class="version">regex builder</div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <!-- Output panel -->
+        <div class="vr-output-panel panel">
+          <div class="vr-output-header">
+            <div>
+              <h2 style="margin:0;font-size:16px;font-weight:600;color:var(--text)">Precursor Tablet Regex Builder</h2>
+              <p class="panel-sub" style="margin:4px 0 0 0">Build compact, hyper-optimized regular expressions for Path of Exile 2 search boxes.</p>
+            </div>
+            <div class="vr-output-actions">
+              <span class="vr-length-text" id="vr-length">0 / 250</span>
+              <button id="vr-copy" class="primary sm" type="button">Copy</button>
+              <button id="vr-reset" class="ghost sm" type="button">Reset</button>
+            </div>
+          </div>
+          <textarea id="vr-output" rows="2" readonly spellcheck="false" class="vr-output-textarea" placeholder="Select filters below to compile regular expressions..."></textarea>
+          <div class="vr-length-bar-wrap">
+            <div class="vr-length-bar" id="vr-length-bar"></div>
+          </div>
+          <div id="vr-warning" class="regex-warning hidden"></div>
+          <div id="vr-chunks" class="regex-chunks" style="margin-top:10px"></div>
+        </div>
+
+        <!-- TABLETS PANEL -->
+        <div class="pane-content active">
+          <div style="display:flex;justify-content:space-between;margin-bottom:12px">
+            <label class="vr-checkbox-label" style="font-size:13px">
+              <input type="checkbox" id="tb-round10" checked>
+              <span>Round down numeric modifiers to nearest 10 (saves search space)</span>
+            </label>
+          </div>
+
+          <div class="vr-ws-top-grid">
+            <!-- Rarity -->
+            <div class="vr-section">
+              <div class="vr-section-title">Tablet Rarity</div>
+              <div class="vr-checkbox-list">
+                <label class="vr-checkbox-label"><input type="checkbox" id="tb-rar-normal"> <span>Normal</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="tb-rar-magic"> <span>Magic</span></label>
+              </div>
+            </div>
+
+            <!-- Type -->
+            <div class="vr-section">
+              <div class="vr-section-title">Tablet Mechanic Type</div>
+              <div class="vr-checkbox-grid">
+                <label class="vr-checkbox-label"><input type="checkbox" id="tb-type-abyss"> <span>Abyss</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="tb-type-breach"> <span>Breach</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="tb-type-delirium"> <span>Delirium</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="tb-type-irradiated"> <span>Irradiated</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="tb-type-expedition"> <span>Expedition</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="tb-type-ritual"> <span>Ritual</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="tb-type-overseer"> <span>Overseer</span></label>
+              </div>
+            </div>
+
+            <!-- Maps Affected -->
+            <div class="vr-section">
+              <div class="vr-section-title">Affected Maps</div>
+              <div class="vr-checkbox-list">
+                <label class="vr-checkbox-label" style="margin-bottom:8px">
+                  <input type="checkbox" id="tb-maps-enable">
+                  <span>Match number of maps in range</span>
+                </label>
+                <div class="vr-input-row" id="tb-maps-input-wrap" style="opacity: 0.5; pointer-events: none;">
+                  <span class="vr-input-label">Min Maps:</span>
+                  <input type="number" id="tb-maps-count" class="vr-num-input" min="2" max="18" value="2" style="width:72px">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tablet Wanted Affixes -->
+          <div class="vr-section" style="margin-top:12px">
+            <div class="vr-section-title">I Want These Affixes</div>
+            <div class="vr-match-options" style="margin-bottom:12px">
+              <label class="vr-radio-label">
+                <input type="radio" name="tb-wanted-type" value="any" checked>
+                <span>Match when <b>any</b> mod matches</span>
+              </label>
+              <label class="vr-radio-label">
+                <input type="radio" name="tb-wanted-type" value="all">
+                <span>Match only when <b>all</b> mods match</span>
+              </label>
+            </div>
+            <input type="search" id="tb-wanted-filter" class="vr-search-box" style="margin-bottom:8px" placeholder="Filter tablet affixes...">
+            <div id="tb-wanted-list" class="vr-checkbox-list" style="max-height:360px;overflow-y:auto;border:1px solid var(--border-2);border-radius:6px;padding:8px">
+              <!-- Dynamically rendered checklist of all Tablet modifiers -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom terms -->
+        <div class="panel" style="margin-top:12px">
+          <div class="field">
+            <label for="vr-custom" style="color:var(--text);font-weight:600">Custom terms (one per line, comma, or | separated)</label>
+            <textarea id="vr-custom" rows="3" spellcheck="false" placeholder='e.g. pierce, culling, "of the tiger"' class="vr-output-textarea" style="margin-top:6px"></textarea>
+          </div>
+          <div class="vr-custom-footer">
+            <label class="check-row" style="margin:0">
+              <input id="vr-custom-regex" type="checkbox" />
+              <span>Treat as raw regex</span>
+            </label>
+            <label class="check-row" style="margin:0">
+              <input id="vr-show-test" type="checkbox" />
+              <span>Show test area</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Test area -->
+        <div id="vr-test-panel" class="panel hidden" style="margin-top:12px">
+          <div class="field">
+            <label for="vr-test-input" style="color:var(--text);font-weight:600">Paste item text to test regex</label>
+            <textarea id="vr-test-input" rows="8" spellcheck="false" placeholder="Paste item tooltip text here — matching lines will be highlighted" class="vr-output-textarea" style="margin-top:6px"></textarea>
+          </div>
+          <div id="vr-test-result" class="regex-test-result" style="margin-top:10px">No test text.</div>
+        </div>
+      </main>
+    </div>
+    <script src="tablet.js"></script>
+  </body>
+</html>
