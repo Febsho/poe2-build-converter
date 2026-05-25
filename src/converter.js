@@ -8,6 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Real GGG passive and ascendancy data from poe2-build-forge
 const PASSIVES = require('./data/passives_default.json');
 const ASCENDANCIES = require('./data/ascendancies.json');
+const TREE_DATA = require('../public/tree-data.json');
 
 // Build a reverse map: ascendancy display name -> internal key (e.g. "Deadeye" -> "Ranger1")
 const ASCENDANCY_BY_NAME = Object.fromEntries(
@@ -123,6 +124,12 @@ export function convertToBuild(build, opts = {}) {
   const report = { converted: [], guessed: [], unsupported: [], warnings: [] };
   const out = {};
 
+  if (build.meta?.parserProblems) {
+    for (const problem of build.meta.parserProblems) {
+      report.unsupported.push(`[Item Parser] ${problem}`);
+    }
+  }
+
   out.name = pickName(build, opts, report);
   out.description = buildDescription(build, opts);
   report.converted.push('description (generated from build metadata + notes)');
@@ -137,7 +144,7 @@ export function convertToBuild(build, opts = {}) {
     out.passives = build.passives.map(enrichBuildPassive);
     report.converted.push(`${build.passives.length} passives (kept as-is)`);
   } else {
-    const passives = convertPassivesWithWeaponSets(build, report);
+    const passives = convertPassivesWithWeaponSets(build, report, asc);
     if (passives.length) out.passives = passives;
   }
 
@@ -415,6 +422,27 @@ function convertSkills(build, report) {
       buildSkill.additional_text = skillText;
     }
 
+    // 5. Validate support gem compatibility (PoB2 Build Optimizer rules)
+    const activeKey = normalizeGemKey(primaryActive.gemId || primaryActive.nameSpec);
+    const activeTags = ACTIVE_GEM_TAGS[activeKey] || [];
+    if (activeTags.length > 0) {
+      for (const support of supports) {
+        const supportKey = normalizeGemKey(support.gemId || support.nameSpec);
+        const rule = SUPPORT_COMPAT_RULES[supportKey];
+        if (rule) {
+          const hasRequiredTag = rule.requiresAny
+            ? rule.requires.some(tag => activeTags.includes(tag))
+            : rule.requires.every(tag => activeTags.includes(tag));
+            
+          if (!hasRequiredTag) {
+            report.warnings.push(
+              `Skill Link Warning: Support gem "${support.nameSpec || support.gemId}" does not support "${primaryActive.nameSpec || primaryActive.gemId}" (${rule.errMsg}).`
+            );
+          }
+        }
+      }
+    }
+
     out.push(buildSkill);
     report.converted.push(`skill "${primaryActive.nameSpec || primaryActive.gemId}"`);
 
@@ -459,7 +487,6 @@ function convertPassives(build, report) {
     for (const nodeId of finalSpec.nodes) {
       const entry = PASSIVES[String(nodeId)];
       if (!entry) { unresolved++; continue; }
-      if (entry.is_jewel_socket) continue;
       if (entry.ascendancy) continue;
       out.push({ id: entry.id, level_interval: [...DEFAULT_LEVEL_INTERVAL] });
       resolved++;
@@ -477,7 +504,6 @@ function convertPassives(build, report) {
     for (const nodeId of finalSpec.nodes) {
       const entry = PASSIVES[String(nodeId)];
       if (!entry) { unresolved++; continue; }
-      if (entry.is_jewel_socket) continue;
       if (entry.ascendancy) continue;
 
       const startLevel = startLevelForSpec(earliest.get(nodeId) ?? allSpecs.length - 1);
@@ -492,7 +518,7 @@ function convertPassives(build, report) {
   return out;
 }
 
-function convertPassivesWithWeaponSets(build, report) {
+function convertPassivesWithWeaponSets(build, report, ascendancy) {
   const localReport = { warnings: [], converted: [], guessed: [] };
   const out = convertPassives(build, localReport);
   const weaponSet1Nodes = build.tree?.weaponSet1Nodes ?? [];
@@ -509,23 +535,23 @@ function convertPassivesWithWeaponSets(build, report) {
 
   const weaponSet1 = appendWeaponSetPassives(out, seenNodeIds, weaponSet1Nodes, 1);
   const weaponSet2 = appendWeaponSetPassives(out, seenNodeIds, weaponSet2Nodes, 2);
-  const ascendancy = appendAscendancyPassives(out, seenNodeIds, build.tree);
+  const ascendancyResult = appendAscendancyPassives(out, seenNodeIds, build.tree, ascendancy);
   const resolved = localReport.converted
     .map((line) => line.match(/^(\d+) passive nodes resolved from GGG data$/))
     .find(Boolean);
   const guessed = localReport.guessed
     .map((line) => line.match(/^(\d+) passive node\(s\) not found in data/))
     .find(Boolean);
-  const resolvedCount = (resolved ? Number(resolved[1]) : 0) + weaponSet1.resolved + weaponSet2.resolved + ascendancy.resolved;
-  const unresolvedCount = (guessed ? Number(guessed[1]) : 0) + weaponSet1.unresolved + weaponSet2.unresolved + ascendancy.unresolved;
+  const resolvedCount = (resolved ? Number(resolved[1]) : 0) + weaponSet1.resolved + weaponSet2.resolved + ascendancyResult.resolved;
+  const unresolvedCount = (guessed ? Number(guessed[1]) : 0) + weaponSet1.unresolved + weaponSet2.unresolved + ascendancyResult.unresolved;
 
   report.warnings.push(...localReport.warnings);
   report.converted.push(...localReport.converted.filter((line) => !/passive nodes resolved from GGG data$/.test(line)));
   report.guessed.push(...localReport.guessed.filter((line) => !/passive node\(s\) not found in data/.test(line)));
   if (resolvedCount) report.converted.push(`${resolvedCount} passive nodes resolved from GGG data`);
   if (unresolvedCount) report.guessed.push(`${unresolvedCount} passive node(s) not found in data - omitted`);
-  if (ascendancy.capped) {
-    report.warnings.push(`${ascendancy.capped} extra ascendancy node(s) omitted; Path of Exile 2 builds can allocate at most ${MAX_ASCENDANCY_PASSIVES} ascendancy points.`);
+  if (ascendancyResult.capped) {
+    report.warnings.push(`${ascendancyResult.capped} extra ascendancy node(s) omitted; Path of Exile 2 builds can allocate at most ${MAX_ASCENDANCY_PASSIVES} ascendancy points.`);
   }
 
   return out;
@@ -533,7 +559,7 @@ function convertPassivesWithWeaponSets(build, report) {
 
 function convertPassiveNode(nodeId) {
   const entry = PASSIVES[String(nodeId)];
-  if (!entry || entry.is_jewel_socket) return null;
+  if (!entry) return null;
   if (entry.ascendancy) return null;
   return entry.id;
 }
@@ -557,7 +583,7 @@ function appendWeaponSetPassives(out, seenNodeIds, nodeIds, weaponSet) {
   return { resolved, unresolved };
 }
 
-function appendAscendancyPassives(out, seenNodeIds, tree) {
+function appendAscendancyPassives(out, seenNodeIds, tree, selectedAscendancy) {
   const activeAscendancyNodes = tree?.activeSpec?.ascendancyNodes ?? [];
   const specAscendancyNodes = (tree?.specs ?? []).flatMap((spec) => spec.ascendancyNodes ?? []);
   const fallbackAscendancyNodes = [
@@ -565,6 +591,9 @@ function appendAscendancyPassives(out, seenNodeIds, tree) {
     ...(tree?.specs ?? []).flatMap((spec) => spec.nodes ?? []),
   ].filter((nodeId) => PASSIVES[String(nodeId)]?.ascendancy);
   const nodeIds = uniqueNums([...activeAscendancyNodes, ...specAscendancyNodes, ...fallbackAscendancyNodes]);
+  const selectedInternal = selectedAscendancy && ASCENDANCIES[selectedAscendancy]
+    ? selectedAscendancy
+    : ASCENDANCY_BY_NAME[selectedAscendancy];
   let resolved = 0;
   let unresolved = 0;
   let capped = 0;
@@ -572,11 +601,12 @@ function appendAscendancyPassives(out, seenNodeIds, tree) {
   for (const nodeId of nodeIds) {
     if (seenNodeIds.has(nodeId)) continue;
     const entry = PASSIVES[String(nodeId)];
-    if (!entry || entry.is_jewel_socket) {
+    if (!entry) {
       unresolved++;
       continue;
     }
     if (!entry.ascendancy) continue;
+    if (selectedInternal && entry.ascendancy !== selectedInternal) continue;
     if (resolved >= MAX_ASCENDANCY_PASSIVES) {
       capped++;
       continue;
@@ -591,6 +621,183 @@ function appendAscendancyPassives(out, seenNodeIds, tree) {
 
 function uniqueNums(values) {
   return [...new Set(values.filter((n) => Number.isInteger(n)))];
+}
+
+function repairAscendancyNodeIds(nodeIds, selectedAscendancy) {
+  const unique = uniqueNums(nodeIds);
+  if (!unique.length) return { nodeIds: [], unresolved: 0 };
+
+  const selectedInternal = selectedAscendancy && ASCENDANCIES[selectedAscendancy]
+    ? selectedAscendancy
+    : ASCENDANCY_BY_NAME[selectedAscendancy];
+  const inferredInternal = selectedInternal || unique
+    .map((nodeId) => PASSIVES[String(nodeId)]?.ascendancy)
+    .find((asc) => asc && ASCENDANCIES[asc]);
+  const display = ASCENDANCIES[inferredInternal]?.name;
+
+  const targets = unique
+    .map((nodeId, index) => {
+      const entry = PASSIVES[String(nodeId)];
+      if (!entry?.ascendancy) return null;
+      if (inferredInternal && entry.ascendancy !== inferredInternal) return null;
+      const hash = findTreeHashBySid(entry.id);
+      if (!hash) return null;
+      return { nodeId, hash, index };
+    })
+    .filter(Boolean);
+
+  if (!targets.length) {
+    return { nodeIds: [], unresolved: unique.filter((nodeId) => PASSIVES[String(nodeId)]?.ascendancy).length };
+  }
+
+  const startHash = findAscendancyTreeStartHash(display);
+  const adjacency = buildTreeAdjacency(TREE_DATA.nodes || {});
+  const allow = (hash) => {
+    const node = TREE_DATA.nodes?.[hash];
+    return !!node?.a && (!display || String(node.a).toLowerCase() === display.toLowerCase());
+  };
+
+  const connected = connectTreeTargets(targets, {
+    adjacency,
+    startHash,
+    max: MAX_ASCENDANCY_PASSIVES,
+    allow,
+    draw: (hash) => {
+      const node = TREE_DATA.nodes?.[hash];
+      return !!node?.sid && !isAscendancyRootTreeNode(node);
+    },
+  });
+
+  const repaired = connected
+    .map((hash) => TREE_DATA.nodes?.[hash]?.sid)
+    .map((sid) => findPassiveHashById(sid))
+    .filter((nodeId) => Number.isInteger(nodeId));
+
+  return {
+    nodeIds: uniqueNums(repaired.length ? repaired : targets.map((target) => target.nodeId)).slice(0, MAX_ASCENDANCY_PASSIVES),
+    unresolved: 0,
+  };
+}
+
+function findTreeHashBySid(sid) {
+  const found = Object.entries(TREE_DATA.nodes || {}).find(([, node]) => node.sid === sid);
+  return found?.[0] || null;
+}
+
+function findPassiveHashById(id) {
+  const found = Object.entries(PASSIVES).find(([, entry]) => entry.id === id);
+  return found ? Number(found[0]) : null;
+}
+
+function findAscendancyTreeStartHash(displayName) {
+  const wanted = String(displayName || '').trim().toLowerCase();
+  if (!wanted) return null;
+  const found = Object.entries(TREE_DATA.nodes || {}).find(([, node]) =>
+    node.a && String(node.a).toLowerCase() === wanted && isAscendancyRootTreeNode(node)
+  );
+  return found?.[0] || null;
+}
+
+function isAscendancyRootTreeNode(node) {
+  return !!node?.a && node.t === 'ascendancy' && String(node.n || '').toLowerCase() === String(node.a || '').toLowerCase();
+}
+
+function buildTreeAdjacency(nodes) {
+  const adjacency = new Map();
+  const ensure = (hash) => {
+    if (!adjacency.has(hash)) adjacency.set(hash, new Set());
+    return adjacency.get(hash);
+  };
+  for (const hash of Object.keys(nodes)) ensure(hash);
+  for (const [hash, node] of Object.entries(nodes)) {
+    for (const next of node.c || []) {
+      const target = String(next);
+      if (!nodes[target]) continue;
+      ensure(hash).add(target);
+      ensure(target).add(hash);
+    }
+  }
+  return adjacency;
+}
+
+function connectTreeTargets(targets, { adjacency, startHash, max, allow, draw }) {
+  const selected = new Set();
+  const result = [];
+  if (startHash && allow(startHash)) selected.add(startHash);
+  else if (targets[0]) selected.add(targets[0].hash);
+
+  const distances = startHash ? treeDistancesFrom(startHash, adjacency, allow) : new Map();
+  const ordered = [...targets].sort((a, b) => {
+    const da = distances.get(a.hash) ?? Number.MAX_SAFE_INTEGER;
+    const db = distances.get(b.hash) ?? Number.MAX_SAFE_INTEGER;
+    return da - db || a.index - b.index;
+  });
+
+  for (const target of ordered) {
+    if (selected.has(target.hash)) {
+      if (draw(target.hash) && !result.includes(target.hash) && result.length < max) result.push(target.hash);
+      continue;
+    }
+    const path = shortestTreePathFromSet(selected, target.hash, adjacency, allow);
+    if (!path) continue;
+    const newHashes = path.filter((hash) => draw(hash) && !result.includes(hash));
+    if (result.length + newHashes.length > max) continue;
+    for (const hash of path) selected.add(hash);
+    for (const hash of newHashes) result.push(hash);
+  }
+
+  return result;
+}
+
+function shortestTreePathFromSet(startSet, target, adjacency, allow) {
+  if (!target || !allow(target)) return null;
+  const queue = [];
+  const previous = new Map();
+  const visited = new Set();
+  for (const start of startSet) {
+    if (!allow(start)) continue;
+    visited.add(start);
+    previous.set(start, null);
+    queue.push(start);
+  }
+  while (queue.length) {
+    const hash = queue.shift();
+    if (hash === target) return unwindTreePath(previous, target);
+    for (const next of adjacency.get(hash) || []) {
+      if (!allow(next) || visited.has(next)) continue;
+      visited.add(next);
+      previous.set(next, hash);
+      queue.push(next);
+    }
+  }
+  return null;
+}
+
+function treeDistancesFrom(startHash, adjacency, allow) {
+  const distances = new Map();
+  if (!startHash || !allow(startHash)) return distances;
+  const queue = [startHash];
+  distances.set(startHash, 0);
+  while (queue.length) {
+    const hash = queue.shift();
+    const nextDistance = distances.get(hash) + 1;
+    for (const next of adjacency.get(hash) || []) {
+      if (!allow(next) || distances.has(next)) continue;
+      distances.set(next, nextDistance);
+      queue.push(next);
+    }
+  }
+  return distances;
+}
+
+function unwindTreePath(previous, target) {
+  const path = [];
+  let current = target;
+  while (current) {
+    path.push(current);
+    current = previous.get(current);
+  }
+  return path.reverse();
 }
 
 function convertItems(build, report) {
@@ -628,6 +835,11 @@ function convertItems(build, report) {
     };
 
     if (item) {
+      if (item.parserProblems) {
+        for (const problem of item.parserProblems) {
+          report.unsupported.push(`[Item Parser] ${problem}`);
+        }
+      }
       if (item.isUnique && item.uniqueName) {
         buildItem.unique_name = item.uniqueName;
         const baseType = (item.typeLine && item.typeLine !== item.uniqueName) ? item.typeLine : '';
@@ -721,3 +933,134 @@ function translateSlotName(name) {
   };
   return map[name] ?? name.replace(/\s+/g, '');
 }
+
+// ── Smart Gem-Link Compatibility Rules & Tags ───────────────────────────────
+
+function normalizeGemKey(idOrName) {
+  return String(idOrName ?? '')
+    .split('/')
+    .pop()
+    .replace(/(?:Skill|Support)?Gem/i, '')
+    .replace(/\bSupport\b/gi, '')
+    .replace(/[^A-Za-z0-9]/g, '')
+    .toLowerCase();
+}
+
+const SUPPORT_COMPAT_RULES = {
+  spellecho: { requires: ['spell'], errMsg: 'requires a Spell skill' },
+  fastercasting: { requires: ['spell'], errMsg: 'requires a Spell skill' },
+  controlleddestruction: { requires: ['spell'], errMsg: 'requires a Spell skill' },
+  spellcascade: { requires: ['spell', 'area'], errMsg: 'requires an Area Spell skill' },
+  meleephysicaldamage: { requires: ['melee'], errMsg: 'requires a Melee skill' },
+  closecombat: { requires: ['melee'], errMsg: 'requires a Melee skill' },
+  maim: { requires: ['attack', 'melee'], requiresAny: true, errMsg: 'requires an Attack or Melee skill' },
+  miniondamage: { requires: ['minion'], errMsg: 'requires a Minion skill' },
+  minionspeed: { requires: ['minion'], errMsg: 'requires a Minion skill' },
+  meatshield: { requires: ['minion'], errMsg: 'requires a Minion skill' },
+  multipleprojectiles: { requires: ['projectile'], errMsg: 'requires a Projectile skill' },
+  fork: { requires: ['projectile'], errMsg: 'requires a Projectile skill' },
+  chain: { requires: ['projectile', 'chaining'], requiresAny: true, errMsg: 'requires a Projectile or Chaining skill' },
+  pierce: { requires: ['projectile'], errMsg: 'requires a Projectile skill' },
+  concentratedeffect: { requires: ['area'], errMsg: 'requires an Area of Effect skill' },
+  increasedaoe: { requires: ['area'], errMsg: 'requires an Area of Effect skill' },
+  burningdamage: { requires: ['fire', 'ignite', 'dot'], requiresAny: true, errMsg: 'requires a Fire, Ignite, or DoT skill' },
+  igniteproliferation: { requires: ['fire', 'ignite'], requiresAny: true, errMsg: 'requires a Fire or Ignite skill' },
+  hypothermia: { requires: ['cold', 'elemental'], requiresAny: true, errMsg: 'requires a Cold or Elemental skill' },
+  icebite: { requires: ['cold'], errMsg: 'requires a Cold skill' },
+  viletoxins: { requires: ['chaos', 'poison', 'dot'], requiresAny: true, errMsg: 'requires a Chaos, Poison, or DoT skill' },
+  voidmanipulation: { requires: ['chaos', 'elemental', 'physical'], requiresAny: true, errMsg: 'requires a Chaos or Damage scaling skill' },
+};
+
+const ACTIVE_GEM_TAGS = {
+  // Fire
+  fireball: ['fire', 'spell', 'projectile'],
+  flameblast: ['fire', 'spell', 'area', 'channelling'],
+  volcanicfissure: ['fire', 'attack', 'area', 'slam'],
+  explosiveshot: ['fire', 'attack', 'projectile', 'bow'],
+  rollingmagma: ['fire', 'spell', 'projectile'],
+  flamewall: ['fire', 'spell', 'area'],
+  volatiledead: ['fire', 'spell', 'area', 'minion'],
+  combustion: ['fire', 'spell', 'area'],
+  incinerate: ['fire', 'spell', 'channelling'],
+  firetrap: ['fire', 'trap', 'area'],
+
+  // Cold
+  icenova: ['cold', 'spell', 'area'],
+  frostbomb: ['cold', 'spell', 'area'],
+  comet: ['cold', 'spell', 'projectile'],
+  glacialbolt: ['cold', 'spell', 'projectile'],
+  icelance: ['cold', 'attack', 'projectile'],
+  snapfreeze: ['cold', 'spell', 'area'],
+  glacialcascade: ['cold', 'spell', 'area'],
+  coldsnap: ['cold', 'spell', 'area'],
+  frostblink: ['cold', 'spell', 'movement'],
+  iceshot: ['cold', 'attack', 'projectile', 'bow'],
+
+  // Lightning
+  arc: ['lightning', 'spell', 'chaining'],
+  balllightning: ['lightning', 'spell', 'projectile', 'area'],
+  spark: ['lightning', 'spell', 'projectile'],
+  lightningarrow: ['lightning', 'attack', 'projectile', 'bow'],
+  stormsurge: ['lightning', 'spell', 'area'],
+  chainlightning: ['lightning', 'spell', 'chaining'],
+  orbofstorms: ['lightning', 'spell', 'area'],
+  stormcall: ['lightning', 'spell', 'area'],
+  lightningwarp: ['lightning', 'spell', 'movement'],
+  tempestflurry: ['lightning', 'attack', 'melee'],
+
+  // Physical
+  groundslam: ['physical', 'attack', 'area', 'slam', 'melee'],
+  heavystrike: ['physical', 'attack', 'melee'],
+  whirlingslash: ['physical', 'attack', 'area', 'melee'],
+  sunder: ['physical', 'attack', 'area', 'slam'],
+  splittingsteel: ['physical', 'attack', 'projectile'],
+  shieldcrush: ['physical', 'attack', 'area', 'melee'],
+  boneshatter: ['physical', 'attack', 'melee'],
+  reap: ['physical', 'spell', 'area'],
+  leapslam: ['physical', 'attack', 'area', 'slam', 'movement'],
+  hammerofgods: ['physical', 'attack', 'slam', 'melee'],
+  shieldcharge: ['physical', 'attack', 'movement', 'melee'],
+
+  // Chaos
+  essencedrain: ['chaos', 'spell', 'projectile', 'dot'],
+  contagion: ['chaos', 'spell', 'area'],
+  blight: ['chaos', 'spell', 'channelling', 'area'],
+  despair: ['chaos', 'spell', 'curse', 'aura'],
+  plaguebearer: ['chaos', 'spell', 'buff'],
+  poisonousconcoction: ['chaos', 'attack', 'projectile', 'poison'],
+
+  // Minion
+  raisezombie: ['minion', 'spell'],
+  raisespectre: ['minion', 'spell'],
+  summonskeletons: ['minion', 'spell'],
+  bonecage: ['minion', 'physical', 'spell'],
+  infernallegion: ['fire', 'minion', 'aura'],
+  unearth: ['physical', 'spell', 'projectile'],
+
+  // Bow
+  tornadoshot: ['attack', 'projectile', 'bow'],
+  barrage: ['attack', 'projectile', 'bow'],
+  rainofarrows: ['attack', 'projectile', 'bow', 'area'],
+  shrapnelballista: ['attack', 'projectile', 'bow', 'totem'],
+
+  // Aura
+  anger: ['fire', 'aura'],
+  hatred: ['cold', 'aura'],
+  wrath: ['lightning', 'aura'],
+  grace: ['defence', 'aura'],
+  determination: ['defence', 'aura'],
+  discipline: ['defence', 'aura'],
+  haste: ['buff', 'aura'],
+  malevolence: ['chaos', 'aura'],
+  vitality: ['defence', 'aura'],
+
+  // Misc
+  flickerstrike: ['attack', 'melee', 'movement'],
+  cyclone: ['attack', 'area', 'melee', 'channelling'],
+  seismiccry: ['physical', 'warcry', 'area'],
+  powersiphon: ['attack', 'projectile'],
+  dash: ['movement', 'spell'],
+  flamedash: ['movement', 'fire', 'spell'],
+  frenzy: ['attack', 'projectile', 'bow', 'melee'],
+  whirlingblades: ['movement', 'attack', 'melee'],
+};

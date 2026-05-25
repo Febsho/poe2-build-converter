@@ -1,0 +1,679 @@
+{
+    "tokens": [
+        {
+            "id": 1000000000,
+            "regex": "tta",
+            "rawText": "(10-20)% increased Monster Attack Speed | (10-20)% increased Monster Movement Speed | (10-20)% increased Monster Cast Speed",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000001,
+            "regex": "rses",
+            "rawText": "(10-20)% less effect of Curses on Monsters",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000002,
+            "regex": "% ma",
+            "rawText": "(10-20)% maximum Player Resistances",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000003,
+            "regex": "ign",
+            "rawText": "Area has patches of Ignited Ground",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000004,
+            "regex": "fire$",
+            "rawText": "Monsters deal (10-20)% of Damage as Extra Fire",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000005,
+            "regex": "blee",
+            "rawText": "Monsters have (10-20)% chance to inflict Bleeding on Hit",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000006,
+            "regex": "lm",
+            "rawText": "Monsters have (10-20)% increased Ailment Threshold | Monsters have (10-20)% increased Stun Threshold",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000007,
+            "regex": "un b",
+            "rawText": "Monsters have 125% increased Stun Buildup",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000008,
+            "regex": "eble",
+            "rawText": "Players are periodically Cursed with Enfeeble",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000009,
+            "regex": "mage$",
+            "rawText": "(10-20)% increased Monster Damage",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000010,
+            "regex": "fe$",
+            "rawText": "(10-20)% more Monster Life",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000011,
+            "regex": "eq",
+            "rawText": "Monsters Break Armour equal to (10-20)% of Physical Damage dealt",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000012,
+            "regex": "oure",
+            "rawText": "Monsters are Armoured",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000013,
+            "regex": "tak",
+            "rawText": "Monsters take (10-20)% reduced Extra Damage from Critical Hits",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000014,
+            "regex": "mod",
+            "rawText": "Rare Monsters have 1 additional Modifier",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000015,
+            "regex": "r el",
+            "rawText": "+(10-20)% Monster Elemental Resistances",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000016,
+            "regex": "sts",
+            "rawText": "Area contains (10-20) additional packs of Beasts",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000017,
+            "regex": "f br",
+            "rawText": "Area contains (10-20) additional packs of Bramble Monsters",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000018,
+            "regex": "yt",
+            "rawText": "Area contains (10-20) additional packs of Ezomyte Monsters",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000019,
+            "regex": "un m",
+            "rawText": "Area contains (10-20) additional packs of Faridun Monsters",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000020,
+            "regex": "ds",
+            "rawText": "Area contains (10-20) additional packs of Iron Guards",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000021,
+            "regex": "agu",
+            "rawText": "Area contains (10-20) additional packs of Plagued Monsters",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000022,
+            "regex": "ans",
+            "rawText": "Area contains (10-20) additional packs of Transcended Monsters",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000023,
+            "regex": "ndea",
+            "rawText": "Area contains (10-20) additional packs of Undead",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000024,
+            "regex": "aa",
+            "rawText": "Area contains (10-20) additional packs of Vaal Monsters",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000025,
+            "regex": "chi",
+            "rawText": "Area has patches of Chilled Ground",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000026,
+            "regex": "cke",
+            "rawText": "Area has patches of Shocked Ground",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000027,
+            "regex": "tes",
+            "rawText": "Monster Damage Penetrates (10-20)% Elemental Resistances",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000028,
+            "regex": "e eva",
+            "rawText": "Monsters are Evasive",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000029,
+            "regex": "ra ch",
+            "rawText": "Monsters deal (10-20)% of Damage as Extra Chaos",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000030,
+            "regex": "col",
+            "rawText": "Monsters deal (10-20)% of Damage as Extra Cold",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000031,
+            "regex": "tn",
+            "rawText": "Monsters deal (10-20)% of Damage as Extra Lightning",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000032,
+            "regex": "oj",
+            "rawText": "Monsters fire 3 additional Projectiles",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000033,
+            "regex": "f m",
+            "rawText": "Monsters gain 20% of maximum Life as Extra maximum Energy Shield",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000034,
+            "regex": "ois",
+            "rawText": "Monsters have (10-20)% chance to Poison on Hit",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000035,
+            "regex": "r,",
+            "rawText": "Monsters have (10-20)% chance to steal Power, Frenzy and Endurance charges on Hit",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000036,
+            "regex": "cc",
+            "rawText": "Monsters have (10-20)% increased Accuracy Rating",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000037,
+            "regex": "bon",
+            "rawText": "Monsters have (10-20)% increased Critical Hit Chance | +(10-20)% to Monster Critical Damage Bonus",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000038,
+            "regex": "ect$",
+            "rawText": "Monsters have 50% increased Area of Effect",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000039,
+            "regex": "mm",
+            "rawText": "Monsters have 125% increased Freeze Buildup | Monsters have 125% increased Shock Chance | Monsters inflict 125% increased Flammability Magnitude",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000040,
+            "regex": "kn",
+            "rawText": "Players are periodically Cursed with Elemental Weakness",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000041,
+            "regex": "emp",
+            "rawText": "Players are periodically Cursed with Temporal Chains",
+            "generalizedText": "",
+            "options": {
+                "prefix": true,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000042,
+            "regex": "sk",
+            "rawText": "Players gain (10-20)% reduced Flask Charges",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000043,
+            "regex": "wn",
+            "rawText": "Players have (10-20)% less Cooldown Recovery Rate",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        },
+        {
+            "id": 1000000044,
+            "regex": "f l",
+            "rawText": "Players have (10-20)% less Recovery Rate of Life and Energy Shield",
+            "generalizedText": "",
+            "options": {
+                "prefix": false,
+                "tags": [
+                    "low_tier_map",
+                    "default",
+                    "mid_tier_map",
+                    "top_tier_map"
+                ]
+            }
+        }
+    ]
+}

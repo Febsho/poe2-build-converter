@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Waystone Regex - PoE2 Build Converter</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="page-regex">
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-mark">&#8962;</span>
+          <span class="brand-name">Build Converter for Path of Exile 2</span>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="/" class="nav-link">Converter</a>
+          <a href="/crafting.html" class="nav-link">⚒ Crafting Simulator</a>
+          <div class="nav-group">
+            <span class="nav-group-title">🔍 Regex Builders</span>
+            <div class="nav-group-items">
+              <a href="/regex.html" class="nav-link sub">Vendor</a>
+              <a href="/waystone.html" class="nav-link sub active">Waystone</a>
+              <a href="/tablet.html" class="nav-link sub">Precursor Tablet</a>
+              <a href="/relic.html" class="nav-link sub">Relic</a>
+            </div>
+          </div>
+        </nav>
+        <div class="sidebar-footer">
+          <a href="https://github.com/febsho/poe2-build-converter" target="_blank" rel="noreferrer">GitHub &#8599;</a>
+          <div class="version">regex builder</div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <!-- Output panel -->
+        <div class="vr-output-panel panel">
+          <div class="vr-output-header">
+            <div>
+              <h2 style="margin:0;font-size:16px;font-weight:600;color:var(--text)">Waystone Regex Builder</h2>
+              <p class="panel-sub" style="margin:4px 0 0 0">Build compact, hyper-optimized regular expressions for Path of Exile 2 search boxes.</p>
+            </div>
+            <div class="vr-output-actions">
+              <span class="vr-length-text" id="vr-length">0 / 250</span>
+              <button id="vr-copy" class="primary sm" type="button">Copy</button>
+              <button id="vr-reset" class="ghost sm" type="button">Reset</button>
+            </div>
+          </div>
+          <textarea id="vr-output" rows="2" readonly spellcheck="false" class="vr-output-textarea" placeholder="Select filters below to compile regular expressions..."></textarea>
+          <div class="vr-length-bar-wrap">
+            <div class="vr-length-bar" id="vr-length-bar"></div>
+          </div>
+          <div id="vr-warning" class="regex-warning hidden"></div>
+          <div id="vr-chunks" class="regex-chunks" style="margin-top:10px"></div>
+        </div>
+
+        <!-- WAYSTONES PANEL -->
+        <div class="pane-content active">
+          <div style="display:flex;justify-content:space-between;margin-bottom:12px">
+            <label class="vr-checkbox-label" style="font-size:13px">
+              <input type="checkbox" id="ws-round10" checked>
+              <span>Round down numeric modifiers to nearest 10 (saves extreme search space)</span>
+            </label>
+          </div>
+
+          <div class="vr-ws-top-grid">
+            <!-- Quantity & Yield -->
+            <div class="vr-section">
+              <div class="vr-section-title">Quantity & Yield</div>
+              <div class="vr-inputs">
+                <div class="vr-input-row">
+                  <label class="vr-input-label" for="ws-iiq">Waystone IIQ:</label>
+                  <input type="number" id="ws-iiq" class="vr-num-input" placeholder="e.g. 20">
+                </div>
+                <div class="vr-input-row">
+                  <label class="vr-input-label" for="ws-iir">Waystone IIR:</label>
+                  <input type="number" id="ws-iir" class="vr-num-input" placeholder="e.g. 25">
+                </div>
+                <div class="vr-input-row">
+                  <label class="vr-input-label" for="ws-drop">Drop Chance:</label>
+                  <input type="number" id="ws-drop" class="vr-num-input" placeholder="e.g. 15">
+                </div>
+                <div class="vr-input-row">
+                  <label class="vr-input-label" for="ws-magics">Magic Monsters:</label>
+                  <input type="number" id="ws-magics" class="vr-num-input" placeholder="e.g. 30">
+                </div>
+                <div class="vr-input-row">
+                  <label class="vr-input-label" for="ws-rares">Rare Monsters:</label>
+                  <input type="number" id="ws-rares" class="vr-num-input" placeholder="e.g. 25">
+                </div>
+              </div>
+            </div>
+
+            <!-- Tiers -->
+            <div class="vr-section">
+              <div class="vr-section-title">Waystone Tier</div>
+              <div class="vr-inputs">
+                <div class="vr-input-row">
+                  <label class="vr-input-label" for="ws-tier-min">Minimum Tier:</label>
+                  <input type="number" id="ws-tier-min" class="vr-num-input" min="1" max="16" value="1">
+                </div>
+                <div class="vr-input-row">
+                  <label class="vr-input-label" for="ws-tier-max">Maximum Tier:</label>
+                  <input type="number" id="ws-tier-max" class="vr-num-input" min="1" max="16" value="16">
+                </div>
+              </div>
+            </div>
+
+            <!-- States -->
+            <div class="vr-section">
+              <div class="vr-section-title">Properties</div>
+              <div class="vr-checkbox-list">
+                <label class="vr-checkbox-label">
+                  <input type="checkbox" id="ws-state-corr">
+                  <span>Corrupted Waystones</span>
+                </label>
+                <label class="vr-checkbox-label">
+                  <input type="checkbox" id="ws-state-uncorr">
+                  <span>Uncorrupted Waystones</span>
+                </label>
+                <label class="vr-checkbox-label">
+                  <input type="checkbox" id="ws-state-delirious">
+                  <span>Delirious area (#%)</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="vr-ws-mods-vertical" style="margin-top:12px">
+            <!-- Wanted modifiers -->
+            <div class="vr-section">
+              <div class="vr-section-title">I Want These Modifiers</div>
+              <div class="vr-match-options" style="margin-bottom:12px">
+                <label class="vr-radio-label">
+                  <input type="radio" name="ws-wanted-type" value="any" checked>
+                  <span>Match when <b>any</b> mod matches</span>
+                </label>
+                <label class="vr-radio-label">
+                  <input type="radio" name="ws-wanted-type" value="all">
+                  <span>Match only when <b>all</b> mods match</span>
+                </label>
+              </div>
+              <input type="search" id="ws-wanted-filter" class="vr-search-box" style="margin-bottom:8px" placeholder="Filter wanted modifiers...">
+              <div id="ws-wanted-list" class="vr-checkbox-list" style="max-height:360px;overflow-y:auto;border:1px solid var(--border-2);border-radius:6px;padding:8px">
+                <!-- Dynamically rendered checklist of all Waystone modifiers -->
+              </div>
+            </div>
+
+            <!-- Unwanted modifiers -->
+            <div class="vr-section">
+              <div class="vr-section-title">I Don't Want These Modifiers</div>
+              <input type="search" id="ws-unwanted-filter" class="vr-search-box" style="margin-bottom:8px" placeholder="Filter unwanted modifiers...">
+              <div id="ws-unwanted-list" class="vr-checkbox-list" style="max-height:360px;overflow-y:auto;border:1px solid var(--border-2);border-radius:6px;padding:8px">
+                <!-- Dynamically rendered checklist of all Waystone modifiers -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom terms -->
+        <div class="panel" style="margin-top:12px">
+          <div class="field">
+            <label for="vr-custom" style="color:var(--text);font-weight:600">Custom terms (one per line, comma, or | separated)</label>
+            <textarea id="vr-custom" rows="3" spellcheck="false" placeholder='e.g. pierce, culling, "of the tiger"' class="vr-output-textarea" style="margin-top:6px"></textarea>
+          </div>
+          <div class="vr-custom-footer">
+            <label class="check-row" style="margin:0">
+              <input id="vr-custom-regex" type="checkbox" />
+              <span>Treat as raw regex</span>
+            </label>
+            <label class="check-row" style="margin:0">
+              <input id="vr-show-test" type="checkbox" />
+              <span>Show test area</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Test area -->
+        <div id="vr-test-panel" class="panel hidden" style="margin-top:12px">
+          <div class="field">
+            <label for="vr-test-input" style="color:var(--text);font-weight:600">Paste item text to test regex</label>
+            <textarea id="vr-test-input" rows="8" spellcheck="false" placeholder="Paste item tooltip text here — matching lines will be highlighted" class="vr-output-textarea" style="margin-top:6px"></textarea>
+          </div>
+          <div id="vr-test-result" class="regex-test-result" style="margin-top:10px">No test text.</div>
+        </div>
+      </main>
+    </div>
+    <script src="waystone.js"></script>
+  </body>
+</html>

@@ -1,5 +1,9 @@
 node_modules/
 
+# PoE2 live data cache (fetched at runtime via npm run data:update)
+data/cache/
+data/raw/
+
 server.out.log
 server.err.log
 

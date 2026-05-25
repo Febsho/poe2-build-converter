@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendor Regex - PoE2 Build Converter</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="page-regex">
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-mark">&#8962;</span>
+          <span class="brand-name">Build Converter for Path of Exile 2</span>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="/" class="nav-link">Converter</a>
+          <a href="/crafting.html" class="nav-link">⚒ Crafting Simulator</a>
+          <div class="nav-group">
+            <span class="nav-group-title">🔍 Regex Builders</span>
+            <div class="nav-group-items">
+              <a href="/regex.html" class="nav-link sub active">Vendor</a>
+              <a href="/waystone.html" class="nav-link sub">Waystone</a>
+              <a href="/tablet.html" class="nav-link sub">Precursor Tablet</a>
+              <a href="/relic.html" class="nav-link sub">Relic</a>
+            </div>
+          </div>
+        </nav>
+        <div class="sidebar-footer">
+          <a href="https://github.com/febsho/poe2-build-converter" target="_blank" rel="noreferrer">GitHub &#8599;</a>
+          <div class="version">regex builder</div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <!-- Output panel -->
+        <div class="vr-output-panel panel">
+          <div class="vr-output-header">
+            <div>
+              <h2 style="margin:0;font-size:16px;font-weight:600;color:var(--text)">Vendor & Stash Regex Builder</h2>
+              <p class="panel-sub" style="margin:4px 0 0 0">Build compact, hyper-optimized regular expressions for Path of Exile 2 search boxes.</p>
+            </div>
+            <div class="vr-output-actions">
+              <span class="vr-length-text" id="vr-length">0 / 250</span>
+              <button id="vr-copy" class="primary sm" type="button">Copy</button>
+              <button id="vr-reset" class="ghost sm" type="button">Reset</button>
+            </div>
+          </div>
+          <textarea id="vr-output" rows="2" readonly spellcheck="false" class="vr-output-textarea" placeholder="Select filters below to compile regular expressions..."></textarea>
+          <div class="vr-length-bar-wrap">
+            <div class="vr-length-bar" id="vr-length-bar"></div>
+          </div>
+          <div id="vr-warning" class="regex-warning hidden"></div>
+          <div id="vr-chunks" class="regex-chunks" style="margin-top:10px"></div>
+        </div>
+
+        <!-- ITEMS (VENDOR) PANEL -->
+        <div class="pane-content active">
+          <div class="vr-section-grid">
+            <!-- Property -->
+            <div class="vr-section">
+              <div class="vr-section-title">Item Property</div>
+              <div class="vr-checkbox-list">
+                <label class="vr-checkbox-label">
+                  <input type="checkbox" id="item-prop-quality">
+                  <span>Quality</span>
+                </label>
+                <label class="vr-checkbox-label">
+                  <input type="checkbox" id="item-prop-sockets">
+                  <span>Sockets</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Speed -->
+            <div class="vr-section">
+              <div class="vr-section-title">Speed</div>
+              <div class="vr-checkbox-list">
+                <label class="vr-checkbox-label">
+                  <input type="checkbox" id="item-speed-attack">
+                  <span>Attack Speed</span>
+                </label>
+                <label class="vr-checkbox-label">
+                  <input type="checkbox" id="item-speed-cast">
+                  <span>Cast Speed</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Movement Speed -->
+            <div class="vr-section">
+              <div class="vr-section-title">Movement Speed</div>
+              <div class="vr-checkbox-list">
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-move-30"> <span>30% Speed</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-move-25"> <span>25% Speed</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-move-20"> <span>20% Speed</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-move-15"> <span>15% Speed</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-move-10"> <span>10% Speed</span></label>
+              </div>
+            </div>
+
+            <!-- Resistances -->
+            <div class="vr-section">
+              <div class="vr-section-title">Resistances</div>
+              <div class="vr-checkbox-list">
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-res-fire"> <span>Fire Resistance</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-res-cold"> <span>Cold Resistance</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-res-lightning"> <span>Lightning Resistance</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-res-chaos"> <span>Chaos Resistance</span></label>
+              </div>
+            </div>
+
+            <!-- Level Ranges -->
+            <div class="vr-section">
+              <div class="vr-section-title">Level Ranges</div>
+              <div class="vr-input-row" style="margin-bottom:8px">
+                <span class="vr-input-label">Item Level:</span>
+                <input type="number" id="item-level-min" class="vr-num-input" placeholder="min" min="0" max="100">
+                <input type="number" id="item-level-max" class="vr-num-input" placeholder="max" min="0" max="100">
+              </div>
+              <div class="vr-input-row">
+                <span class="vr-input-label">Req. Level:</span>
+                <input type="number" id="item-char-min" class="vr-num-input" placeholder="min" min="0" max="100">
+                <input type="number" id="item-char-max" class="vr-num-input" placeholder="max" min="0" max="100">
+              </div>
+            </div>
+
+            <!-- Rarity -->
+            <div class="vr-section">
+              <div class="vr-section-title">Item Rarity</div>
+              <div class="vr-checkbox-list">
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-rarity-rare"> <span>Rare</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-rarity-magic"> <span>Magic</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-rarity-normal"> <span>Normal</span></label>
+              </div>
+            </div>
+
+            <!-- Modifiers -->
+            <div class="vr-section">
+              <div class="vr-section-title">Item Modifiers</div>
+              <div class="vr-checkbox-list">
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-phys"> <span>Physical Damage</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-spell"> <span>Spell Damage</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-elem"> <span>Elemental Damage</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-cold"> <span>Cold Damage</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-fire"> <span>Fire Damage</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-lightning"> <span>Lightning Damage</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-chaos"> <span>Chaos Damage</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-spirit"> <span>+# Spirit</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-rarity"> <span>Increased Rarity</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-life"> <span>Maximum Life</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-mana"> <span>Maximum Mana</span></label>
+              </div>
+            </div>
+
+            <!-- Skills -->
+            <div class="vr-section">
+              <div class="vr-section-title">Item Modifiers (Skill)</div>
+              <div class="vr-checkbox-list">
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-skill-all"> <span>+# level of all Skills</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-skill-minion"> <span>+# level of Minion Skills</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-skill-melee"> <span>+# level of Melee Skills</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-skill-spell"> <span>+# level of spell Skills</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-skill-fire"> <span>+# fire spell Skills</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-skill-cold"> <span>+# cold spell Skills</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-skill-lightning"> <span>+# lightning spell Skills</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-mod-skill-projectile"> <span>+# projectile Skills</span></label>
+              </div>
+            </div>
+
+            <!-- Attributes -->
+            <div class="vr-section">
+              <div class="vr-section-title">Attributes</div>
+              <div class="vr-checkbox-list">
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-attr-str"> <span>Strength</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-attr-int"> <span>Intelligence</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-attr-dex"> <span>Dexterity</span></label>
+              </div>
+            </div>
+
+            <!-- Classes -->
+            <div class="vr-section vr-section--full">
+              <div class="vr-section-title">Item Classes</div>
+              <div class="vr-checkbox-grid">
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-amulet"> <span>Amulets</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-ring"> <span>Rings</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-belt"> <span>Belts</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-wand"> <span>Wands</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-mace1"> <span>One Hand Maces</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-sceptre"> <span>Sceptres</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-bow"> <span>Bows</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-staff"> <span>Staves</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-mace2"> <span>Two Hand Maces</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-qstaff"> <span>Quarterstaves</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-spear"> <span>Spears</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-xbow"> <span>Crossbows</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-talisman"> <span>Talismans</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-gloves"> <span>Gloves</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-boots"> <span>Boots</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-body"> <span>Body Armours</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-helmet"> <span>Helmets</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-quiver"> <span>Quivers</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-focus"> <span>Foci</span></label>
+                <label class="vr-checkbox-label"><input type="checkbox" id="item-class-shield"> <span>Shields</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Custom terms -->
+        <div class="panel" style="margin-top:12px">
+          <div class="field">
+            <label for="vr-custom" style="color:var(--text);font-weight:600">Custom terms (one per line, comma, or | separated)</label>
+            <textarea id="vr-custom" rows="3" spellcheck="false" placeholder='e.g. pierce, culling, "of the tiger"' class="vr-output-textarea" style="margin-top:6px"></textarea>
+          </div>
+          <div class="vr-custom-footer">
+            <label class="check-row" style="margin:0">
+              <input id="vr-custom-regex" type="checkbox" />
+              <span>Treat as raw regex</span>
+            </label>
+            <label class="check-row" style="margin:0">
+              <input id="vr-show-test" type="checkbox" />
+              <span>Show test area</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Test area -->
+        <div id="vr-test-panel" class="panel hidden" style="margin-top:12px">
+          <div class="field">
+            <label for="vr-test-input" style="color:var(--text);font-weight:600">Paste item text to test regex</label>
+            <textarea id="vr-test-input" rows="8" spellcheck="false" placeholder="Paste item tooltip text here — matching lines will be highlighted" class="vr-output-textarea" style="margin-top:6px"></textarea>
+          </div>
+          <div id="vr-test-result" class="regex-test-result" style="margin-top:10px">No test text.</div>
+        </div>
+      </main>
+    </div>
+    <script src="regex.js"></script>
+  </body>
+</html>

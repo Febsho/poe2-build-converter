@@ -5,9 +5,16 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js",
-    "test": "node --test"
+    "start": "node --experimental-strip-types server.js",
+    "dev": "node --watch --experimental-strip-types server.js",
+    "test": "node --experimental-strip-types --test",
+    "data:update": "node scripts/data-update.js",
+    "data:update:patches": "node scripts/data-update.js -- --only patches",
+    "data:update:poe2db": "node scripts/data-update.js -- --only gems,items,uniques",
+    "data:update:uniques": "node scripts/data-update.js -- --only uniques",
+    "data:update:items": "node scripts/data-update.js -- --only items",
+    "data:status": "node scripts/data-status.js",
+    "data:tree": "node scripts/tree-build.js"
   },
   "engines": {
     "node": ">=20"

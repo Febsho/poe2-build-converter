@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "poe2-converter",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--experimental-strip-types", "server.js"],
+      "port": 3000,
+      "autoPort": false
+    }
+  ]
+}
