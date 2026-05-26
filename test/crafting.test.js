@@ -8,7 +8,7 @@ import { POE2_OMENS } from '../src/data/poe2/omens.ts';
 import { POE2_RUNES } from '../src/data/poe2/runes.ts';
 import { POE2_SOUL_CORES } from '../src/data/poe2/soulCores.ts';
 import { POE2_ABYSS_CRAFTING } from '../src/data/poe2/abyss.ts';
-import { getFallbackItemBases } from '../src/data/poe2/itemBases.ts';
+import { getFallbackItemBases, transformCachedItemBases } from '../src/data/poe2/itemBases.ts';
 
 // Mock context for the tests
 const context = {
@@ -66,6 +66,33 @@ test('fallback crafting bases are available when runtime cache is missing', () =
   assert.ok(bases.length > 0);
   assert.ok(bases.some((base) => base.category === 'Weapon' && base.type === 'bow'));
   assert.ok(bases.some((base) => base.category === 'Jewellery' && base.type === 'ring'));
+});
+
+test('poe2db crafting base transform supports all current item class groups', () => {
+  const bases = transformCachedItemBases([
+    { id: 'claws-crude-claw', name: 'Crude Claw', class: 'Claws', level: 1 },
+    { id: 'daggers-glass-shank', name: 'Glass Shank', class: 'Daggers', level: 1 },
+    { id: 'one-hand-swords-shortsword', name: 'Shortsword', class: 'One Hand Swords', level: 1 },
+    { id: 'two-hand-axes-greataxe', name: 'Greataxe', class: 'Two Hand Axes', level: 1 },
+    { id: 'flails-chain-flail', name: 'Chain Flail', class: 'Flails', level: 1 },
+    { id: 'traps-bear-trap', name: 'Bear Trap', class: 'Traps', level: 1 },
+    { id: 'relics-weathered-relic', name: 'Weathered Relic', class: 'Relics', level: 1 },
+    { id: 'vault-keys-copper-key', name: 'Copper Key', class: 'Vault Keys', level: 1 },
+  ]);
+
+  assert.deepEqual(
+    bases.map((base) => [base.name, base.category, base.type]),
+    [
+      ['Crude Claw', 'Weapon', 'claw'],
+      ['Glass Shank', 'Weapon', 'dagger'],
+      ['Shortsword', 'Weapon', 'sword'],
+      ['Greataxe', 'Weapon', '2h axe'],
+      ['Chain Flail', 'Weapon', 'flail'],
+      ['Bear Trap', 'Weapon', 'trap'],
+      ['Weathered Relic', 'Relic', 'relic'],
+      ['Copper Key', 'Key', 'vault key'],
+    ],
+  );
 });
 
 test('valid currency craft - transmutes normal item to magic', () => {

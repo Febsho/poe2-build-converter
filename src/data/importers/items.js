@@ -16,13 +16,15 @@ const HEADERS = {
 
 // Equipment classes we care about for build advice (skip currency/misc)
 const WANTED_CLASSES = new Set([
-  'Wands','Bows','Staves','Quarterstaves','Crossbows','Spears','Flails',
+  'Claws','Daggers','Wands','Bows','Staves','Quarterstaves','Crossbows','Spears','Flails',
   'One_Hand_Maces','Two_Hand_Maces','Sceptres',
   'One_Hand_Swords','Two_Hand_Swords','One_Hand_Axes','Two_Hand_Axes',
+  'Traps','Talismans',
   'Shields','Bucklers','Foci','Quivers',
   'Body_Armours','Helmets','Gloves','Boots',
   'Amulets','Rings','Belts','Jewels',
-  'Life_Flasks','Mana_Flasks','Charms',
+  'Flasks','Life_Flasks','Mana_Flasks','Charms',
+  'Relics','Vault_Keys',
 ]);
 
 export async function importItems() {
@@ -39,7 +41,9 @@ export async function importItems() {
     return { ok: false, error: err.message };
   }
 
-  // Extract item class links from the navigation (enabled = no "disabled" class)
+  // Extract item class links from the navigation. Some implemented PoE2DB pages
+  // are still marked "disabled" in the nav, so rely on the wanted class list
+  // instead of the nav state.
   const classes = parseItemClasses(indexHtml);
   console.log(`[items] Found ${classes.length} item classes to fetch`);
 
@@ -76,8 +80,7 @@ export async function importItems() {
 // ── Parsers ───────────────────────────────────────────────────────────────────
 
 function parseItemClasses(html) {
-  // Match ItemClasses links that do NOT contain "disabled": <a class="ItemClasses  KeywordPopups" href="Wands">
-  const re = /class="ItemClasses(?![^"]*disabled)[^"]*"\s+href="([^"/][^"]*)"[^>]*>([^<]*)</g;
+  const re = /class="ItemClasses[^"]*"\s+href="([^"/][^"]*)"[^>]*>([^<]*)</g;
   const seen = new Set();
   const results = [];
   let m;

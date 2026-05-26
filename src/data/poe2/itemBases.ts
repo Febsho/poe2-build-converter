@@ -6,15 +6,24 @@ export type { Modifier, ItemBase } from './types.ts';
 
 // Tag mapping from poe2db class name to item tags
 const CLASS_TAG_MAP: Record<string, string[]> = {
+  'Claws':           ['weapon', 'claw', 'attack', 'melee', 'dex_int_weapon'],
+  'Daggers':         ['weapon', 'dagger', 'attack', 'melee', 'critical', 'dex_int_weapon'],
   'Wands':           ['weapon', 'wand', 'caster', 'spell'],
   'Bows':            ['weapon', 'bow', 'attack', 'projectile'],
   'Staves':          ['weapon', 'staff', 'caster', 'melee'],
   'Quarterstaves':   ['weapon', 'quarterstaff', 'attack', 'melee'],
   'Crossbows':       ['weapon', 'crossbow', 'attack', 'projectile'],
   'Spears':          ['weapon', 'spear', 'attack', 'melee', 'projectile'],
+  'Flails':          ['weapon', 'flail', 'attack', 'melee', 'str_int_weapon'],
+  'One Hand Swords': ['weapon', 'sword', 'attack', 'melee', 'dex_weapon'],
+  'Two Hand Swords': ['weapon', 'sword', '2h', 'attack', 'melee', 'dex_weapon'],
+  'One Hand Axes':   ['weapon', 'axe', 'attack', 'melee', 'str_dex_weapon'],
+  'Two Hand Axes':   ['weapon', 'axe', '2h', 'attack', 'melee', 'str_dex_weapon'],
   'One Hand Maces':  ['weapon', 'mace', 'attack', 'melee', 'str_weapon'],
   'Two Hand Maces':  ['weapon', 'mace', '2h', 'attack', 'melee', 'str_weapon'],
   'Sceptres':        ['weapon', 'sceptre', 'caster', 'melee', 'str_weapon'],
+  'Traps':           ['weapon', 'trap', 'attack'],
+  'Talismans':       ['weapon', 'talisman'],
   'Shields':         ['armour', 'shield', 'str_armour', 'block'],
   'Bucklers':        ['armour', 'shield', 'dex_armour', 'block', 'evasion'],
   'Foci':            ['armour', 'focus', 'int_armour', 'energy_shield'],
@@ -27,31 +36,46 @@ const CLASS_TAG_MAP: Record<string, string[]> = {
   'Rings':           ['jewellery', 'ring'],
   'Belts':           ['jewellery', 'belt'],
   'Jewels':          ['jewel'],
+  'Flasks':          ['flask'],
   'Life Flasks':     ['flask', 'life_flask'],
   'Mana Flasks':     ['flask', 'mana_flask'],
   'Charms':          ['charm'],
+  'Relics':          ['relic'],
+  'Vault Keys':      ['key', 'vault_key'],
 };
 
 // Derive category from class name
 function classToCategory(cls: string): string {
-  if (cls.includes('Flask'))  return 'Flask';
+  if (cls === 'Relics')       return 'Relic';
+  if (cls.includes('Flask') || cls === 'Flasks') return 'Flask';
   if (cls === 'Charms')       return 'Flask/Charm';
   if (cls === 'Jewels')       return 'Jewel';
+  if (cls === 'Vault Keys')   return 'Key';
   if (['Amulets', 'Rings', 'Belts'].includes(cls)) return 'Jewellery';
-  if (['Wands', 'Bows', 'Staves', 'Quarterstaves', 'Crossbows', 'Spears', 'One Hand Maces', 'Two Hand Maces', 'Sceptres'].includes(cls)) return 'Weapon';
+  if ([
+    'Claws', 'Daggers', 'Wands', 'Bows', 'Staves', 'Quarterstaves',
+    'Crossbows', 'Spears', 'Flails', 'One Hand Swords', 'Two Hand Swords',
+    'One Hand Axes', 'Two Hand Axes', 'One Hand Maces', 'Two Hand Maces',
+    'Sceptres', 'Traps', 'Talismans',
+  ].includes(cls)) return 'Weapon';
   return 'Armour';
 }
 
 // Derive item type (short) from class name
 function classToType(cls: string): string {
   const map: Record<string, string> = {
+    'Claws': 'claw', 'Daggers': 'dagger',
     'Wands': 'wand', 'Bows': 'bow', 'Staves': 'staff', 'Quarterstaves': 'quarterstaff',
-    'Crossbows': 'crossbow', 'Spears': 'spear',
+    'Crossbows': 'crossbow', 'Spears': 'spear', 'Flails': 'flail',
+    'One Hand Swords': 'sword', 'Two Hand Swords': '2h sword',
+    'One Hand Axes': 'axe', 'Two Hand Axes': '2h axe',
     'One Hand Maces': 'mace', 'Two Hand Maces': '2h mace', 'Sceptres': 'sceptre',
+    'Traps': 'trap', 'Talismans': 'talisman',
     'Shields': 'shield', 'Bucklers': 'buckler', 'Foci': 'focus', 'Quivers': 'quiver',
     'Body Armours': 'body armour', 'Helmets': 'helmet', 'Gloves': 'gloves', 'Boots': 'boots',
     'Amulets': 'amulet', 'Rings': 'ring', 'Belts': 'belt',
-    'Jewels': 'jewel', 'Life Flasks': 'life flask', 'Mana Flasks': 'mana flask', 'Charms': 'charm',
+    'Jewels': 'jewel', 'Flasks': 'flask', 'Life Flasks': 'life flask', 'Mana Flasks': 'mana flask', 'Charms': 'charm',
+    'Relics': 'relic', 'Vault Keys': 'vault key',
   };
   return map[cls] ?? cls.toLowerCase();
 }

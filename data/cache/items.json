@@ -1,5 +1,329 @@
 [
   {
+    "id": "claws-crude-claw",
+    "name": "Crude Claw",
+    "class": "Claws",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "damageMin": 4,
+      "damageMax": 10,
+      "aps": 1.65
+    }
+  },
+  {
+    "id": "claws-pict-claw",
+    "name": "Pict Claw",
+    "class": "Claws",
+    "level": 6,
+    "implicit": null,
+    "stats": {
+      "damageMin": 4,
+      "damageMax": 16,
+      "aps": 1.7
+    }
+  },
+  {
+    "id": "claws-wolfbone-claw",
+    "name": "Wolfbone Claw",
+    "class": "Claws",
+    "level": 12,
+    "implicit": "Grants 8 Life per Enemy Hit",
+    "stats": {
+      "damageMin": 7,
+      "damageMax": 23,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "claws-forked-claw",
+    "name": "Forked Claw",
+    "class": "Claws",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "damageMin": 10,
+      "damageMax": 26,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "claws-plated-claw",
+    "name": "Plated Claw",
+    "class": "Claws",
+    "level": 22,
+    "implicit": null,
+    "stats": {
+      "damageMin": 13,
+      "damageMax": 31,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "claws-edged-claw",
+    "name": "Edged Claw",
+    "class": "Claws",
+    "level": 28,
+    "implicit": "(15—25)% chance to Blind Enemies on hit",
+    "stats": {
+      "damageMin": 11,
+      "damageMax": 38,
+      "aps": 1.7
+    }
+  },
+  {
+    "id": "claws-arced-claw",
+    "name": "Arced Claw",
+    "class": "Claws",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "damageMin": 12,
+      "damageMax": 46,
+      "aps": 1.65
+    }
+  },
+  {
+    "id": "claws-hooked-claw",
+    "name": "Hooked Claw",
+    "class": "Claws",
+    "level": 36,
+    "implicit": null,
+    "stats": {
+      "damageMin": 16,
+      "damageMax": 49,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "claws-razorglass-claw",
+    "name": "Razorglass Claw",
+    "class": "Claws",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "damageMin": 23,
+      "damageMax": 54,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "claws-sharktooth-claw",
+    "name": "Sharktooth Claw",
+    "class": "Claws",
+    "level": 49,
+    "implicit": null,
+    "stats": {
+      "damageMin": 25,
+      "damageMax": 52,
+      "aps": 1.7
+    }
+  },
+  {
+    "id": "claws-armoured-claw",
+    "name": "Armoured Claw",
+    "class": "Claws",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "damageMin": 27,
+      "damageMax": 63,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "claws-piercing-claw",
+    "name": "Piercing Claw",
+    "class": "Claws",
+    "level": 55,
+    "implicit": null,
+    "stats": {
+      "damageMin": 23,
+      "damageMax": 68,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "claws-talon-claw",
+    "name": "Talon Claw",
+    "class": "Claws",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "damageMin": 23,
+      "damageMax": 79,
+      "aps": 1.65
+    }
+  },
+  {
+    "id": "daggers-ethereal-blade",
+    "name": "Ethereal Blade",
+    "class": "Daggers",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "damageMin": 5,
+      "damageMax": 10,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "daggers-glass-shank",
+    "name": "Glass Shank",
+    "class": "Daggers",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "damageMin": 3,
+      "damageMax": 10,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "daggers-crone-knife",
+    "name": "Crone Knife",
+    "class": "Daggers",
+    "level": 6,
+    "implicit": "Leeches 4% of Physical Damage as Mana",
+    "stats": {
+      "damageMin": 4,
+      "damageMax": 15,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "daggers-simple-dagger",
+    "name": "Simple Dagger",
+    "class": "Daggers",
+    "level": 12,
+    "implicit": null,
+    "stats": {
+      "damageMin": 8,
+      "damageMax": 19,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "daggers-skinning-knife",
+    "name": "Skinning Knife",
+    "class": "Daggers",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "damageMin": 8,
+      "damageMax": 22,
+      "aps": 1.65
+    }
+  },
+  {
+    "id": "daggers-moon-dagger",
+    "name": "Moon Dagger",
+    "class": "Daggers",
+    "level": 20,
+    "implicit": "local weapon implicit hidden % base damage is cold [100]",
+    "stats": {
+      "damageMin": 11,
+      "damageMax": 26,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "daggers-engraved-knife",
+    "name": "Engraved Knife",
+    "class": "Daggers",
+    "level": 27,
+    "implicit": null,
+    "stats": {
+      "damageMin": 11,
+      "damageMax": 34,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "daggers-obsidian-dagger",
+    "name": "Obsidian Dagger",
+    "class": "Daggers",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "damageMin": 13,
+      "damageMax": 39,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "daggers-bloodletting-dagger",
+    "name": "Bloodletting Dagger",
+    "class": "Daggers",
+    "level": 39,
+    "implicit": "25% of Spell Mana Cost Converted to Life Cost",
+    "stats": {
+      "damageMin": 18,
+      "damageMax": 42,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "daggers-mail-breaker",
+    "name": "Mail Breaker",
+    "class": "Daggers",
+    "level": 45,
+    "implicit": "Breaks (400—500) Armour on Critical Hit",
+    "stats": {
+      "damageMin": 19,
+      "damageMax": 44,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "daggers-kris-knife",
+    "name": "Kris Knife",
+    "class": "Daggers",
+    "level": 49,
+    "implicit": null,
+    "stats": {
+      "damageMin": 16,
+      "damageMax": 48,
+      "aps": 1.65
+    }
+  },
+  {
+    "id": "daggers-parrying-dagger",
+    "name": "Parrying Dagger",
+    "class": "Daggers",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "damageMin": 16,
+      "damageMax": 55,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "daggers-arcane-dirk",
+    "name": "Arcane Dirk",
+    "class": "Daggers",
+    "level": 56,
+    "implicit": null,
+    "stats": {
+      "damageMin": 22,
+      "damageMax": 52,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "daggers-cinquedea",
+    "name": "Cinquedea",
+    "class": "Daggers",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "damageMin": 21,
+      "damageMax": 62,
+      "aps": 1.55
+    }
+  },
+  {
     "id": "wands-withered-wand",
     "name": "Withered Wand",
     "class": "Wands",
@@ -89,6 +413,352 @@
     "class": "Wands",
     "level": 65,
     "implicit": "Grants Skill: Level 15 Spellslinger"
+  },
+  {
+    "id": "one-hand-swords-golden-blade",
+    "name": "Golden Blade",
+    "class": "One Hand Swords",
+    "level": 0,
+    "implicit": "+(16—24) to all Attributes",
+    "stats": {
+      "damageMin": 3,
+      "damageMax": 28,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "one-hand-swords-energy-blade",
+    "name": "Energy Blade",
+    "class": "One Hand Swords",
+    "level": 0,
+    "implicit": "Adds to Lightning Damage",
+    "stats": {
+      "aps": 1.7
+    }
+  },
+  {
+    "id": "one-hand-swords-shortsword",
+    "name": "Shortsword",
+    "class": "One Hand Swords",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "damageMin": 6,
+      "damageMax": 9,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "one-hand-swords-broadsword",
+    "name": "Broadsword",
+    "class": "One Hand Swords",
+    "level": 6,
+    "implicit": null,
+    "stats": {
+      "damageMin": 8,
+      "damageMax": 13,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "one-hand-swords-vampiric-blade",
+    "name": "Vampiric Blade",
+    "class": "One Hand Swords",
+    "level": 11,
+    "implicit": null,
+    "stats": {
+      "damageMin": 11,
+      "damageMax": 20,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "one-hand-swords-scimitar",
+    "name": "Scimitar",
+    "class": "One Hand Swords",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "damageMin": 14,
+      "damageMax": 23,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "one-hand-swords-charred-shortsword",
+    "name": "Charred Shortsword",
+    "class": "One Hand Swords",
+    "level": 21,
+    "implicit": null,
+    "stats": {
+      "damageMin": 19,
+      "damageMax": 34,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "one-hand-swords-sickle-sword",
+    "name": "Sickle Sword",
+    "class": "One Hand Swords",
+    "level": 28,
+    "implicit": null,
+    "stats": {
+      "damageMin": 18,
+      "damageMax": 38,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "one-hand-swords-falchion",
+    "name": "Falchion",
+    "class": "One Hand Swords",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "damageMin": 27,
+      "damageMax": 37,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "one-hand-swords-treasured-blade",
+    "name": "Treasured Blade",
+    "class": "One Hand Swords",
+    "level": 40,
+    "implicit": null,
+    "stats": {
+      "damageMin": 27,
+      "damageMax": 45,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "one-hand-swords-cutlass",
+    "name": "Cutlass",
+    "class": "One Hand Swords",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "damageMin": 33,
+      "damageMax": 49,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "one-hand-swords-runic-shortsword",
+    "name": "Runic Shortsword",
+    "class": "One Hand Swords",
+    "level": 50,
+    "implicit": null,
+    "stats": {
+      "damageMin": 26,
+      "damageMax": 55,
+      "aps": 1.65
+    }
+  },
+  {
+    "id": "one-hand-swords-messer",
+    "name": "Messer",
+    "class": "One Hand Swords",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "damageMin": 30,
+      "damageMax": 56,
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "one-hand-swords-commander-sword",
+    "name": "Commander Sword",
+    "class": "One Hand Swords",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "damageMin": 36,
+      "damageMax": 60,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "one-hand-swords-dark-blade",
+    "name": "Dark Blade",
+    "class": "One Hand Swords",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "damageMin": 43,
+      "damageMax": 65,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "one-hand-swords-golden-blade",
+    "name": "Golden Blade",
+    "class": "One Hand Swords",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "damageMin": 6,
+      "damageMax": 9,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "one-hand-axes-dull-hatchet",
+    "name": "Dull Hatchet",
+    "class": "One Hand Axes",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "damageMin": 4,
+      "damageMax": 10,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "one-hand-axes-hook-axe",
+    "name": "Hook Axe",
+    "class": "One Hand Axes",
+    "level": 4,
+    "implicit": "Grants 1 Rage on Hit",
+    "stats": {
+      "damageMin": 5,
+      "damageMax": 14,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-axes-bearded-axe",
+    "name": "Bearded Axe",
+    "class": "One Hand Axes",
+    "level": 10,
+    "implicit": null,
+    "stats": {
+      "damageMin": 8,
+      "damageMax": 21,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "one-hand-axes-extended-cleaver",
+    "name": "Extended Cleaver",
+    "class": "One Hand Axes",
+    "level": 16,
+    "implicit": "Has no Accuracy Penalty from Range",
+    "stats": {
+      "damageMin": 8,
+      "damageMax": 25,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "one-hand-axes-bandit-hatchet",
+    "name": "Bandit Hatchet",
+    "class": "One Hand Axes",
+    "level": 20,
+    "implicit": null,
+    "stats": {
+      "damageMin": 13,
+      "damageMax": 31,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "one-hand-axes-crescent-axe",
+    "name": "Crescent Axe",
+    "class": "One Hand Axes",
+    "level": 26,
+    "implicit": null,
+    "stats": {
+      "damageMin": 18,
+      "damageMax": 37,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "one-hand-axes-carving-hatchet",
+    "name": "Carving Hatchet",
+    "class": "One Hand Axes",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "damageMin": 19,
+      "damageMax": 44,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "one-hand-axes-sacrificial-axe",
+    "name": "Sacrificial Axe",
+    "class": "One Hand Axes",
+    "level": 37,
+    "implicit": "Gain (28—35) Mana per enemy killed",
+    "stats": {
+      "damageMin": 20,
+      "damageMax": 42,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "one-hand-axes-boarding-hatchet",
+    "name": "Boarding Hatchet",
+    "class": "One Hand Axes",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "damageMin": 24,
+      "damageMax": 55,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "one-hand-axes-fury-cleaver",
+    "name": "Fury Cleaver",
+    "class": "One Hand Axes",
+    "level": 48,
+    "implicit": "10% increased Damage taken",
+    "stats": {
+      "damageMin": 30,
+      "damageMax": 62,
+      "aps": 1.55
+    }
+  },
+  {
+    "id": "one-hand-axes-battle-axe",
+    "name": "Battle Axe",
+    "class": "One Hand Axes",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "damageMin": 28,
+      "damageMax": 65,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "one-hand-axes-profane-cleaver",
+    "name": "Profane Cleaver",
+    "class": "One Hand Axes",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "damageMin": 26,
+      "damageMax": 69,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "one-hand-axes-dread-hatchet",
+    "name": "Dread Hatchet",
+    "class": "One Hand Axes",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "damageMin": 34,
+      "damageMax": 79,
+      "aps": 1.5
+    }
   },
   {
     "id": "one-hand-maces-wooden-club",
@@ -863,6 +1533,162 @@
     }
   },
   {
+    "id": "flails-splintered-flail",
+    "name": "Splintered Flail",
+    "class": "Flails",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "damageMin": 6,
+      "damageMax": 9,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "flails-chain-flail",
+    "name": "Chain Flail",
+    "class": "Flails",
+    "level": 6,
+    "implicit": null,
+    "stats": {
+      "damageMin": 8,
+      "damageMax": 14,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "flails-holy-flail",
+    "name": "Holy Flail",
+    "class": "Flails",
+    "level": 11,
+    "implicit": null,
+    "stats": {
+      "damageMin": 10,
+      "damageMax": 17,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "flails-iron-flail",
+    "name": "Iron Flail",
+    "class": "Flails",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "damageMin": 14,
+      "damageMax": 23,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "flails-twin-flail",
+    "name": "Twin Flail",
+    "class": "Flails",
+    "level": 20,
+    "implicit": "Bifurcates Critical Hits",
+    "stats": {
+      "damageMin": 8,
+      "damageMax": 18,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "flails-slender-flail",
+    "name": "Slender Flail",
+    "class": "Flails",
+    "level": 26,
+    "implicit": null,
+    "stats": {
+      "damageMin": 19,
+      "damageMax": 32,
+      "aps": 1.5
+    }
+  },
+  {
+    "id": "flails-stone-flail",
+    "name": "Stone Flail",
+    "class": "Flails",
+    "level": 33,
+    "implicit": "Unblockable",
+    "stats": {
+      "damageMin": 23,
+      "damageMax": 38,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "flails-ring-flail",
+    "name": "Ring Flail",
+    "class": "Flails",
+    "level": 38,
+    "implicit": null,
+    "stats": {
+      "damageMin": 23,
+      "damageMax": 44,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "flails-guarded-flail",
+    "name": "Guarded Flail",
+    "class": "Flails",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "damageMin": 31,
+      "damageMax": 57,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "flails-icicle-flail",
+    "name": "Icicle Flail",
+    "class": "Flails",
+    "level": 47,
+    "implicit": "local weapon implicit hidden % base damage is cold [100]",
+    "stats": {
+      "damageMin": 24,
+      "damageMax": 55,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "flails-tearing-flail",
+    "name": "Tearing Flail",
+    "class": "Flails",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "damageMin": 27,
+      "damageMax": 56,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "flails-great-flail",
+    "name": "Great Flail",
+    "class": "Flails",
+    "level": 58,
+    "implicit": null,
+    "stats": {
+      "damageMin": 35,
+      "damageMax": 58,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "flails-abyssal-flail",
+    "name": "Abyssal Flail",
+    "class": "Flails",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "damageMin": 36,
+      "damageMax": 66,
+      "aps": 1.45
+    }
+  },
+  {
     "id": "bows-crude-bow",
     "name": "Crude Bow",
     "class": "Bows",
@@ -1285,6 +2111,328 @@
     "class": "Staves",
     "level": 70,
     "implicit": "Grants Skill: Level 16 Mirror of Refraction"
+  },
+  {
+    "id": "two-hand-swords-energy-blade",
+    "name": "Energy Blade",
+    "class": "Two Hand Swords",
+    "level": 0,
+    "implicit": "Adds to Lightning Damage",
+    "stats": {
+      "aps": 1.6
+    }
+  },
+  {
+    "id": "two-hand-swords-corroded-longsword",
+    "name": "Corroded Longsword",
+    "class": "Two Hand Swords",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "damageMin": 9,
+      "damageMax": 16,
+      "aps": 1.3
+    }
+  },
+  {
+    "id": "two-hand-swords-iron-greatsword",
+    "name": "Iron Greatsword",
+    "class": "Two Hand Swords",
+    "level": 6,
+    "implicit": null,
+    "stats": {
+      "damageMin": 13,
+      "damageMax": 23,
+      "aps": 1.35
+    }
+  },
+  {
+    "id": "two-hand-swords-blessed-claymore",
+    "name": "Blessed Claymore",
+    "class": "Two Hand Swords",
+    "level": 11,
+    "implicit": null,
+    "stats": {
+      "damageMin": 19,
+      "damageMax": 32,
+      "aps": 1.3
+    }
+  },
+  {
+    "id": "two-hand-swords-broad-greatsword",
+    "name": "Broad Greatsword",
+    "class": "Two Hand Swords",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "damageMin": 25,
+      "damageMax": 42,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "two-hand-swords-rippled-greatsword",
+    "name": "Rippled Greatsword",
+    "class": "Two Hand Swords",
+    "level": 22,
+    "implicit": null,
+    "stats": {
+      "damageMin": 28,
+      "damageMax": 52,
+      "aps": 1.3
+    }
+  },
+  {
+    "id": "two-hand-swords-arced-longsword",
+    "name": "Arced Longsword",
+    "class": "Two Hand Swords",
+    "level": 28,
+    "implicit": null,
+    "stats": {
+      "damageMin": 31,
+      "damageMax": 58,
+      "aps": 1.35
+    }
+  },
+  {
+    "id": "two-hand-swords-stone-greatsword",
+    "name": "Stone Greatsword",
+    "class": "Two Hand Swords",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "damageMin": 40,
+      "damageMax": 67,
+      "aps": 1.3
+    }
+  },
+  {
+    "id": "two-hand-swords-obsidian-greatsword",
+    "name": "Obsidian Greatsword",
+    "class": "Two Hand Swords",
+    "level": 36,
+    "implicit": null,
+    "stats": {
+      "damageMin": 49,
+      "damageMax": 73,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "two-hand-swords-keen-greatsword",
+    "name": "Keen Greatsword",
+    "class": "Two Hand Swords",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "damageMin": 45,
+      "damageMax": 94,
+      "aps": 1.3
+    }
+  },
+  {
+    "id": "two-hand-swords-ancient-greatblade",
+    "name": "Ancient Greatblade",
+    "class": "Two Hand Swords",
+    "level": 49,
+    "implicit": null,
+    "stats": {
+      "damageMin": 55,
+      "damageMax": 103,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "two-hand-swords-flanged-greatblade",
+    "name": "Flanged Greatblade",
+    "class": "Two Hand Swords",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "damageMin": 51,
+      "damageMax": 106,
+      "aps": 1.3
+    }
+  },
+  {
+    "id": "two-hand-swords-regalia-longsword",
+    "name": "Regalia Longsword",
+    "class": "Two Hand Swords",
+    "level": 54,
+    "implicit": null,
+    "stats": {
+      "damageMin": 61,
+      "damageMax": 92,
+      "aps": 1.35
+    }
+  },
+  {
+    "id": "two-hand-swords-ultra-greatsword",
+    "name": "Ultra Greatsword",
+    "class": "Two Hand Swords",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "damageMin": 72,
+      "damageMax": 119,
+      "aps": 1.3
+    }
+  },
+  {
+    "id": "two-hand-axes-splitting-greataxe",
+    "name": "Splitting Greataxe",
+    "class": "Two Hand Axes",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "damageMin": 8,
+      "damageMax": 20,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "two-hand-axes-light-halberd",
+    "name": "Light Halberd",
+    "class": "Two Hand Axes",
+    "level": 4,
+    "implicit": null,
+    "stats": {
+      "damageMin": 10,
+      "damageMax": 25,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "two-hand-axes-executioner-greataxe",
+    "name": "Executioner Greataxe",
+    "class": "Two Hand Axes",
+    "level": 10,
+    "implicit": "Culling Strike",
+    "stats": {
+      "damageMin": 10,
+      "damageMax": 41,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "two-hand-axes-arched-greataxe",
+    "name": "Arched Greataxe",
+    "class": "Two Hand Axes",
+    "level": 16,
+    "implicit": null,
+    "stats": {
+      "damageMin": 17,
+      "damageMax": 59,
+      "aps": 1.15
+    }
+  },
+  {
+    "id": "two-hand-axes-elegant-glaive",
+    "name": "Elegant Glaive",
+    "class": "Two Hand Axes",
+    "level": 20,
+    "implicit": null,
+    "stats": {
+      "damageMin": 19,
+      "damageMax": 64,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "two-hand-axes-savage-greataxe",
+    "name": "Savage Greataxe",
+    "class": "Two Hand Axes",
+    "level": 27,
+    "implicit": "Gain (34—43) Life per enemy killed",
+    "stats": {
+      "damageMin": 23,
+      "damageMax": 70,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "two-hand-axes-rending-halberd",
+    "name": "Rending Halberd",
+    "class": "Two Hand Axes",
+    "level": 33,
+    "implicit": null,
+    "stats": {
+      "damageMin": 27,
+      "damageMax": 91,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "two-hand-axes-jagged-greataxe",
+    "name": "Jagged Greataxe",
+    "class": "Two Hand Axes",
+    "level": 40,
+    "implicit": "(15—25)% chance to cause Bleeding on Hit",
+    "stats": {
+      "damageMin": 43,
+      "damageMax": 99,
+      "aps": 1.15
+    }
+  },
+  {
+    "id": "two-hand-axes-reaver-glaive",
+    "name": "Reaver Glaive",
+    "class": "Two Hand Axes",
+    "level": 45,
+    "implicit": null,
+    "stats": {
+      "damageMin": 43,
+      "damageMax": 113,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "two-hand-axes-ember-greataxe",
+    "name": "Ember Greataxe",
+    "class": "Two Hand Axes",
+    "level": 50,
+    "implicit": "local weapon implicit hidden % base damage is fire [100]",
+    "stats": {
+      "damageMin": 58,
+      "damageMax": 154,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "two-hand-axes-ceremonial-halberd",
+    "name": "Ceremonial Halberd",
+    "class": "Two Hand Axes",
+    "level": 52,
+    "implicit": "Cannot use Projectile Attacks",
+    "stats": {
+      "damageMin": 53,
+      "damageMax": 123,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "two-hand-axes-monument-greataxe",
+    "name": "Monument Greataxe",
+    "class": "Two Hand Axes",
+    "level": 57,
+    "implicit": null,
+    "stats": {
+      "damageMin": 48,
+      "damageMax": 143,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "two-hand-axes-vile-greataxe",
+    "name": "Vile Greataxe",
+    "class": "Two Hand Axes",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "damageMin": 59,
+      "damageMax": 155,
+      "aps": 1.2
+    }
   },
   {
     "id": "two-hand-maces-felled-greatclub",
@@ -2232,6 +3380,404 @@
       "damageMin": 31,
       "damageMax": 123,
       "aps": 1.65
+    }
+  },
+  {
+    "id": "traps-clay-trap",
+    "name": "Clay Trap",
+    "class": "Traps",
+    "level": 2,
+    "implicit": null
+  },
+  {
+    "id": "traps-clamping-trap",
+    "name": "Clamping Trap",
+    "class": "Traps",
+    "level": 6,
+    "implicit": null
+  },
+  {
+    "id": "traps-shrapnel-trap",
+    "name": "Shrapnel Trap",
+    "class": "Traps",
+    "level": 10,
+    "implicit": null
+  },
+  {
+    "id": "traps-urn-trap",
+    "name": "Urn Trap",
+    "class": "Traps",
+    "level": 16,
+    "implicit": null
+  },
+  {
+    "id": "traps-incense-trap",
+    "name": "Incense Trap",
+    "class": "Traps",
+    "level": 22,
+    "implicit": "(20—30)% increased Cooldown Recovery Rate for throwing Traps"
+  },
+  {
+    "id": "traps-bladed-trap",
+    "name": "Bladed Trap",
+    "class": "Traps",
+    "level": 27,
+    "implicit": null
+  },
+  {
+    "id": "traps-dart-trap",
+    "name": "Dart Trap",
+    "class": "Traps",
+    "level": 33,
+    "implicit": null
+  },
+  {
+    "id": "traps-spike-trap",
+    "name": "Spike Trap",
+    "class": "Traps",
+    "level": 38,
+    "implicit": null
+  },
+  {
+    "id": "traps-coiled-trap",
+    "name": "Coiled Trap",
+    "class": "Traps",
+    "level": 45,
+    "implicit": null
+  },
+  {
+    "id": "traps-lead-trap",
+    "name": "Lead Trap",
+    "class": "Traps",
+    "level": 49,
+    "implicit": null
+  },
+  {
+    "id": "traps-medallion-trap",
+    "name": "Medallion Trap",
+    "class": "Traps",
+    "level": 52,
+    "implicit": null
+  },
+  {
+    "id": "traps-intricate-trap",
+    "name": "Intricate Trap",
+    "class": "Traps",
+    "level": 56,
+    "implicit": null
+  },
+  {
+    "id": "traps-refined-trap",
+    "name": "Refined Trap",
+    "class": "Traps",
+    "level": 65,
+    "implicit": null
+  },
+  {
+    "id": "traps-incense-trap",
+    "name": "Incense Trap",
+    "class": "Traps",
+    "level": 22,
+    "implicit": "(20—30)% increased Cooldown Recovery Rate for throwing Traps"
+  },
+  {
+    "id": "talismans-changeling-talisman",
+    "name": "Changeling Talisman",
+    "class": "Talismans",
+    "level": 0,
+    "implicit": null,
+    "stats": {
+      "damageMin": 9,
+      "damageMax": 15,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "talismans-nettle-talisman",
+    "name": "Nettle Talisman",
+    "class": "Talismans",
+    "level": 5,
+    "implicit": null,
+    "stats": {
+      "damageMin": 12,
+      "damageMax": 20,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "talismans-cinderbark-talisman",
+    "name": "Cinderbark Talisman",
+    "class": "Talismans",
+    "level": 10,
+    "implicit": "(50—80)% increased Flammability Magnitudelocal weapon implicit hidden % base damage is fire [30]",
+    "stats": {
+      "damageMin": 12.6,
+      "damageMax": 25.2,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "talismans-familial-talisman",
+    "name": "Familial Talisman",
+    "class": "Talismans",
+    "level": 16,
+    "implicit": "Minions deal (30—50)% increased Damage",
+    "stats": {
+      "damageMin": 20,
+      "damageMax": 34,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "talismans-frenzied-talisman",
+    "name": "Frenzied Talisman",
+    "class": "Talismans",
+    "level": 22,
+    "implicit": null,
+    "stats": {
+      "damageMin": 23,
+      "damageMax": 38,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "talismans-primal-talisman",
+    "name": "Primal Talisman",
+    "class": "Talismans",
+    "level": 28,
+    "implicit": "+(10—15)% to Block chance",
+    "stats": {
+      "damageMin": 31,
+      "damageMax": 46,
+      "aps": 1.3
+    }
+  },
+  {
+    "id": "talismans-rabid-talisman",
+    "name": "Rabid Talisman",
+    "class": "Talismans",
+    "level": 34,
+    "implicit": "+(8—12) to Maximum Rage",
+    "stats": {
+      "damageMin": 31,
+      "damageMax": 58,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "talismans-vicious-talisman",
+    "name": "Vicious Talisman",
+    "class": "Talismans",
+    "level": 40,
+    "implicit": null,
+    "stats": {
+      "damageMin": 43,
+      "damageMax": 71,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "talismans-voltfang-talisman",
+    "name": "Voltfang Talisman",
+    "class": "Talismans",
+    "level": 46,
+    "implicit": "(15—25)% increased Magnitude of Shock you inflictlocal weapon implicit hidden % base damage is lightning [30]",
+    "stats": {
+      "damageMin": 16.1,
+      "damageMax": 91,
+      "aps": 1.3
+    }
+  },
+  {
+    "id": "talismans-lumbering-talisman",
+    "name": "Lumbering Talisman",
+    "class": "Talismans",
+    "level": 52,
+    "implicit": null,
+    "stats": {
+      "damageMin": 71,
+      "damageMax": 107,
+      "aps": 1.1
+    }
+  },
+  {
+    "id": "talismans-roaring-talisman",
+    "name": "Roaring Talisman",
+    "class": "Talismans",
+    "level": 58,
+    "implicit": "+(8—12) to Maximum Rage",
+    "stats": {
+      "damageMin": 57,
+      "damageMax": 96,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "talismans-wingbeat-talisman",
+    "name": "Wingbeat Talisman",
+    "class": "Talismans",
+    "level": 65,
+    "implicit": null,
+    "stats": {
+      "damageMin": 45,
+      "damageMax": 83,
+      "aps": 1.45
+    }
+  },
+  {
+    "id": "talismans-condemned-talisman",
+    "name": "Condemned Talisman",
+    "class": "Talismans",
+    "level": 65,
+    "implicit": "(10—20)% increased Effect of your Mark Skills",
+    "stats": {
+      "damageMin": 68,
+      "damageMax": 113,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "talismans-howling-talisman",
+    "name": "Howling Talisman",
+    "class": "Talismans",
+    "level": 55,
+    "implicit": "+(10—15)% to Block chance",
+    "stats": {
+      "damageMin": 52,
+      "damageMax": 78,
+      "aps": 1.3
+    }
+  },
+  {
+    "id": "talismans-fury-talisman",
+    "name": "Fury Talisman",
+    "class": "Talismans",
+    "level": 59,
+    "implicit": "+(8—12) to Maximum Rage",
+    "stats": {
+      "damageMin": 49,
+      "damageMax": 91,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "talismans-cruel-talisman",
+    "name": "Cruel Talisman",
+    "class": "Talismans",
+    "level": 63,
+    "implicit": null,
+    "stats": {
+      "damageMin": 62,
+      "damageMax": 103,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "talismans-spiny-talisman",
+    "name": "Spiny Talisman",
+    "class": "Talismans",
+    "level": 67,
+    "implicit": null,
+    "stats": {
+      "damageMin": 60,
+      "damageMax": 99,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "talismans-ashbark-talisman",
+    "name": "Ashbark Talisman",
+    "class": "Talismans",
+    "level": 72,
+    "implicit": "(50—80)% increased Flammability Magnitudelocal weapon implicit hidden % base damage is fire [30]",
+    "stats": {
+      "damageMin": 50.4,
+      "damageMax": 105,
+      "aps": 1.2
+    }
+  },
+  {
+    "id": "talismans-fang-talisman",
+    "name": "Fang Talisman",
+    "class": "Talismans",
+    "level": 77,
+    "implicit": "Minions deal (30—50)% increased Damage",
+    "stats": {
+      "damageMin": 70,
+      "damageMax": 116,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "talismans-fungal-talisman",
+    "name": "Fungal Talisman",
+    "class": "Talismans",
+    "level": 78,
+    "implicit": null,
+    "stats": {
+      "damageMin": 59,
+      "damageMax": 98,
+      "aps": 1.4
+    }
+  },
+  {
+    "id": "talismans-alpha-talisman",
+    "name": "Alpha Talisman",
+    "class": "Talismans",
+    "level": 75,
+    "implicit": "+(10—15)% to Block chance",
+    "stats": {
+      "damageMin": 63,
+      "damageMax": 94,
+      "aps": 1.3
+    }
+  },
+  {
+    "id": "talismans-maji-talisman",
+    "name": "Maji Talisman",
+    "class": "Talismans",
+    "level": 79,
+    "implicit": "+(8—12) to Maximum Rage",
+    "stats": {
+      "damageMin": 61,
+      "damageMax": 114,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "talismans-wildwood-talisman",
+    "name": "Wildwood Talisman",
+    "class": "Talismans",
+    "level": 70,
+    "implicit": null,
+    "stats": {
+      "damageMin": 67,
+      "damageMax": 112,
+      "aps": 1.25
+    }
+  },
+  {
+    "id": "talismans-thunder-talisman",
+    "name": "Thunder Talisman",
+    "class": "Talismans",
+    "level": 77,
+    "implicit": "(15—25)% increased Magnitude of Shock you inflictlocal weapon implicit hidden % base damage is lightning [30]",
+    "stats": {
+      "damageMin": 23.1,
+      "damageMax": 130.9,
+      "aps": 1.3
+    }
+  },
+  {
+    "id": "talismans-jade-talisman",
+    "name": "Jade Talisman",
+    "class": "Talismans",
+    "level": 78,
+    "implicit": null,
+    "stats": {
+      "damageMin": 101,
+      "damageMax": 151,
+      "aps": 1.1
     }
   },
   {
@@ -8861,5 +10407,236 @@
     "class": "Jewels",
     "level": 0,
     "implicit": "local jewel effect base radius [1000]"
+  },
+  {
+    "id": "vault-keys-ancient-reliquary-key",
+    "name": "Ancient Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-timeworn-reliquary-key",
+    "name": "Timeworn Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-vaal-reliquary-key",
+    "name": "Vaal Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-forgotten-reliquary-key",
+    "name": "Forgotten Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-visceral-reliquary-key",
+    "name": "Visceral Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-shiny-reliquary-key",
+    "name": "Shiny Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-archive-reliquary-key",
+    "name": "Archive Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-oubliette-reliquary-key",
+    "name": "Oubliette Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-cosmic-reliquary-key",
+    "name": "Cosmic Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-decaying-reliquary-key",
+    "name": "Decaying Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-voidborn-reliquary-key",
+    "name": "Voidborn Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-voidborn-reliquary-key",
+    "name": "Voidborn Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-twilight-reliquary-key",
+    "name": "Twilight Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-xesht-s-reliquary-key",
+    "name": "Xesht's Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-the-trialmaster-s-reliquary-key",
+    "name": "The Trialmaster's Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-ritualistic-reliquary-key",
+    "name": "Ritualistic Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-tangmazu-s-reliquary-key",
+    "name": "Tangmazu's Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-olroth-s-reliquary-key",
+    "name": "Olroth's Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-the-arbiter-s-reliquary-key",
+    "name": "The Arbiter's Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-zarokh-s-reliquary-key",
+    "name": "Zarokh's Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "vault-keys-zarokh-s-reliquary-key-against-the-darkness",
+    "name": "Zarokh's Reliquary Key: Against the Darkness",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": "Chest drops Against the Darkness"
+  },
+  {
+    "id": "vault-keys-zarokh-s-reliquary-key-sandstorm-visage",
+    "name": "Zarokh's Reliquary Key: Sandstorm Visage",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": "Chest drops Sandstorm Visage"
+  },
+  {
+    "id": "vault-keys-zarokh-s-reliquary-key-blessed-bonds",
+    "name": "Zarokh's Reliquary Key: Blessed Bonds",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": "Chest drops Blessed Bonds"
+  },
+  {
+    "id": "vault-keys-zarokh-s-reliquary-key-sekhema-s-resolve",
+    "name": "Zarokh's Reliquary Key: Sekhema's Resolve",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": "Chest drops Sekhema's Resolve"
+  },
+  {
+    "id": "vault-keys-zarokh-s-reliquary-key-temporalis",
+    "name": "Zarokh's Reliquary Key: Temporalis",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": "Chest drops Temporalis"
+  },
+  {
+    "id": "vault-keys-azmeri-reliquary-key",
+    "name": "Azmeri Reliquary Key",
+    "class": "Vault Keys",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "relics-urn-relic",
+    "name": "Urn Relic",
+    "class": "Relics",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "relics-amphora-relic",
+    "name": "Amphora Relic",
+    "class": "Relics",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "relics-vase-relic",
+    "name": "Vase Relic",
+    "class": "Relics",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "relics-seal-relic",
+    "name": "Seal Relic",
+    "class": "Relics",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "relics-coffer-relic",
+    "name": "Coffer Relic",
+    "class": "Relics",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "relics-tapestry-relic",
+    "name": "Tapestry Relic",
+    "class": "Relics",
+    "level": 0,
+    "implicit": null
+  },
+  {
+    "id": "relics-incense-relic",
+    "name": "Incense Relic",
+    "class": "Relics",
+    "level": 0,
+    "implicit": null
   }
 ]

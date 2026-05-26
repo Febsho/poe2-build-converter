@@ -3,14 +3,14 @@
     "__test_source__": {
       "count": 5,
       "sourceUrl": "http://example.com",
-      "lastUpdated": "2026-05-26T15:08:57.186Z"
+      "lastUpdated": "2026-05-26T15:25:07.875Z"
     },
     "gems": {
       "count": 860,
       "sourceUrl": "https://poe2db.tw/us/Skill_Gems, https://poe2db.tw/us/Support_Gems",
       "lastError": null,
       "note": "Imported live Skill Gems and Support Gems from PoE2DB.",
-      "lastUpdated": "2026-05-26T15:09:00.140Z"
+      "lastUpdated": "2026-05-26T15:25:13.404Z"
     },
     "patches": {
       "lastError": null,
@@ -26,12 +26,12 @@
       "lastUpdated": "2026-05-25T11:53:29.543Z"
     },
     "items": {
-      "count": 879,
+      "count": 1047,
       "sourceUrl": "https://poe2db.tw/us/Items",
       "lastError": null,
-      "note": "24 classes, 879 base items",
-      "lastUpdated": "2026-05-25T18:37:14.418Z"
+      "note": "35 classes, 1047 base items",
+      "lastUpdated": "2026-05-26T15:24:16.977Z"
     }
   },
-  "lastGlobalUpdate": "2026-05-26T15:09:00.140Z"
+  "lastGlobalUpdate": "2026-05-26T15:25:13.404Z"
 }
