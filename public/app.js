@@ -64,7 +64,7 @@ async function loadCraftingData() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     if (!data.ok) throw new Error(data.error || 'Failed to load crafting data');
-    CRAFTING_ITEM_BASES = data.bases ?? [];
+    CRAFTING_ITEM_BASES = normalizeCraftingBases(data.bases ?? data.itemBases ?? data.item_bases ?? []);
     CRAFTING_MODIFIERS = data.modifiers ?? [];
     CRAFTING_ESSENCES = data.essences ?? [];
     CRAFTING_OMENS = data.omens ?? [];
@@ -82,6 +82,72 @@ async function loadCraftingData() {
     craftingDataError = err.message;
     return false;
   }
+}
+
+function normalizeCraftingBases(bases) {
+  if (!Array.isArray(bases)) return [];
+  return bases
+    .map((base, index) => {
+      const name = String(base?.name ?? base?.baseType ?? base?.typeLine ?? '').trim();
+      if (!name) return null;
+      const rawClass = String(base?.class ?? base?.itemClass ?? base?.baseClass ?? '').trim();
+      const tags = Array.isArray(base?.tags) ? base.tags.filter(Boolean).map(String) : [];
+      const category = String(base?.category ?? inferCraftingBaseCategory(rawClass, tags, name)).trim() || 'Misc';
+      const type = String(base?.type ?? inferCraftingBaseType(rawClass, tags, name)).trim() || category.toLowerCase();
+      return {
+        ...base,
+        id: String(base?.id ?? `${type}-${index}-${name}`).trim(),
+        name,
+        category,
+        type,
+        itemLevel: clampCraftingNumber(base?.itemLevel ?? base?.level ?? 1, 1, 100),
+        implicits: Array.isArray(base?.implicits) ? base.implicits : [],
+        tags,
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.category.localeCompare(b.category) || a.type.localeCompare(b.type) || a.name.localeCompare(b.name));
+}
+
+function inferCraftingBaseCategory(rawClass, tags, name) {
+  const haystack = `${rawClass} ${tags.join(' ')} ${name}`.toLowerCase();
+  if (/flask|charm/.test(haystack)) return 'Flask/Charm';
+  if (/jewel/.test(haystack)) return 'Jewel';
+  if (/amulet|ring|belt/.test(haystack)) return 'Jewellery';
+  if (/wand|bow|staff|staves|quarterstaff|crossbow|spear|mace|sceptre/.test(haystack)) return 'Weapon';
+  if (/armour|armor|helmet|glove|boot|shield|buckler|focus|foci|quiver|robe|vest|cuirass/.test(haystack)) return 'Armour';
+  return rawClass || 'Misc';
+}
+
+function inferCraftingBaseType(rawClass, tags, name) {
+  const haystack = `${rawClass} ${tags.join(' ')} ${name}`.toLowerCase();
+  const pairs = [
+    ['quarterstaff', /quarterstaff|quarterstaves/],
+    ['crossbow', /crossbow/],
+    ['2h mace', /two hand mace|2h mace|piledriver/],
+    ['mace', /mace/],
+    ['sceptre', /sceptre/],
+    ['staff', /staff|staves/],
+    ['wand', /wand/],
+    ['bow', /bow/],
+    ['spear', /spear/],
+    ['body armour', /body armour|body armor|robe|vest|cuirass/],
+    ['helmet', /helmet|helm|hood/],
+    ['gloves', /glove/],
+    ['boots', /boot/],
+    ['shield', /shield/],
+    ['buckler', /buckler/],
+    ['focus', /focus|foci/],
+    ['quiver', /quiver/],
+    ['amulet', /amulet/],
+    ['ring', /ring/],
+    ['belt', /belt/],
+    ['jewel', /jewel/],
+    ['life flask', /life flask/],
+    ['mana flask', /mana flask/],
+    ['charm', /charm/],
+  ];
+  return pairs.find(([, re]) => re.test(haystack))?.[0] || rawClass.toLowerCase() || 'misc';
 }
 
 // ── State ──────────────────────────────────────────────────────────────────
@@ -945,12 +1011,15 @@ function renderCraftingSimulator() {
     return;
   }
   ensureCraftingState();
+  refreshCraftingBaseSelection();
   const item = craftingState.item;
   const categories = uniqueValues(CRAFTING_ITEM_BASES.map((b) => b.category));
-  const selectedCategory = item.base.category;
+  const selectedCategory = categories.includes(item.base.category) ? item.base.category : (categories[0] ?? item.base.category);
   const search = $('craft-base-search')?.value ?? '';
   const types = uniqueValues(CRAFTING_ITEM_BASES.filter((b) => b.category === selectedCategory).map((b) => b.type));
-  const filteredBases = filterCraftingBases(selectedCategory, $('craft-base-type')?.value || item.base.type, search);
+  const currentType = $('craft-base-type')?.value || item.base.type;
+  const selectedType = types.includes(currentType) ? currentType : (types[0] ?? currentType);
+  const filteredBases = filterCraftingBases(selectedCategory, selectedType, search);
   
   const targetOptions = CRAFTING_MODIFIERS
     .filter((m) => validModifierForBase(m, item.base, item.itemLevel))
@@ -1016,7 +1085,7 @@ function renderCraftingSimulator() {
         <section class="craft-panel">
           <h4>Item Base Selection</h4>
           <label class="edit-field"><span class="edit-label">Category</span><select id="craft-base-category" onchange="updateCraftingBaseFilters()">${categories.map((category) => `<option value="${escAttr(category)}"${category === selectedCategory ? ' selected' : ''}>${esc(category)}</option>`).join('')}</select></label>
-          <label class="edit-field"><span class="edit-label">Item Type</span><select id="craft-base-type" onchange="updateCraftingBaseFilters()">${types.map((type) => `<option value="${escAttr(type)}"${type === item.base.type ? ' selected' : ''}>${esc(titleCase(type))}</option>`).join('')}</select></label>
+          <label class="edit-field"><span class="edit-label">Item Type</span><select id="craft-base-type" onchange="updateCraftingBaseFilters()">${types.map((type) => `<option value="${escAttr(type)}"${type === selectedType ? ' selected' : ''}>${esc(titleCase(type))}</option>`).join('')}</select></label>
           <label class="edit-field"><span class="edit-label">Search Base</span><input id="craft-base-search" value="${escAttr(search)}" oninput="updateCraftingBaseFilters()" placeholder="Longbow, ring, robe..." /></label>
           <label class="edit-field"><span class="edit-label">Base</span><select id="craft-base-id" onchange="selectCraftingBase(this.value)">${filteredBases.map((base) => `<option value="${escAttr(base.id)}"${base.id === item.base.id ? ' selected' : ''}>${esc(base.name)}</option>`).join('')}</select></label>
           <label class="edit-field"><span class="edit-label">Item Level</span><input type="number" min="1" max="100" value="${item.itemLevel}" onchange="updateCraftingItemLevel(this.value)" /></label>
@@ -1322,18 +1391,25 @@ function renderCraftingSimulation() {
 
 function filterCraftingBases(category, type, search) {
   const needle = String(search ?? '').trim().toLowerCase();
-  let bases = CRAFTING_ITEM_BASES.filter((base) => base.category === category);
-  if (type) bases = bases.filter((base) => base.type === type);
+  let bases = CRAFTING_ITEM_BASES;
+  if (category) bases = bases.filter((base) => base.category === category);
+  if (type) {
+    const typedBases = bases.filter((base) => base.type === type);
+    if (typedBases.length) bases = typedBases;
+  }
   if (needle) bases = bases.filter((base) => base.name.toLowerCase().includes(needle));
-  return bases.length ? bases : CRAFTING_ITEM_BASES.filter((base) => base.category === category);
+  if (bases.length) return bases;
+  const categoryFallback = category ? CRAFTING_ITEM_BASES.filter((base) => base.category === category) : [];
+  return categoryFallback.length ? categoryFallback : CRAFTING_ITEM_BASES;
 }
 
 function updateCraftingBaseFilters() {
+  ensureCraftingState();
   const category = $('craft-base-category')?.value || craftingState.item.base.category;
   const currentType = $('craft-base-type')?.value || '';
   const search = $('craft-base-search')?.value ?? '';
   const types = uniqueValues(CRAFTING_ITEM_BASES.filter((b) => b.category === category).map((b) => b.type));
-  const nextType = types.includes(currentType) ? currentType : types[0];
+  const nextType = types.includes(currentType) ? currentType : (types[0] ?? '');
   const filteredBases = filterCraftingBases(category, nextType, search);
 
   // If the search field is focused, update only the base <select> in-place
@@ -1353,6 +1429,7 @@ function updateCraftingBaseFilters() {
 
 function selectCraftingBase(baseId) {
   const base = CRAFTING_ITEM_BASES.find((b) => b.id === baseId) ?? CRAFTING_ITEM_BASES[0];
+  if (!base) return;
   saveCraftingHistory();
   // Preserve the current item level rather than using base.itemLevel (which is equip requirement)
   const currentItemLevel = craftingState?.item?.itemLevel ?? 83;
@@ -1360,6 +1437,20 @@ function selectCraftingBase(baseId) {
   craftingState.log.push({ action: 'select-base', result: `Selected ${base.name}` });
   craftingState.simulation = null;
   renderCraftingSimulator();
+}
+
+function refreshCraftingBaseSelection() {
+  if (!craftingState || !CRAFTING_ITEM_BASES.length) return;
+  const currentId = craftingState.item?.base?.id;
+  if (CRAFTING_ITEM_BASES.some((base) => base.id === currentId)) return;
+
+  const preferredCategory = craftingState.item?.base?.category;
+  const preferredType = craftingState.item?.base?.type;
+  const replacement =
+    CRAFTING_ITEM_BASES.find((base) => preferredCategory && preferredType && base.category === preferredCategory && base.type === preferredType) ??
+    CRAFTING_ITEM_BASES.find((base) => preferredCategory && base.category === preferredCategory) ??
+    CRAFTING_ITEM_BASES[0];
+  craftingState.item = createCraftedItem(replacement, craftingState.item?.itemLevel ?? 83);
 }
 
 function updateCraftingItemLevel(value) {
@@ -3838,7 +3929,14 @@ function resolveTreePassiveHash(id) {
   return null;
 }
 
-
+function normalizeTreePassiveId(id) {
+  const value = String(id ?? '').trim();
+  if (!value) return '';
+  return value
+    .replace(/^passive[:/]/i, '')
+    .replace(/^node[:/]/i, '')
+    .trim();
+}
 
 function extractBuildPassiveIds(build) {
   return (build?.passives || [])

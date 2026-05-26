@@ -6,7 +6,8 @@ import { fetchPobbinCode, isPobbinUrl } from './pobbin.js';
 import { resolveGemLevel } from './gemLevels.js';
 
 const execFileAsync = promisify(execFile);
-const MOBALYTICS_HOSTS = ['mobalytics.gg', 'www.mobalytics.gg'];
+const MOBALYTICS_HOSTS = ['mobalytics.gg', 'www.mobalytics.gg', 'app.mobalytics.gg'];
+const MOBALYTICS_SHORT_HOSTS = ['moba.lol', 'www.moba.lol'];
 const POE2_CLASSES = ['Warrior', 'Sorceress', 'Witch', 'Ranger', 'Huntress', 'Mercenary', 'Monk', 'Druid'];
 const POE2_ASCENDANCIES = [
   'Titan', 'Warbringer', 'Smith of Kitava',
@@ -22,7 +23,11 @@ export function isMobalyticsUrl(input) {
   if (typeof input !== 'string') return false;
   try {
     const url = new URL(input.trim());
-    return MOBALYTICS_HOSTS.includes(url.hostname) && url.pathname.includes('/poe-2');
+    const hostname = url.hostname.toLowerCase();
+    return (
+      (MOBALYTICS_HOSTS.includes(hostname) && /\/poe-?2\b/i.test(url.pathname)) ||
+      MOBALYTICS_SHORT_HOSTS.includes(hostname)
+    );
   } catch {
     return false;
   }
@@ -35,13 +40,10 @@ export function isMobalyticsUrl(input) {
 export async function fetchMobalyticsData(input, opts = {}) {
   const { timeoutMs = 15000, skillSetId, itemSetId, specIndex } = opts;
   const parsed = new URL(input.trim());
+  if (!isMobalyticsUrl(input)) throw new Error('Unsupported Mobalytics URL');
   const requestedVariantId = extractRequestedVariantId(parsed);
 
-  // Extract slug from pathname: /poe-2/builds/<slug>
-  const slug = parsed.pathname.replace(/\/+$/, '').split('/').pop();
-  if (!slug) throw new Error('Could not extract build slug from Mobalytics URL');
-
-  const page = await fetchBuildPage(slug, timeoutMs);
+  const page = await fetchBuildPage(parsed, timeoutMs);
   const gemNameMap = extractMobalyticsGemNameMap(page.html);
   const pobLinks = extractPobLinks(page.html);
   const preloadedState = extractPreloadedState(page.html);
@@ -92,12 +94,11 @@ export async function fetchMobalyticsData(input, opts = {}) {
 export async function inspectMobalyticsUrl(input, { timeoutMs = 15000 } = {}) {
   const { getAvailableSets } = await import('./pobParser.js');
   const parsed = new URL(input.trim());
+  if (!isMobalyticsUrl(input)) return { skillSets: [], itemSets: [], treeSpecs: [], meta: {} };
   const requestedVariantId = extractRequestedVariantId(parsed);
-  const slug = parsed.pathname.replace(/\/+$/, '').split('/').pop();
-  if (!slug) return { skillSets: [], itemSets: [], treeSpecs: [], meta: {} };
 
   try {
-    const page = await fetchBuildPage(slug, timeoutMs);
+    const page = await fetchBuildPage(parsed, timeoutMs);
     const pobLinks = extractPobLinks(page.html);
     const preloadedState = extractPreloadedState(page.html);
     const doc = preloadedState ? findBuildDocument(preloadedState) : null;
@@ -126,8 +127,8 @@ export async function inspectMobalyticsUrl(input, { timeoutMs = 15000 } = {}) {
  * fingerprint check that blocks Node.js's built-in fetch) and extract
  * the embedded pobb.in URL from the page HTML.
  */
-async function fetchBuildPage(slug, timeoutMs) {
-  const url = `https://mobalytics.gg/poe-2/builds/${slug}`;
+async function fetchBuildPage(parsedUrl, timeoutMs) {
+  const url = getMobalyticsFetchUrl(parsedUrl);
   let stdout = '';
   try {
     stdout = await fetchPageViaCurl(url, timeoutMs);
@@ -143,6 +144,18 @@ async function fetchBuildPage(slug, timeoutMs) {
     html: stdout,
     title: cleanMobalyticsTitle(extractPageTitle(stdout)),
   };
+}
+
+function getMobalyticsFetchUrl(parsedUrl) {
+  const hostname = parsedUrl.hostname.toLowerCase();
+  if (MOBALYTICS_SHORT_HOSTS.includes(hostname)) return parsedUrl.href;
+
+  const path = parsedUrl.pathname.replace(/\/+$/, '');
+  if (!/\/poe-?2\b/i.test(path)) {
+    throw new Error('Mobalytics URL must point to a Path of Exile 2 build.');
+  }
+
+  return `https://mobalytics.gg${path || '/poe-2'}${parsedUrl.search}`;
 }
 
 async function fetchPageViaCurl(url, timeoutMs) {

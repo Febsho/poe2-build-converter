@@ -8,6 +8,7 @@ import { POE2_OMENS } from '../src/data/poe2/omens.ts';
 import { POE2_RUNES } from '../src/data/poe2/runes.ts';
 import { POE2_SOUL_CORES } from '../src/data/poe2/soulCores.ts';
 import { POE2_ABYSS_CRAFTING } from '../src/data/poe2/abyss.ts';
+import { getFallbackItemBases } from '../src/data/poe2/itemBases.ts';
 
 // Mock context for the tests
 const context = {
@@ -59,6 +60,13 @@ const baseJewel = {
   tags: ["jewel"],
   implicits: []
 };
+
+test('fallback crafting bases are available when runtime cache is missing', () => {
+  const bases = getFallbackItemBases();
+  assert.ok(bases.length > 0);
+  assert.ok(bases.some((base) => base.category === 'Weapon' && base.type === 'bow'));
+  assert.ok(bases.some((base) => base.category === 'Jewellery' && base.type === 'ring'));
+});
 
 test('valid currency craft - transmutes normal item to magic', () => {
   const item = createCraftedItem(baseWeapon, 83);

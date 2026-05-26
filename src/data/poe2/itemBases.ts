@@ -110,6 +110,31 @@ interface RawCacheItem {
   };
 }
 
+const FALLBACK_RAW_ITEM_BASES: RawCacheItem[] = [
+  { id: 'expert-dualstring-bow', name: 'Expert Dualstring Bow', class: 'Bows', level: 77, implicit: 'Bow Attacks fire an additional Arrow' },
+  { id: 'expert-longbow', name: 'Expert Longbow', class: 'Bows', level: 78 },
+  { id: 'expert-advanced-crossbow', name: 'Expert Bombard Crossbow', class: 'Crossbows', level: 77 },
+  { id: 'expert-crackling-staff', name: 'Expert Crackling Staff', class: 'Staves', level: 78, implicit: 'Grants Skill: Level 20 Spark' },
+  { id: 'expert-plague-wand', name: 'Expert Plague Wand', class: 'Wands', level: 78, implicit: 'Grants Skill: Level 20 Contagion' },
+  { id: 'expert-shaman-sceptre', name: 'Expert Shaman Sceptre', class: 'Sceptres', level: 78, implicit: 'Grants Skill: Level 20 Skeletal Warrior Minion' },
+  { id: 'expert-piledriver', name: 'Expert Piledriver', class: 'Two Hand Maces', level: 77 },
+  { id: 'expert-iron-cuirass', name: 'Expert Iron Cuirass', class: 'Body Armours', level: 78, stats: { armour: 714 } },
+  { id: 'expert-studded-vest', name: 'Expert Studded Vest', class: 'Body Armours', level: 78, stats: { evasion: 714 } },
+  { id: 'expert-silk-robe', name: 'Expert Silk Robe', class: 'Body Armours', level: 78, stats: { energyShield: 243 } },
+  { id: 'expert-greathelm', name: 'Expert Greathelm', class: 'Helmets', level: 76, stats: { armour: 236 } },
+  { id: 'expert-hunter-hood', name: 'Expert Hunter Hood', class: 'Helmets', level: 76, stats: { evasion: 236 } },
+  { id: 'expert-gilded-focus', name: 'Expert Gilded Focus', class: 'Foci', level: 78, stats: { energyShield: 106 } },
+  { id: 'gold-ring', name: 'Gold Ring', class: 'Rings', level: 20, implicit: '(6-15)% increased Rarity of Items found' },
+  { id: 'sapphire-ring', name: 'Sapphire Ring', class: 'Rings', level: 12, implicit: '+(20-30)% to Cold Resistance' },
+  { id: 'stellar-amulet', name: 'Stellar Amulet', class: 'Amulets', level: 30, implicit: '+(5-7) to all Attributes' },
+  { id: 'heavy-belt', name: 'Heavy Belt', class: 'Belts', level: 8, implicit: '+(25-35) to Strength' },
+  { id: 'timeless-jewel', name: 'Timeless Jewel', class: 'Jewels', level: 1 },
+];
+
+export function getFallbackItemBases(): ItemBase[] {
+  return transformCachedItemBases(FALLBACK_RAW_ITEM_BASES);
+}
+
 /**
  * Transform raw cached item bases (from data/cache/items.json) into ItemBase objects.
  */
@@ -151,8 +176,7 @@ function loadItemBases(): ItemBase[] {
     const raw: RawCacheItem[] = _require('../../../data/cache/items.json');
     _cachedBases = transformCachedItemBases(raw);
   } catch {
-    // Fallback to empty array if cache is unavailable
-    _cachedBases = [];
+    _cachedBases = getFallbackItemBases();
   }
   return _cachedBases;
 }

@@ -6,6 +6,7 @@ import { convertToBuild } from '../src/converter.js';
 import { resolveInput } from '../src/resolve.js';
 import { toRawUrl } from '../src/pobbin.js';
 import { resolveGemLevel } from '../src/gemLevels.js';
+import { isMobalyticsUrl } from '../src/mobalytics.js';
 
 const SAMPLE_XML = `<?xml version="1.0" encoding="UTF-8"?>
 <PathOfBuilding>
@@ -434,6 +435,13 @@ test('resolveInput auto-detects a PoB export code', async () => {
   const { build, source } = await resolveInput(code, { kind: 'auto' });
   assert.equal(source.kind, 'pobcode');
   assert.equal(build.meta.className, 'Sorceress');
+});
+
+test('Mobalytics URL detection accepts current build and short link formats', () => {
+  assert.equal(isMobalyticsUrl('https://mobalytics.gg/poe-2/builds/deadeye-leveling'), true);
+  assert.equal(isMobalyticsUrl('https://app.mobalytics.gg/poe-2/builds/deadeye-leveling?activeVariantId=abc'), true);
+  assert.equal(isMobalyticsUrl('https://moba.lol/poe2-deadeye'), true);
+  assert.equal(isMobalyticsUrl('https://example.com/poe-2/builds/deadeye-leveling'), false);
 });
 
 test('resolveInput auto-detects raw XML', async () => {

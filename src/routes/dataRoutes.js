@@ -72,7 +72,7 @@ router.get('/search', async (req, res) => {
 router.get('/crafting/data', async (_req, res) => {
   try {
     const rawBases = await readCache('items') ?? [];
-    const { transformCachedItemBases } = await import('../data/poe2/itemBases.ts');
+    const { transformCachedItemBases, getFallbackItemBases } = await import('../data/poe2/itemBases.ts');
     const { POE2_MODIFIERS } = await import('../data/poe2/modifiers.ts');
     const { POE2_ESSENCES } = await import('../data/poe2/essences.ts');
     const { POE2_OMENS } = await import('../data/poe2/omens.ts');
@@ -85,7 +85,7 @@ router.get('/crafting/data', async (_req, res) => {
     const { POE2_CRAFTING_MECHANICS } = await import('../data/poe2/craftingMechanics.ts');
     const { desecrationCraftingData } = await import('../data/poe2/desecration.ts');
 
-    const bases = transformCachedItemBases(rawBases);
+    const bases = rawBases.length ? transformCachedItemBases(rawBases) : getFallbackItemBases();
     res.json({
       ok: true,
       bases,
