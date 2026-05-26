@@ -27,7 +27,7 @@ import { applyDesecration } from './mechanics/applyDesecration.ts';
 
 export type CraftedItem = {
   base: ItemBase;
-  rarity: 'normal' | 'magic' | 'rare';
+  rarity: 'normal' | 'magic' | 'rare' | 'unique';
   quality: number;
   itemLevel: number;
   implicits: Modifier[];
@@ -37,6 +37,7 @@ export type CraftedItem = {
   runes?: { id: string; name: string; text: string }[];
   corrupted?: boolean;
   mirrored?: boolean;
+  destroyed?: boolean;
   properties?: Record<string, string | number>;
 };
 
@@ -91,6 +92,7 @@ export function createCraftedItem(base: ItemBase, itemLevel = base.itemLevel): C
     runes: [],
     corrupted: false,
     mirrored: false,
+    destroyed: false,
     properties: { Sockets: "" },
   };
 }
@@ -116,6 +118,30 @@ export function addRandomModifier(item: CraftedItem, pool = POE2_MODIFIERS): Mod
   if (bucket.type === 'prefix') item.prefixes.push(modifier);
   else item.suffixes.push(modifier);
   return modifier;
+}
+
+export function removeRandomModifier(item: CraftedItem): Modifier | null {
+  const allExplicit = [...item.prefixes, ...item.suffixes];
+  if (!allExplicit.length) return null;
+  const chosen = allExplicit[Math.floor(Math.random() * allExplicit.length)];
+  if (chosen.type === 'prefix') {
+    item.prefixes = item.prefixes.filter((m) => m.id !== chosen.id);
+  } else {
+    item.suffixes = item.suffixes.filter((m) => m.id !== chosen.id);
+  }
+  return chosen;
+}
+
+export function rollRareModifiers(item: CraftedItem, desired = 4): Modifier[] {
+  item.prefixes = [];
+  item.suffixes = [];
+  const added: Modifier[] = [];
+  for (let i = 0; i < desired; i++) {
+    const mod = addRandomModifier(item);
+    if (!mod) break;
+    added.push(mod);
+  }
+  return added;
 }
 
 export function applyCraftingAction(
@@ -213,53 +239,41 @@ export function applyCraftingAction(
         const mod = addRandomModifier(cloned);
         if (mod) addedMods.push(mod);
       } else if (action.currencyId === 'chaos') {
-        cloned.prefixes = [];
-        cloned.suffixes = [];
-        const desired = 4;
-        for (let i = 0; i < desired; i++) {
-          const mod = addRandomModifier(cloned);
-          if (mod) addedMods.push(mod);
-        }
+        const removed = removeRandomModifier(cloned);
+        if (removed) removedMods.push(removed);
+        const mod = addRandomModifier(cloned);
+        if (mod) addedMods.push(mod);
+        else warnings.push("Chaos Orb removed a modifier, but no valid replacement modifier was available.");
       } else if (action.currencyId === 'alchemy') {
         cloned.rarity = 'rare';
-        cloned.prefixes = [];
-        cloned.suffixes = [];
-        const desired = 4;
-        for (let i = 0; i < desired; i++) {
-          const mod = addRandomModifier(cloned);
-          if (mod) addedMods.push(mod);
-        }
+        addedMods = rollRareModifiers(cloned, 4);
       } else if (action.currencyId === 'annul') {
-        const allExplicit = [...cloned.prefixes, ...cloned.suffixes];
-        if (allExplicit.length > 0) {
-          const chosen = allExplicit[Math.floor(Math.random() * allExplicit.length)];
-          removedMods.push(chosen);
-          if (chosen.type === 'prefix') {
-            cloned.prefixes = cloned.prefixes.filter((m) => m.id !== chosen.id);
-          } else {
-            cloned.suffixes = cloned.suffixes.filter((m) => m.id !== chosen.id);
-          }
-        }
+        const removed = removeRandomModifier(cloned);
+        if (removed) removedMods.push(removed);
       } else if (action.currencyId === 'chance') {
-        cloned.rarity = Math.random() < 0.2 ? 'rare' : 'magic';
+        const hitUnique = Math.random() < 0.01;
         cloned.prefixes = [];
         cloned.suffixes = [];
-        const desired = 4;
-        for (let i = 0; i < desired; i++) {
-          const mod = addRandomModifier(cloned);
-          if (mod) addedMods.push(mod);
+        if (hitUnique) {
+          cloned.rarity = 'unique';
+          warnings.push("Unique outcome is simulated without unique modifier data.");
+        } else {
+          cloned.destroyed = true;
+          warnings.push("Orb of Chance destroyed the item.");
         }
       }
       break;
     }
   }
 
+  const afterItem = JSON.parse(JSON.stringify(cloned)) as CraftedItem;
+
   // Push new Step into history log
   const step: CraftingStep = {
     id: `step-${Date.now()}-${Math.random()}`,
     action,
     beforeItem,
-    afterItem: cloned,
+    afterItem,
     addedMods,
     removedMods,
     warnings: warnings.map((msg) => ({ code: 'warning', message: msg, severity: 'warning' })),

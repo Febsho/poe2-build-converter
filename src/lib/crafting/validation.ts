@@ -12,9 +12,10 @@ export function modifierMatchesBase(modifier: Modifier, base: ItemBase, itemLeve
   return modifier.tags.some((tag) => baseTags.has(tag));
 }
 
-export function explicitLimit(rarity: 'normal' | 'magic' | 'rare'): number {
+export function explicitLimit(rarity: 'normal' | 'magic' | 'rare' | 'unique'): number {
   if (rarity === 'normal') return 0;
   if (rarity === 'magic') return 1;
+  if (rarity === 'unique') return 0;
   return 3;
 }
 
@@ -24,6 +25,14 @@ export function validateCraftingAction(
   context: CraftingContext
 ): CraftingProblem[] {
   const problems: CraftingProblem[] = [];
+
+  if (item.destroyed) {
+    problems.push({
+      code: "item_destroyed",
+      message: "Item was destroyed by Orb of Chance.",
+      severity: "error"
+    });
+  }
 
   // Check general corruption and mirrored status
   if (item.corrupted && action.type !== 'undo' && action.type !== 'socket') {
@@ -247,8 +256,11 @@ export function validateCraftingAction(
       if (cId === "chaos" && item.rarity !== "rare") {
         problems.push({ code: "wrong_item_rarity", message: "Chaos Orb requires a Rare item.", severity: "error" });
       }
-      if (cId === "alchemy" && item.rarity !== "normal") {
-        problems.push({ code: "wrong_item_rarity", message: "Orb of Alchemy requires a Normal item.", severity: "error" });
+      if (cId === "chaos" && item.prefixes.length + item.suffixes.length === 0) {
+        problems.push({ code: "no_explicit_modifier", message: "Chaos Orb requires a Rare item with at least one modifier.", severity: "error" });
+      }
+      if (cId === "alchemy" && item.rarity !== "normal" && item.rarity !== "magic") {
+        problems.push({ code: "wrong_item_rarity", message: "Orb of Alchemy requires a Normal or Magic item.", severity: "error" });
       }
       if (cId === "annul" && item.prefixes.length + item.suffixes.length === 0) {
         problems.push({ code: "no_open_prefix_suffix", message: "No explicit modifier can be removed.", severity: "error" });

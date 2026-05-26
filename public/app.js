@@ -998,6 +998,7 @@ function createCraftedItem(base, itemLevel = base.itemLevel) {
     runes: [],
     corrupted: false,
     mirrored: false,
+    destroyed: false,
     properties: { Sockets: "" },
     craftingLog: [],
   };
@@ -1302,7 +1303,8 @@ function renderCraftingSimulator() {
 
 function renderCraftActionButton(action, label) {
   const validation = validateCraftingAction(craftingState.item, action);
-  return `<button class="ghost sm${validation.ok ? '' : ' disabled'}" type="button" onclick="applyCraftingAction('${action}')" title="${escAttr(validation.ok ? label : validation.reason)}">${esc(label)}</button>`;
+  const disabledAttr = validation.ok ? '' : ' disabled';
+  return `<button class="ghost sm${validation.ok ? '' : ' disabled'}" type="button"${disabledAttr} onclick="applyCraftingAction('${action}')" title="${escAttr(validation.ok ? label : validation.reason)}">${esc(label)}</button>`;
 }
 
 function renderBaseStats(item) {
@@ -1337,6 +1339,7 @@ function renderCraftedItemCard(item) {
   const suffixLimit = craftingSuffixLimit(item.rarity);
   const corruptedTag = item.corrupted ? `<div class="poe-item-meta" style="color:var(--red,#ef4444);font-weight:bold;">Corrupted</div>` : '';
   const mirroredTag = item.mirrored ? `<div class="poe-item-meta" style="color:var(--blue,#3b82f6);font-weight:bold;">Mirrored</div>` : '';
+  const destroyedTag = item.destroyed ? `<div class="poe-item-meta" style="color:var(--red,#ef4444);font-weight:bold;">Destroyed by Orb of Chance</div>` : '';
   
   return `
     <div class="poe-item-card ${rarityClass}">
@@ -1348,6 +1351,7 @@ function renderCraftedItemCard(item) {
       <div class="poe-item-meta">Item Level: ${item.itemLevel}</div>
       ${corruptedTag}
       ${mirroredTag}
+      ${destroyedTag}
       ${renderBaseStats(item)}
       ${item.implicits.length ? `<div class="poe-item-sep"></div>${item.implicits.map((m) => `<div class="poe-item-implicit">${esc(formatModifierLine(m))}</div>`).join('')}` : ''}
       ${(item.runes ?? []).length ? `<div class="poe-item-sep"></div>${item.runes.map((r) => `<div class="poe-item-implicit" style="color:var(--amber,#f59e0b)">${esc(r.text)} <em style="opacity:.6">(${esc(r.name)})</em></div>`).join('')}` : ''}
@@ -1518,40 +1522,39 @@ function applyCraftingAction(action) {
       result = added ? `Used Exalted Orb: rolled ${formatModifierLine(added)}` : 'Exalted Orb: no valid modifier available for this item type (all modifier groups already present)';
     }
   } else if (action === 'chaos') {
+    let removed = null;
     if (omenApplies && activeOmen.id === 'omen-whittling') {
       // Remove modifier with lowest requiredItemLevel
       const mods = allExplicitModifiers(item);
       if (mods.length) {
-        const lowest = mods.reduce((a, b) => ((a.requiredItemLevel ?? 0) <= (b.requiredItemLevel ?? 0) ? a : b));
-        const list = lowest.type === 'prefix' ? item.prefixes : item.suffixes;
-        const idx = list.findIndex((m) => m.rollId === lowest.rollId);
+        removed = mods.reduce((a, b) => ((a.requiredItemLevel ?? 0) <= (b.requiredItemLevel ?? 0) ? a : b));
+        const list = removed.type === 'prefix' ? item.prefixes : item.suffixes;
+        const idx = list.findIndex((m) => m.rollId === removed.rollId);
         if (idx >= 0) list.splice(idx, 1);
       }
-      result = `Used Chaos Orb${omenTag}: removed lowest-level modifier`;
     } else if (omenApplies && activeOmen.id === 'omen-sinistral-erasure') {
-      const removed = removeModifierOfType(item, 'prefix');
-      result = `Used Chaos Orb${omenTag}: removed prefix${removed ? ` ${formatModifierLine(removed)}` : ''}`;
+      removed = removeModifierOfType(item, 'prefix');
     } else if (omenApplies && activeOmen.id === 'omen-dextral-erasure') {
-      const removed = removeModifierOfType(item, 'suffix');
-      result = `Used Chaos Orb${omenTag}: removed suffix${removed ? ` ${formatModifierLine(removed)}` : ''}`;
+      removed = removeModifierOfType(item, 'suffix');
     } else {
-      rerollRareItem(item);
-      result = `Used Chaos Orb: rerolled Rare item with ${item.prefixes.length + item.suffixes.length} modifiers`;
+      removed = removeRandomModifier(item);
     }
+    const added = addRandomModifier(item);
+    result = `Used Chaos Orb${omenTag}: removed ${removed ? formatModifierLine(removed) : 'no modifier'}${added ? ` and added ${formatModifierLine(added)}` : '; no valid replacement modifier was available'}`;
   } else if (action === 'alchemy') {
     item.rarity = 'rare';
     if (omenApplies && activeOmen.id === 'omen-sinistral-alchemy') {
       item.prefixes = [];
       item.suffixes = [];
       for (let i = 0; i < 3; i += 1) addRandomModifier(item, 'prefix');
-      for (let i = 0; i < 2 + Math.floor(Math.random() * 2); i += 1) addRandomModifier(item, 'suffix');
+      addRandomModifier(item, 'suffix');
     } else if (omenApplies && activeOmen.id === 'omen-dextral-alchemy') {
       item.prefixes = [];
       item.suffixes = [];
       for (let i = 0; i < 3; i += 1) addRandomModifier(item, 'suffix');
-      for (let i = 0; i < 2 + Math.floor(Math.random() * 2); i += 1) addRandomModifier(item, 'prefix');
+      addRandomModifier(item, 'prefix');
     } else {
-      rerollRareItem(item);
+      rollRareItemWithFourModifiers(item);
     }
     result = `Used Orb of Alchemy${omenTag}: item became Rare with ${item.prefixes.length + item.suffixes.length} modifiers`;
   } else if (action === 'annul') {
@@ -1570,7 +1573,15 @@ function applyCraftingAction(action) {
       result = removed ? `Used Orb of Annulment: removed ${formatModifierLine(removed)}` : 'Orb of Annulment had no modifier to remove';
     }
   } else if (action === 'chance') {
-    result = 'Orb of Chance simulation is reserved for unique item data integration.';
+    item.prefixes = [];
+    item.suffixes = [];
+    if (Math.random() < 0.01) {
+      item.rarity = 'unique';
+      result = 'Used Orb of Chance: item upgraded to Unique rarity. Unique modifier data is not available yet.';
+    } else {
+      item.destroyed = true;
+      result = 'Used Orb of Chance: item was destroyed.';
+    }
   }
   // Consume the omen after it modifies an action
   if (omenApplies) craftingState.activeOmen = null;
@@ -1580,6 +1591,9 @@ function applyCraftingAction(action) {
 }
 
 function validateCraftingAction(item, action) {
+  if (item.destroyed && action !== 'reset' && action !== 'undo') {
+    return { ok: false, reason: 'Item was destroyed by Orb of Chance. Reset or undo to continue.' };
+  }
   if (item.mirrored) {
     return { ok: false, reason: 'Item is mirrored — cannot modify.' };
   }
@@ -1601,7 +1615,8 @@ function validateCraftingAction(item, action) {
     if (action === 'exalt' && item.rarity !== 'rare') return { ok: false, reason: 'Exalted Orb requires a Rare item.' };
     if (action === 'exalt' && !hasOpenModifierSlot(item)) return { ok: false, reason: 'Rare item has no open modifier slots.' };
     if (action === 'chaos' && item.rarity !== 'rare') return { ok: false, reason: 'Chaos Orb requires a Rare item.' };
-    if (action === 'alchemy' && item.rarity !== 'normal') return { ok: false, reason: 'Orb of Alchemy requires a Normal item.' };
+    if (action === 'chaos' && !allExplicitModifiers(item).length) return { ok: false, reason: 'Chaos Orb requires a Rare item with at least one modifier.' };
+    if (action === 'alchemy' && item.rarity !== 'normal' && item.rarity !== 'magic') return { ok: false, reason: 'Orb of Alchemy requires a Normal or Magic item.' };
     if (action === 'annul' && !allExplicitModifiers(item).length) return { ok: false, reason: 'No explicit modifier can be removed.' };
     if (action === 'chance' && item.rarity !== 'normal') return { ok: false, reason: 'Orb of Chance requires a Normal item.' };
     return { ok: true };
@@ -1718,6 +1733,14 @@ function rerollRareItem(item) {
   item.suffixes = [];
   const desired = 4 + Math.floor(Math.random() * 3);
   for (let i = 0; i < desired; i += 1) {
+    if (!addRandomModifier(item)) break;
+  }
+}
+
+function rollRareItemWithFourModifiers(item) {
+  item.prefixes = [];
+  item.suffixes = [];
+  for (let i = 0; i < 4; i += 1) {
     if (!addRandomModifier(item)) break;
   }
 }
@@ -1921,12 +1944,14 @@ function simulateTargetCrafts(count) {
     } 
     else if (strategy === 'chaos') {
       item.rarity = 'rare';
-      rerollRareItem(item);
+      rollRareItemWithFourModifiers(item);
+      removeRandomModifier(item);
+      addRandomModifier(item);
       spent.chaos += 1;
     } 
     else if (strategy === 'alchemy' || strategy === 'alchemy_chaos') {
       item.rarity = 'rare';
-      rerollRareItem(item);
+      rollRareItemWithFourModifiers(item);
       spent.alchemy += 1;
     } 
     else if (strategy === 'essence') {
@@ -1972,7 +1997,7 @@ function simulateTargetCrafts(count) {
           if (!addRandomModifier(item)) break;
         }
       } else {
-        rerollRareItem(item);
+        rollRareItemWithFourModifiers(item);
       }
     } 
     else if (strategy === 'exalt') {
@@ -1987,7 +2012,7 @@ function simulateTargetCrafts(count) {
     } 
     else if (strategy === 'corruption') {
       item.rarity = 'rare';
-      rerollRareItem(item);
+      rollRareItemWithFourModifiers(item);
       item.corrupted = true;
       spent.vaal += 1;
       
@@ -2040,7 +2065,7 @@ function simulateTargetCrafts(count) {
           }
         }
       }
-      rerollRareItem(item);
+      rollRareItemWithFourModifiers(item);
     }
     else if (strategy === 'desecration') {
       const desecrationId = craftingState.selectedDesecration;
@@ -2108,7 +2133,9 @@ function simulateTargetCrafts(count) {
       if (item.rarity !== 'rare') {
         item.rarity = 'rare';
       }
-      rerollRareItem(item);
+      rollRareItemWithFourModifiers(item);
+      removeRandomModifier(item);
+      addRandomModifier(item);
       spent.chaos += 1;
     }
     else if (strategy === 'desecration_assisted') {
@@ -2143,7 +2170,7 @@ function simulateTargetCrafts(count) {
     }
     else if (strategy === 'rune_soul') {
       item.rarity = 'rare';
-      rerollRareItem(item);
+      rollRareItemWithFourModifiers(item);
       
       const coreId = craftingState.selectedSoulCore;
       const core = CRAFTING_SOUL_CORES.find(c => c.id === coreId);
@@ -2268,8 +2295,10 @@ function craftedItemText(item) {
 }
 
 function craftedItemName(item) {
+  if (item.destroyed) return `Destroyed ${item.base.name}`;
   if (item.rarity === 'normal') return item.base.name;
   if (item.rarity === 'magic') return `${item.prefixes[0]?.name || item.suffixes[0]?.name || 'Magic'} ${item.base.name}`;
+  if (item.rarity === 'unique') return `Unique ${item.base.name}`;
   const first = item.prefixes[0]?.name || 'Crafted';
   const second = item.suffixes[0]?.name || 'Relic';
   return `${first} ${second}`;
@@ -2294,6 +2323,7 @@ function getCraftingWarnings() {
   
   if (item.prefixes.length > 3) warnings.push('Impossible item state: more than 3 prefixes.');
   if (item.suffixes.length > 3) warnings.push('Impossible item state: more than 3 suffixes.');
+  if (item.destroyed) warnings.push('Item was destroyed by Orb of Chance.');
   if (item.rarity === 'magic' && (item.prefixes.length > 1 || item.suffixes.length > 1)) warnings.push('Magic item has too many explicit modifiers.');
   
   for (const mod of allExplicitModifiers(item)) {

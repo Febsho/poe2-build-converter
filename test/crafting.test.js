@@ -115,6 +115,62 @@ test('invalid currency craft - transmute blocks magic item', () => {
   assert.ok(problems.some(p => p.code === 'wrong_item_rarity'));
 });
 
+test('alchemy upgrades normal or magic item to rare with four modifiers', () => {
+  const normalItem = createCraftedItem(baseWeapon, 83);
+  const rareFromNormal = applyCraftingAction(normalItem, { type: 'currency', currencyId: 'alchemy' }, context);
+  assert.equal(rareFromNormal.rarity, 'rare');
+  assert.equal(rareFromNormal.prefixes.length + rareFromNormal.suffixes.length, 4);
+
+  const magicItem = createCraftedItem(baseWeapon, 83);
+  magicItem.rarity = 'magic';
+  const existingMod = rareFromNormal.prefixes[0] ?? rareFromNormal.suffixes[0];
+  if (existingMod.type === 'prefix') magicItem.prefixes.push(existingMod);
+  else magicItem.suffixes.push(existingMod);
+  const problems = validateCraftingAction(magicItem, { type: 'currency', currencyId: 'alchemy' }, context);
+  assert.equal(problems.filter(p => p.severity === 'error').length, 0);
+
+  const rareFromMagic = applyCraftingAction(magicItem, { type: 'currency', currencyId: 'alchemy' }, context);
+  assert.equal(rareFromMagic.rarity, 'rare');
+  assert.equal(rareFromMagic.prefixes.length + rareFromMagic.suffixes.length, 4);
+});
+
+test('chaos removes one rare modifier and adds one replacement', () => {
+  const item = applyCraftingAction(createCraftedItem(baseWeapon, 83), { type: 'currency', currencyId: 'alchemy' }, context);
+  const beforeCount = item.prefixes.length + item.suffixes.length;
+  const updated = applyCraftingAction(item, { type: 'currency', currencyId: 'chaos' }, context);
+  const step = updated.craftingLog.at(-1);
+
+  assert.equal(updated.rarity, 'rare');
+  assert.equal(step.removedMods.length, 1);
+  assert.equal(step.addedMods.length, 1);
+  assert.equal(updated.prefixes.length + updated.suffixes.length, beforeCount);
+});
+
+test('chaos requires at least one explicit rare modifier', () => {
+  const item = createCraftedItem(baseWeapon, 83);
+  item.rarity = 'rare';
+  const problems = validateCraftingAction(item, { type: 'currency', currencyId: 'chaos' }, context);
+  assert.ok(problems.some(p => p.code === 'no_explicit_modifier'));
+});
+
+test('chance upgrades normal item to unique or destroys it', () => {
+  const originalRandom = Math.random;
+  try {
+    Math.random = () => 0;
+    const unique = applyCraftingAction(createCraftedItem(baseWeapon, 83), { type: 'currency', currencyId: 'chance' }, context);
+    assert.equal(unique.rarity, 'unique');
+    assert.equal(unique.destroyed, false);
+
+    Math.random = () => 0.99;
+    const destroyed = applyCraftingAction(createCraftedItem(baseWeapon, 83), { type: 'currency', currencyId: 'chance' }, context);
+    assert.equal(destroyed.destroyed, true);
+    const problems = validateCraftingAction(destroyed, { type: 'currency', currencyId: 'transmute' }, context);
+    assert.ok(problems.some(p => p.code === 'item_destroyed'));
+  } finally {
+    Math.random = originalRandom;
+  }
+});
+
 test('essence forced modifier - force-applies mod and upgrades to rare', () => {
   const item = createCraftedItem(baseBelt, 83);
   
